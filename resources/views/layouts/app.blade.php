@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ config('app.name', 'TuteBuddy Institution') }}</title>
 
-    <link rel="icon" type="image/png" href="{{ asset('/storage/logos/' . config('favicon')) }}">
+    <link rel="icon" type="image/png" href="{{ asset('/assets/img/logos/favicon.png') }}">
 
     <!-- Prevent the demo from appearing in search engines -->
     <meta name="robots" content="noindex">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap" rel="stylesheet">
 
     <!-- Perfect Scrollbar -->
     <link type="text/css" href="{{ asset('assets/css/perfect-scrollbar.css') }}" rel="stylesheet">
@@ -106,25 +108,6 @@
 <script src="{{ asset('assets/js/helper.js') }}"></script>
 
 @include('layouts.parts.sweet-alert')
-
-@if(\Request::route()->getName() == 'homepage')
-<script>
-    (function() {
-        'use strict';
-        var headerNode = document.querySelector('.mdk-header')
-        var layoutNode = document.querySelector('.mdk-header-layout')
-        var componentNode = layoutNode ? layoutNode : headerNode
-
-        componentNode.addEventListener('domfactory-component-upgraded', function() {
-            headerNode.mdkHeader.eventTarget.addEventListener('scroll', function() {
-                var progress = headerNode.mdkHeader.getScrollState().progress
-                var navbarNode = headerNode.querySelector('#default-navbar')
-                navbarNode.classList.toggle('bg-transparent', progress <= 0.2)
-            })
-        })
-    })()
-</script>
-@endif
 
 </body>
 

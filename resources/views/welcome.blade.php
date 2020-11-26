@@ -1,23 +1,35 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ config('app.name', 'TuteBuddy LMS') }}</title>
-    <style>
+@section('content')
+
+@push('after-styles')
+
+<style>
     body {
         background-color: lightblue;
-        background-image: url("{{ asset('/assets/img/background/tutebuddy-bg.jpg') }}");
+        background-image: url("{{ asset('/assets/img/backgrounds/tutebuddy-bg.jpg') }}");
         background-repeat: no-repeat;
         background-size: auto;
     }
-    </style>
-</head>
+</style>
 
-<body>
-    
-</body>
+@endpush
 
-</html>
+<!-- Header Layout Content -->
+<div class="mdk-header-layout__content page-content login-bg"></div>
+
+@push('after-scripts')
+
+@if(isset($message))
+
+<script type="text/javascript">
+    $(function() {
+        swal("Warning!", "{{ $message }}", "warning");
+    });
+</script>
+
+@endif
+
+@endpush
+
+@endsection
