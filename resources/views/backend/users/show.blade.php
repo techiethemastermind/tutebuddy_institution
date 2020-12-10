@@ -50,6 +50,38 @@
                             </div>
                         </div>
                     </div>
+
+                    @if($user->hasRole('Teacher'))
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Subjects offered by {{ $user->name }}</label>
+                                    <div class="mt-8pt">
+                                        @foreach($user->courses as $course)
+                                        <span class="btn btn-light btn-sm p-2 mb-8pt mr-8pt">{{ $course->title }}</span>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Professions</label>
+                                    @if(!empty($user->profession))
+                                    <div class="mt-8pt">
+                                        @php $pros = json_decode($user->profession); @endphp
+                                
+                                        @foreach($pros as $pro)
+                                        <?php
+                                            $category = App\Models\Category::find($pro);
+                                            $name = !empty($category) ? $category->name : $pro;
+                                        ?>
+                                        <span class="btn btn-light btn-sm p-2 mb-8pt mr-8pt">{{ $name }}</span>
+                                        @endforeach
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="col-md-8">
@@ -66,6 +98,47 @@
                             </div>
                         </div>
                     </div>
+
+                    @if($user->hasRole('Teacher'))
+                        <div class="card">
+                            <div class="card-body p-5">
+                                <h4>{{ $user->headline }}</h4>
+                                <p class="font-size-16pt">{{ $user->about }}</p>
+                            </div>
+                        </div>
+
+                        @if(!empty($user->qualifications))
+                            <div class="card">
+                                <div class="card-body p-5">
+                                    <h4>Professional Qualifications and Certifications</h4>
+                                    @foreach(json_decode($user->qualifications) as $qualification)
+                                    <p class="font-size-16pt mb-1"><strong>{{ $loop->iteration }}. </strong> {{ $qualification }}</p>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(!empty($user->qualifications))
+                            <div class="card">
+                                <div class="card-body p-5">
+                                    <h4>Achievements</h4>
+                                    @foreach(json_decode($user->achievements) as $achievement)
+                                    <p class="font-size-16pt mb-1"><strong>{{ $loop->iteration }}. </strong> {{ $achievement }}</p>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(!empty($user->experience))
+                            <div class="card">
+                                <div class="card-body p-5">
+                                    <h4>Experience</h4>
+                                    <p class="font-size-16pt mb-1">{{ $user->experience }}</p>
+                                </div>
+                            </div>
+                        @endif
+
+                    @endif
                 </div>
             </div>
         </div>

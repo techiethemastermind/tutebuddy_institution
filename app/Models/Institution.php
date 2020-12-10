@@ -15,4 +15,15 @@ class Institution extends Model
     {
     	return $this->hasMany(User::class);
     }
+
+    public function classes()
+    {
+        return $this->hasMany(Grade::class);
+    }
+
+    public function divisions()
+    {
+        return $this->hasMany(Division::class);
+    }
+
 }

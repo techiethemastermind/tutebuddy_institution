@@ -131,7 +131,7 @@ function convertToSlug(Text)
         ;
 }
 
-function checkValidForm(Form)
+function isValidForm(Form)
 {
     var no_empty_eles = Form.find('input[tute-no-empty], textarea[tute-no-empty], select[tute-no-empty]');
     var invalid_found = false;

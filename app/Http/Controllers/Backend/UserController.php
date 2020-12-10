@@ -11,6 +11,7 @@ use Spatie\Permission\Models\Role;
 use Hash;
 use App\Http\Controllers\Traits\FileUploadTrait;
 use Illuminate\Support\Str;
+use App\Models\Institution;
 
 class UserController extends Controller
 {
@@ -35,20 +36,73 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::orderBy('id','ASC')->paginate(10);
-        return view('backend.users.index',compact('users'));
+        $institutions = Institution::all();
+        if(!isset($request->institution_id) || isset($request->institution_id) && $request->institution_id == 'all') {
+            $users = User::orderBy('id','ASC')
+                    ->where('institution_id', '!=', 0)
+                    ->paginate(10);
+        } else {
+            $users = User::orderBy('id','ASC')
+                    ->where('institution_id', '!=', 0)
+                    ->where('institution_id', $request->institution_id)
+                    ->paginate(10);
+        }
+        $action = 'users';
+        return view('backend.users.index',compact('users', 'institutions', 'action'));
     }
 
-    public function getTeachers()
+    /**
+     * Display Institution Admins
+     */
+    public function getAdmins(Request $request)
     {
-        $users = User::role('Teacher')->paginate(10);
-        return view('backend.users.index',compact('users'));
+        $institutions = Institution::all();
+        if(!isset($request->institution_id) || isset($request->institution_id) && $request->institution_id == 'all') {
+            $users = User::role('Institution Admin')
+                    ->orderBy('id','ASC')
+                    ->paginate(10);
+        } else {
+            $users = User::role('Institution Admin')
+                    ->orderBy('id','ASC')
+                    ->where('institution_id', $request->institution_id)
+                    ->paginate(10);
+        }
+        $action = 'admins';
+        return view('backend.users.index', compact('users', 'institutions', 'action'));
     }
 
-    public function getStudents()
+    public function getTeachers(Request $request)
     {
-        $users = User::role('Student')->paginate(10);
-        return view('backend.users.index',compact('users'));
+        $institutions = Institution::all();
+        if(!isset($request->institution_id) || isset($request->institution_id) && $request->institution_id == 'all') {
+            $users = User::role('Teacher')
+                    ->orderBy('id','ASC')
+                    ->paginate(10);
+        } else {
+            $users = User::role('Teacher')
+                    ->orderBy('id','ASC')
+                    ->where('institution_id', $request->institution_id)
+                    ->paginate(10);
+        }
+        $action = 'teachers';
+        return view('backend.users.index',compact('users', 'institutions', 'action'));
+    }
+
+    public function getStudents(Request $request)
+    {
+        $institutions = Institution::all();
+        if(!isset($request->institution_id) || isset($request->institution_id) && $request->institution_id == 'all') {
+            $users = User::role('Student')
+                    ->orderBy('id','ASC')
+                    ->paginate(10);
+        } else {
+            $users = User::role('Student')
+                    ->orderBy('id','ASC')
+                    ->where('institution_id', $request->institution_id)
+                    ->paginate(10);
+        }
+        $action = 'students';
+        return view('backend.users.index',compact('users', 'institutions', 'action'));
     }
     
     /**
@@ -111,7 +165,6 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
-    
         return view('backend.users.edit',compact('user', 'roles', 'userRole'));
     }
     

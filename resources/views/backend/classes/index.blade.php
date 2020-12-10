@@ -48,14 +48,15 @@
         </div>
         <div class="card dashboard-area-tabs p-relative o-hidden mb-lg-32pt">
             <div class="table-responsive" data-toggle="lists">
-                <table id="tbl_classes" class="table mb-0 thead-border-top-0 table-nowrap" data-page-length='25'>
+                <table id="tbl_classes" class="table mb-0 thead-border-top-0 table-nowrap" data-page-length='10'>
                     <thead>
                         <tr>
                             <th style="width: 18px;" class="pr-0"></th>
-                            <th>Class Name</th>
-                            <th>Divisions</th>
-                            <th>Students</th>
-                            <th>Actions</th>
+                            <th> Class Name </th>
+                            <th> Number of Courses </th>
+                            <th> Number of Divisions </th>
+                            <th> Number of Students </th>
+                            <th> Actions </th>
                         </tr>
                     </thead>
                     <tbody class="list"></tbody>
@@ -78,11 +79,11 @@
                 searching: false,
                 ordering:  false,
                 info: false,
-                bStateSave: true,
                 ajax: "{{ route('admin.ajax.getClassesTableData') }}",
                 columns: [
                     { data: 'index'},
                     { data: 'name'},
+                    { data: 'subjects'},
                     { data: 'divisions'},
                     { data: 'students'},
                     { data: 'action' }

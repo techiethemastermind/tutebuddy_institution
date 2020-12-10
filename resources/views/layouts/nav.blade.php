@@ -10,7 +10,7 @@
             </button>
 
             <!-- Navbar Brand -->
-            <a href="{{ config('app.url') }}" class="navbar-brand mr-16pt">
+            <a href="{{ route('admin.dashboard') }}" class="navbar-brand mr-16pt">
 
                 <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
                     <img src="{{ asset('/assets/img/logos/tutebuddy-logo-full.png') }}" alt="logo" class="img-fluid" />

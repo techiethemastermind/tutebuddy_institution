@@ -49,7 +49,7 @@ trait FileUploadTrait
                     $constraint->aspectRatio();
                 });
             }
-            $image->save(public_path('storage/' . $type) . '/' . $filename);
+            $image->save(public_path('storage/uploads') . '/' . $filename);
         } else {
             $extension = array_last(explode('.', $image->getClientOriginalName()));
             $name = array_first(explode('.', $image->getClientOriginalName()));
@@ -59,7 +59,11 @@ trait FileUploadTrait
                 Image::make($image)->resize(64, 64)->save(public_path('storage/uploads/thumb') . '/' . $filename);
             }
 
-            $image->move(public_path('storage/' . $type), $filename);
+            if($type == 'upload') {
+                $image->move(public_path('storage/uploads'), $filename);
+            } else if($type == 'avatar') {
+                $image->move(public_path('storage/avatars'), $filename);
+            }
         }
 
         return $filename;

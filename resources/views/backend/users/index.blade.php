@@ -2,6 +2,12 @@
 
 @section('content')
 
+@push('after-styles')
+
+<link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}">
+
+@endpush
+
 <!-- Header Layout Content -->
 <div class="mdk-header-layout__content page-content ">
 
@@ -42,6 +48,23 @@
     <div class="container page__container page-section">
 
         <div class="card mb-lg-32pt">
+
+            @if(auth()->user()->hasRole('Administrator') && !empty($institutions))
+            <div class="card-header">
+                <div class="form-group form-inline mb-0">
+                    <label class="card-title mb-8pt mr-16pt">Institution:</label>
+                    <select name="institution" id="institution" class="form-control">
+                        <option value="all" @if(isset($_GET['institution_id']) && $_GET['institution_id'] == 'all') selected @endif>All</option>
+                        @foreach($institutions as $institution)
+                            <option value="{{ $institution->id }}" 
+                                @if(isset($_GET['institution_id']) && $_GET['institution_id'] == $institution->id) selected @endif>
+                                {{ $institution->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            @endif
 
             <div class="table-responsive" data-toggle="lists" data-lists-values='["js-lists-values-name", "js-lists-values-email"]'>
 
@@ -137,12 +160,17 @@
 
 @push('after-scripts')
 
-<!-- List.js -->
-<script src="{{ asset('assets/js/list.min.js') }}"></script>
-<script src="{{ asset('assets/js/list.js') }}"></script>
+<script src="{{ asset('assets/js/select2.min.js') }}"></script>
 
-<!-- Tables -->
-<script src="{{ asset('assets/js/toggle-check-all.js') }}"></script>
-<script src="{{ asset('assets/js/check-selected-row.js') }}"></script>
+<script>
+    $(function() {
+
+        $('select[name="institution"]').select2();
+        $('select[name="institution"]').on('change', function(e) {
+            var url = '/admin/'+ '{{ $action }}' +'?institution_id=' + $(this).val();
+            window.location.href = url;
+        });
+    });
+</script>
 
 @endpush

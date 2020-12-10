@@ -7,6 +7,7 @@
 <style type="text/css">
     [dir=ltr] .login-bg {
         background: url({{ asset('assets/img/backgrounds/tutebuddy-bg.jpg') }});
+        min-height: 100vh;
     }
 </style>
 

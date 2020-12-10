@@ -9,6 +9,7 @@ use App\Http\Controllers\Traits\FileUploadTrait;
 use App\Models\Config;
 use App\Models\Grade;
 use App\Models\Institution;
+use App\Models\Division;
 use Hash;
 
 class ConfigController extends Controller
@@ -140,11 +141,46 @@ class ConfigController extends Controller
         $institution_id = auth()->user()->institution->id;
 
         if($request->tab == 'grade') {
+
             Grade::where('institution_id', $institution_id)->delete();
             foreach ($request->grade_name as $key => $value) {
                 Grade::insert([
                     'name' => $value,
                     'value' => $key,
+                    'type' => 'grade',
+                    'institution_id' => $institution_id
+                ]);
+            }
+
+            foreach ($request->college_name as $key => $value) {
+                Grade::insert([
+                    'name' => $value,
+                    'value' => $key,
+                    'type' => 'college',
+                    'institution_id' => $institution_id
+                ]);
+            }
+
+            foreach ($request->graduation_name as $key => $value) {
+                Grade::insert([
+                    'name' => $value,
+                    'value' => $key,
+                    'type' => 'graduation',
+                    'institution_id' => $institution_id
+                ]);
+            }
+
+            return response()->json([
+                'success' => true
+            ]);
+        }
+
+        if($request->tab == 'division') {
+
+            $division = Division::where('institution_id', $institution_id)->delete();
+            foreach ($request->division_name as $key => $value) {
+                Division::insert([
+                    'name' => $value,
                     'institution_id' => $institution_id
                 ]);
             }

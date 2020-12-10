@@ -53,12 +53,6 @@
                 </div>
             </div>
 
-            <div class="row" role="tablist">
-                <div class="col-auto mr-3">
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">Go To List</a>
-                </div>
-            </div>
-
             @can('user_create')
             <div class="row" role="tablist">
                 <div class="col-auto mr-3">
@@ -121,12 +115,14 @@
                                     'form-control')) !!}
                                 </div>
                             </div>
+                            @if(auth()->user()->hasRole('Administrator'))
                             <div class="col-md-6">
                                 <div class="form-group mb-24pt">
                                     <label class="form-label">Role</label>
                                     {!! Form::select('roles[]', $roles, $userRole, array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
                                 </div>
                             </div>
+                            @endif
                         </div>
 
                         <div class="row">
