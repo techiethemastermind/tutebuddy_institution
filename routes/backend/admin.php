@@ -126,3 +126,7 @@ Route::post('timetables/class/{id}/update', 'TimetableController@updateClassTime
 Route::get('ajax/classTimeTables', 'TimetableController@getClassTimetableByAjax')->name('ajax.getClassTimetableByAjax');
 
 Route::get('timetables/exam', 'TimetableController@getExamTimeTable')->name('timetables.exam');
+Route::get('timetables/exam/{id}/edit', 'TimetableController@editExamTimeTable')->name('timetables.exam.edit');
+Route::post('timetables/exam/{id}/update', 'TimetableController@updateExamTimeTable')->name('timetables.exam.update');
+Route::post('timetables/exam/create', 'TimetableController@storeTimeTable')->name('timetables.store');
+Route::post('ajax/examTimeTables/order', 'TimetableController@orderChange')->name('ajax.timetables.order');

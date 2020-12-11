@@ -14,6 +14,14 @@
         object-fit: cover;
         object-position: top;
     }
+
+    [dir=ltr] .modal-content embed {
+        height: 80vh;
+    }
+
+    [dir=ltr] .modal-content img {
+        height: 80vh;
+    }
 </style>
 @endpush
 
@@ -25,13 +33,13 @@
             class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
             <div class="flex d-flex flex-column flex-sm-row align-items-center">
                 <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-                    <h2 class="mb-0">Create a timetable</h2>
+                    <h2 class="mb-0">Timetable for {{ $class->name }}</h2>
 
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
 
                         <li class="breadcrumb-item active">
-                            Create a timetable
+                            Edit Timetable
                         </li>
                     </ol>
                 </div>
@@ -122,8 +130,10 @@
                         </div>
 
                         <div class="form-group text-right">
+                            <button type="button" class="btn btn-accent" data-toggle="modal" data-target="#modal_{{ $division->id }}">View Timetable</button>
                             <button class="btn btn-primary">Save Changes</button>
                         </div>
+
                     </div>
         		</div>
         	</div>
@@ -134,6 +144,49 @@
         {!! Form::close() !!}
     </div>
 </div>
+
+<!-- Modal for Timetable view -->
+@foreach($class->divisions as $division)
+<div class="modal fade" id="modal_{{ $division->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xlg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">TimeTable for {{ $division->name }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content mb-16pt">
+                    @if($class->classTimeTableForDivision($division->id))
+
+                        @if($class->classTimeTableForDivision($division->id)->type != 'pdf')
+                        <img src="{{ asset('/storage/attachments/' . $class->classTimeTableForDivision($division->id)->url) }}"
+                            alt="people" width="100%" class="rounded" />
+
+                        <embed src="{{ asset('/storage/attachments/' . $class->classTimeTableForDivision($division->id)->url) }}" type="application/pdf"
+                            alt="people" width="100%" class="rounded" style="display:none;" />
+
+                        @else
+                        <img src="{{ asset('/storage/attachments/' . $class->classTimeTableForDivision($division->id)->url) }}"
+                            alt="people" width="100%" class="rounded" style="display:none;" />
+
+                        <embed src="{{ asset('/storage/attachments/' . $class->classTimeTableForDivision($division->id)->url) }}" type="application/pdf"
+                            alt="people" width="100%" class="rounded" />
+                        @endif
+                    @else
+                    <img src="{{ asset('/assets/img/no-image.jpg') }}"
+                        alt="people" width="100%" class="rounded" />
+
+                    <embed src="{{ asset('/assets/img/no-image.jpg') }}" type="application/pdf"
+                        alt="people" width="100%" class="rounded" style="display:none;" />
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 
 @push('after-scripts')
 

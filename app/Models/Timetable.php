@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Timetable extends Model
 {
-    protected $fillable = ['grade_id', 'division_id', 'type', 'url'];
+    protected $fillable = ['grade_id', 'name', 'division_id', 'type', 'table_type', 'order', 'url'];
 }

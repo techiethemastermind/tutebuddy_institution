@@ -43,9 +43,14 @@ class Grade extends Model
         return $this->belongsToMany(User::class, 'class_user');
     }
 
-    public function timetables()
+    public function classTimeTables()
     {
-        return $this->hasMany(Timetable::class);
+        return Timetable::where('grade_id', $this->id)->where('table_type', 0)->get();
+    }
+
+    public function examTimeTables()
+    {
+        return Timetable::where('grade_id', $this->id)->where('table_type', 1)->orderBy('order')->get();
     }
 
     public function classTimeTableForDivision($id)

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 use App\Models\Timetable;
 use App\Models\Grade;
@@ -20,11 +21,6 @@ class TimetableController extends Controller
     */
 	public function getClassTimeTable()
 	{
-		// $timetables = Grade::leftJoin('timetables', function($timetable){
-		// 	$timetable->where('timetables.type', 0)
-		// 	->on('classes.id', '=', 'timetables.class_id');
-		// })->paginate(5);
-
 		return view('backend.timetables.class');
 	}
 
@@ -98,7 +94,7 @@ class TimetableController extends Controller
 	public function editClassTimeTable($id)
 	{
 		$class = Grade::find($id);
-		return view('backend.timetables.edit', compact('class'));
+		return view('backend.timetables.class-edit', compact('class'));
 	}
 
 	public function updateClassTimeTable(Request $request, $id)
@@ -156,6 +152,70 @@ class TimetableController extends Controller
 
 	public function getExamTimeTable()
 	{
-		// 
+		$classes = Grade::paginate(5);
+		return view('backend.timetables.exam', compact('classes'));
+	}
+
+	public function editExamTimeTable($id)
+	{
+		$class = Grade::find($id);
+		return view('backend.timetables.exam-edit', compact('class'));
+	}
+
+	public function storeTimeTable(Request $request)
+	{
+		$name = $request->name;
+		$file = $request->file('file_timetable');
+		$attachment_url = $this->saveFile($file);
+
+		$timetable = Timetable::create([
+			'grade_id' => $request->class_id,
+			'name' => $request->name,
+			'type' => array_last(explode('.', $file->getClientOriginalName())),
+			'table_type' => 1,
+			'url' => $attachment_url
+		]);
+
+		return back()->with('success', 'Created Successfully');
+	}
+
+	public function updateExamTimeTable(Request $request, $id)
+	{
+		$timetable = Timetable::find($id);
+
+		$file = $request->file('file_timetable');
+
+		if(!empty($file)) {
+			// Delete existing img file
+			if (File::exists(public_path('/storage/attachments/' . $timetable->url))) {
+				File::delete(public_path('/storage/attachments/' . $timetable->url));
+			}
+			$attachment_url = $this->saveFile($file);
+			$timetable->url = $attachment_url;
+			$timetable->type = array_last(explode('.', $file->getClientOriginalName()));
+		}
+		$timetable->name = $request->name;
+		$timetable->save();
+
+		return response()->json([
+			'success' => true
+		]);
+	}
+
+	public function orderChange(Request $request)
+	{
+		if(isset($request->data)) {
+			$i = 0;
+			foreach($request->data as $item) {
+				$timetable = Timetable::find($item['id']);
+				$timetable->order = $i;
+				$timetable->save();
+				$i++;
+			}
+		}
+
+		return response()->json([
+			'success' => true
+		]);
 	}
 }
