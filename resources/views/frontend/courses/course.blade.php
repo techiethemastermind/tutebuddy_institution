@@ -169,7 +169,7 @@
                     <p class="lead text-white-50 measure-hero-lead mb-24pt">{{ $course->short_description }}</p>
 
                     @if(auth()->check() && auth()->user()->hasRole('Student'))
-                    @if($course->favorited())
+                    @if($course->isFavorited())
                     <button data-route="{{ route('admin.course.addFavorite', $course->id) }}" disabled class="btn btn-white mr-12pt"><i
                             class="material-icons icon--left">favorite_border</i> Added to Favorite</button>
                     @else

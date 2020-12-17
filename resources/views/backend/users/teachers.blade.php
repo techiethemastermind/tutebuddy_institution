@@ -112,6 +112,21 @@
                 }
             }
         );
+
+        $(document).on('submit', 'form[name="delete_item"]', function(e) {
+
+            e.preventDefault();
+
+            $(this).ajaxSubmit({
+                success: function(res) {
+                    if(res.success) {
+                        table.ajax.reload();
+                    } else {
+                        swal("Warning!", res.message, "warning");
+                    }
+                }
+            });
+        });
     });
 </script>
 

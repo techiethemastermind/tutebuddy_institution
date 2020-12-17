@@ -83,9 +83,9 @@
                             <div class="w-64 h-64 d-inline-flex align-items-center justify-content-center mr-16pt">
                                 @php $ext = pathinfo($assignment->attachment, PATHINFO_EXTENSION); @endphp
                                 @if($ext == 'pdf')
-                                <img class="img-fluid rounded" src="{{ asset('/images/pdf.png') }}" alt="image">
+                                <img class="img-fluid rounded" src="{{ asset('/assets/img/pdf.png') }}" alt="image">
                                 @else
-                                <img class="img-fluid rounded" src="{{ asset('/images/docx.png') }}" alt="image">
+                                <img class="img-fluid rounded" src="{{ asset('/assets/img/docx.png') }}" alt="image">
                                 @endif
                             </div>
                             <div class="flex">

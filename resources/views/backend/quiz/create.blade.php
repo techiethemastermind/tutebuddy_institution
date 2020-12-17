@@ -419,7 +419,7 @@ $(function() {
     $('#btn_new_section').on('click', function(e) {
         e.preventDefault();
 
-        if(!checkValidForm($('#frm_quiz'))){
+        if(!isValidForm($('#frm_quiz'))){
             return false;
         }
 
@@ -696,7 +696,7 @@ $(function() {
     // ==== Save quiz ==== //
     $('#btn_quiz_save').on('click', function() {
 
-        if(!checkValidForm($('#frm_quiz'))){
+        if(!isValidForm($('#frm_quiz'))){
             return false;
         }
 
@@ -722,7 +722,7 @@ $(function() {
 
                     }, function(val) {
                         if (val) {
-                            var url = '/dashboard/quizs/' + res.quiz.id + '/edit';
+                            var url = '/admin/quizs/' + res.quiz.id + '/edit';
                             window.location.href = url;
                         }
                     });

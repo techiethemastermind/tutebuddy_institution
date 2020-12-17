@@ -26,7 +26,7 @@
     object-fit: cover;
     display: block;
     width: 250px;
-    height: 250px;
+    height: auto;
     object-position: top;
 }
 </style>

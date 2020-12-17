@@ -82,4 +82,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Models\ChapterStudent::class, 'user_id');
     }
+
+    //Get Certificates
+    public function certificates(){
+        return $this->hasMany(Models\Certificate::class);
+    }
 }

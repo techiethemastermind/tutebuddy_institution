@@ -555,9 +555,9 @@ class TestController extends Controller
             $ext = pathinfo($result->attachment, PATHINFO_EXTENSION);
             if(!empty($result->attachment)) {
                 if($ext == 'pdf') {
-                    $img = '<img class="rounded w-50" src="'. asset('/images/pdf.png') .'" alt="image">';
+                    $img = '<img class="rounded w-50" src="'. asset('/assets/img/pdf.png') .'" alt="image">';
                 } else {
-                    $img = '<img class="rounded w-50" src="'. asset('/images/docx.png') .'" alt="image">';
+                    $img = '<img class="rounded w-50" src="'. asset('/assets/img/docx.png') .'" alt="image">';
                 }
                 $temp['attachment'] = '<a href="'. asset('/storage/attachments/' . $result->attachment ) .'" target="_blank">'. $img .'</a>';
             } else {

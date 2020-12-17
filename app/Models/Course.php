@@ -28,11 +28,11 @@ class Course extends Model
                 $builder->where('institution_id', Auth::user()->institution->id);
             });
 
-            // static::addGlobalScope('filter', function (Builder $builder) {
-            //     $builder->whereHas('teachers', function ($q) {
-            //         $q->where('course_user.user_id', '=', auth()->user()->id);
-            //     });
-            // });
+            if(Auth::user()->hasRole('Student')) {
+                static::addGlobalScope('filter', function (Builder $builder) {
+                    $builder->where('class_id', Auth::user()->grade[0]->id);
+                });
+            }
         }
 
         static::deleting(function ($course) { // before delete() method call this

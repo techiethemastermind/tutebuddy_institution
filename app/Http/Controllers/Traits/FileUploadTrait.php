@@ -63,6 +63,8 @@ trait FileUploadTrait
                 $image->move(public_path('storage/uploads'), $filename);
             } else if($type == 'avatar') {
                 $image->move(public_path('storage/avatars'), $filename);
+            } else if($type == 'logo') {
+                $image->move(public_path('storage/logos'), $filename);
             }
         }
 

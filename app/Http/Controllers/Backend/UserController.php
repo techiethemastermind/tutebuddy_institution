@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 use App\User;
 use Spatie\Permission\Models\Role;
@@ -37,72 +38,245 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $institutions = Institution::all();
-        if(!isset($request->institution_id) || isset($request->institution_id) && $request->institution_id == 'all') {
-            $users = User::orderBy('id','ASC')
-                    ->where('institution_id', '!=', 0)
-                    ->paginate(10);
-        } else {
-            $users = User::orderBy('id','ASC')
-                    ->where('institution_id', '!=', 0)
-                    ->where('institution_id', $request->institution_id)
-                    ->paginate(10);
-        }
+        $users = User::orderBy('created_at','desc')->paginate(10);
         $action = 'users';
         return view('backend.users.index',compact('users', 'institutions', 'action'));
     }
 
     /**
      * Display Institution Admins
+     * 
+     * @return \Illuminate\Http\Response
      */
-    public function getAdmins(Request $request)
+    public function admins()
     {
-        $institutions = Institution::all();
-        if(!isset($request->institution_id) || isset($request->institution_id) && $request->institution_id == 'all') {
-            $users = User::role('Institution Admin')
-                    ->orderBy('id','ASC')
-                    ->paginate(10);
-        } else {
-            $users = User::role('Institution Admin')
-                    ->orderBy('id','ASC')
-                    ->where('institution_id', $request->institution_id)
-                    ->paginate(10);
-        }
-        $action = 'admins';
-        return view('backend.users.index', compact('users', 'institutions', 'action'));
+        return view('backend.users.admins');
     }
 
-    public function getTeachers(Request $request)
+    /**
+     * Display Teachers
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function teachers()
     {
-        $institutions = Institution::all();
-        if(!isset($request->institution_id) || isset($request->institution_id) && $request->institution_id == 'all') {
-            $users = User::role('Teacher')
-                    ->orderBy('id','ASC')
-                    ->paginate(10);
-        } else {
-            $users = User::role('Teacher')
-                    ->orderBy('id','ASC')
-                    ->where('institution_id', $request->institution_id)
-                    ->paginate(10);
-        }
-        $action = 'teachers';
-        return view('backend.users.index',compact('users', 'institutions', 'action'));
+        return view('backend.users.teachers');
     }
 
-    public function getStudents(Request $request)
+    /**
+     * Display Students
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function students()
     {
-        $institutions = Institution::all();
-        if(!isset($request->institution_id) || isset($request->institution_id) && $request->institution_id == 'all') {
-            $users = User::role('Student')
-                    ->orderBy('id','ASC')
-                    ->paginate(10);
-        } else {
-            $users = User::role('Student')
-                    ->orderBy('id','ASC')
-                    ->where('institution_id', $request->institution_id)
-                    ->paginate(10);
+        return view('backend.users.students');
+    }
+
+    /**
+     * Display Institution Admins
+     */
+    public function getAdminsByAjax()
+    {
+        $inst_users = User::role('Institution Admin')->get();
+        $admin_users = User::role('Admin')->get();
+        $users = collect();
+
+        foreach($inst_users as $user) {
+            $users->add($user);
         }
-        $action = 'students';
-        return view('backend.users.index',compact('users', 'institutions', 'action'));
+
+        foreach($admin_users as $user) {
+            $users->add($user);
+        }
+
+        $data = [];
+        $i = 1;
+        foreach($users as $user) {
+            $temp = [];
+            $temp['index'] = '';
+            $temp['no'] = $i++;
+
+            if(empty($user->avatar)) {
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->name, 0, 2) .'</span>';
+            } else {
+                $avatar = '<img src="'. asset('/storage/avatars/' . $user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
+            }
+
+            $temp['name'] = '<div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
+                                <div class="avatar avatar-sm mr-8pt">'. $avatar .'</div>
+                                <div class="media-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex d-flex flex-column">
+                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $user->name .'</strong></p>
+                                            <small class="js-lists-values-email text-50">'. $user->institution->name .'</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>';
+            
+            $temp['email'] = '<strong>' . $user->email . '</strong>';
+
+            if($user->status) {
+                $temp['status'] = '<div class="d-flex flex-column">
+                                <small class="js-lists-values-status text-50 mb-4pt">Active</small>
+                                <span class="indicator-line rounded bg-success"></span>
+                            </div>';
+            } else {
+                $temp['status'] = '<div class="d-flex flex-column">
+                                <small class="js-lists-values-status text-50 mb-4pt">Inactive</small>
+                                <span class="indicator-line rounded bg-accent"></span>
+                            </div>';
+            }
+
+            $show_route = route('admin.users.show', $user->id);
+            $btn_show = view('layouts.buttons.show', ['show_route' => $show_route])->render();
+
+            $edit_route = route('admin.users.edit', $user->id);
+            $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route])->render();
+
+            $delete_route = route('admin.users.destroy', $user->id);
+            $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route])->render();
+
+            if($user->hasRole('Admin')) {
+                $temp['actions'] = $btn_show . '&nbsp;' . $btn_edit . '&nbsp;' . $btn_delete;
+            } else {
+                $temp['actions'] = $btn_show . '&nbsp;' . $btn_edit;;
+            }
+
+            array_push($data, $temp);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
+    public function getTeachersByAjax()
+    {
+        $users = User::role('Teacher')->get();
+        $data = [];
+        $i = 1;
+        foreach($users as $user) {
+            $temp = [];
+            $temp['index'] = '';
+            $temp['no'] = $i++;
+
+            if(empty($user->avatar)) {
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->name, 0, 2) .'</span>';
+            } else {
+                $avatar = '<img src="'. asset('/storage/avatars/' . $user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
+            }
+
+            $temp['name'] = '<div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
+                                <div class="avatar avatar-sm mr-8pt">'. $avatar .'</div>
+                                <div class="media-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex d-flex flex-column">
+                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $user->name .'</strong></p>
+                                            <small class="js-lists-values-email text-50">'. $user->headline .'</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>';
+            
+            $temp['email'] = '<strong>' . $user->email . '</strong>';
+            $temp['subjects'] = '<strong>' .$user->courses->count() . '</strong>';
+
+            if($user->status) {
+                $temp['status'] = '<div class="d-flex flex-column">
+                                <small class="js-lists-values-status text-50 mb-4pt">Active</small>
+                                <span class="indicator-line rounded bg-success"></span>
+                            </div>';
+            } else {
+                $temp['status'] = '<div class="d-flex flex-column">
+                                <small class="js-lists-values-status text-50 mb-4pt">Inactive</small>
+                                <span class="indicator-line rounded bg-accent"></span>
+                            </div>';
+            }
+
+            $show_route = route('admin.users.show', $user->id);
+            $btn_show = view('layouts.buttons.show', ['show_route' => $show_route])->render();
+
+            $edit_route = route('admin.users.edit', $user->id);
+            $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route])->render();
+
+            $delete_route = route('admin.users.destroy', $user->id);
+            $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route])->render();
+
+            $temp['actions'] = $btn_show . '&nbsp;' . $btn_edit . '&nbsp;' . $btn_delete;
+
+            array_push($data, $temp);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
+    public function getStudentsByAjax(Request $request)
+    {
+        $users = User::role('Student')->get();
+        $data = [];
+        $i = 1;
+        foreach($users as $user) {
+            $temp = [];
+            $temp['index'] = '';
+            $temp['no'] = $i++;
+
+            if(empty($user->avatar)) {
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->name, 0, 2) .'</span>';
+            } else {
+                $avatar = '<img src="'. asset('/storage/avatars/' . $user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
+            }
+
+            $temp['name'] = '<div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
+                                <div class="avatar avatar-sm mr-8pt">'. $avatar .'</div>
+                                <div class="media-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex d-flex flex-column">
+                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $user->name .'</strong></p>
+                                            <small class="js-lists-values-email text-50">'. $user->institution->name .'</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>';
+            
+            $temp['email'] = '<strong>' . $user->email . '</strong>';
+            $temp['class'] = '<strong>' . $user->grade[0]->name . '</strong>';
+
+            if($user->status) {
+                $temp['status'] = '<div class="d-flex flex-column">
+                                <small class="js-lists-values-status text-50 mb-4pt">Active</small>
+                                <span class="indicator-line rounded bg-success"></span>
+                            </div>';
+            } else {
+                $temp['status'] = '<div class="d-flex flex-column">
+                                <small class="js-lists-values-status text-50 mb-4pt">Inactive</small>
+                                <span class="indicator-line rounded bg-accent"></span>
+                            </div>';
+            }
+
+            $show_route = route('admin.users.show', $user->id);
+            $btn_show = view('layouts.buttons.show', ['show_route' => $show_route])->render();
+
+            $edit_route = route('admin.users.edit', $user->id);
+            $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route])->render();
+
+            $delete_route = route('admin.users.destroy', $user->id);
+            $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route])->render();
+
+            $temp['actions'] = $btn_show . '&nbsp;' . $btn_edit . '&nbsp;' . $btn_delete;
+
+            array_push($data, $temp);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
     }
     
     /**
@@ -126,19 +300,25 @@ class UserController extends Controller
     {    
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
+
+        if(in_array('Admin', $input['roles'])) { // Admin limited with 2
+            if(!User::role('Admin')->count() < 3) {
+                return back()->with('error', 'Admin user is limited');
+            }
+        }
     
         $user = User::create($input);
 
         $avatar = $request->has('avatar') ? $request->file('avatar') : false;
         if($avatar) {
-            $avatar_url = $this->saveImage($avatar, 'avatars');
+            $avatar_url = $this->saveImage($avatar, 'avatar');
             $user->avatar = $avatar_url;
             $user->save();
         }
         
         $user->assignRole($request->input('roles'));
     
-        return redirect()->route('admin.users.index')
+        return redirect()->route('admin.users.edit', $user->id)
                         ->with('success','User created successfully');
     }
     
@@ -210,16 +390,26 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('admin.users.index')
-                        ->with('success','User deleted successfully');
+        try {
+            User::find($id)->delete();
+
+            return response()->json([
+                'success' => true,
+                'action' => 'destroy'
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function myAccount()
     {
         $user = auth()->user();
-        $child = $user->child();
-        return view('backend.users.account', compact('user', 'child'));
+        return view('backend.users.account', compact('user'));
     }
 
     public function updateAccount(Request $request, $id)
@@ -288,7 +478,7 @@ class UserController extends Controller
 
     public function studentInstructors()
     {
-        return view('backend.users.student');
+        return view('backend.users.my-teachers');
     }
 
     public function getStudentInstructorsByAjax()

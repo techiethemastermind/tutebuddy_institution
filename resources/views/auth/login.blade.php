@@ -4,9 +4,9 @@
 
 @push('after-styles')
 
-<style type="text/css">
+<style>
     [dir=ltr] .login-bg {
-        background: url({{ asset('assets/img/backgrounds/tutebuddy-bg.jpg') }});
+        background: url("{{ asset('assets/img/backgrounds/tutebuddy-bg.jpg') }}");
         min-height: 100vh;
     }
 </style>
@@ -20,7 +20,11 @@
             <div class="col-lg-6 p-0 mx-auto">
 
                 <div class="logo text-center mb-32pt">
+                    @if(isset($institution) && !empty($institution->logo))
+                    <img src="{{ asset('/storage/logos/' . $institution->logo) }}" class="w-50" alt="logo">
+                    @else
                     <img src="{{ asset('/assets/img/logos/tutebuddy-logo-full.png') }}" class="w-50" alt="logo">
+                    @endif
                 </div>
 
                 <form method="POST" action="{{ route('login') }}" class="card card-body p-5">

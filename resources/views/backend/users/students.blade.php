@@ -18,13 +18,13 @@
             <div class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0">
 
                 <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-                    <h2 class="mb-0">Teachers</h2>
+                    <h2 class="mb-0">Students</h2>
 
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
 
                         <li class="breadcrumb-item active">
-                            Teachers
+                            Students
                         </li>
                     </ol>
                 </div>
@@ -112,6 +112,21 @@
                 }
             }
         );
+
+        $(document).on('submit', 'form[name="delete_item"]', function(e) {
+
+            e.preventDefault();
+
+            $(this).ajaxSubmit({
+                success: function(res) {
+                    if(res.success) {
+                        table.ajax.reload();
+                    } else {
+                        swal("Warning!", res.message, "warning");
+                    }
+                }
+            });
+        });
     });
 </script>
 

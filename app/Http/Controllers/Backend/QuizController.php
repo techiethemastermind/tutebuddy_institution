@@ -120,11 +120,13 @@ class QuizController extends Controller
 
         if(isset($data['model_id']) && ($data['model_id'] != -1)) {
             try {
-                Quiz::find($data['model_id'])->update($quiz_data);
-    
+                $quiz = Quiz::find($data['model_id']);
+                $quiz->update($quiz_data);
+
                 return response()->json([
                     'success' => true,
-                    'action' => 'update'
+                    'action' => 'update',
+                    'quiz' => $quiz
                 ]);
             } catch (Exception $e) {
     
@@ -138,8 +140,11 @@ class QuizController extends Controller
                 $quiz = Quiz::create($quiz_data);
 
                 // Send Email to Students
-                $student_ids = DB::table('course_student')->where('course_id', $quiz->course_id)->pluck('user_id');
-                $student_emails = User::whereIn('id', $student_ids)->pluck('email');
+                $course = Course::find($data['course_id']);
+                $grade = $course->grade;
+                $student_ids = $grade->students->pluck('id');                
+                $student_emails = \App\User::whereIn('id', $student_ids)->pluck('email');
+
                 $email_data = [
                     'template_type' => 'New_Quiz_Created',
                     'mail_data' => [
@@ -150,7 +155,7 @@ class QuizController extends Controller
 
                 foreach($student_emails as $email) {
                     $email_data['mail_data']['email'] = $email;
-                    SendEmail::dispatch($email_data);
+                    // SendEmail::dispatch($email_data);
                 }
     
                 return response()->json([

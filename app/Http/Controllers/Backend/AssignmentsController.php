@@ -328,9 +328,9 @@ class AssignmentsController extends Controller
             $publish_route = route('admin.assignment.publish', $item->id);
             $show_route = route('student.assignment.show', [$item->lesson->slug, $item->id]);
 
-            $btn_edit = view('backend.buttons.edit', ['edit_route' => $edit_route]);
-            $btn_show = view('backend.buttons.show', ['show_route' => $show_route]);
-            $btn_delete = view('backend.buttons.delete', ['delete_route' => $delete_route]);
+            $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route]);
+            $btn_show = view('layouts.buttons.show', ['show_route' => $show_route]);
+            $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route]);
 
             if($item->published == 0) {
                 $btn_publish = '<a href="'. $publish_route. '" class="btn btn-success btn-sm" data-action="publish" data-toggle="tooltip"
@@ -548,7 +548,7 @@ class AssignmentsController extends Controller
                 $temp['attachment'] = 'N/A';
             }
 
-            $btn_show = view('backend.buttons.show', ['show_route' => route('admin.assignments.show_result', $result->id)]);
+            $btn_show = view('layouts.buttons.show', ['show_route' => route('admin.assignments.show_result', $result->id)]);
             
             $temp['action'] = $btn_show . '&nbsp;';
 

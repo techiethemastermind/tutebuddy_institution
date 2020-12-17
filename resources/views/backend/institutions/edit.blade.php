@@ -13,7 +13,7 @@
 	    object-fit: cover;
 	    display: block;
 	    width: 250px;
-	    height: 250px;
+	    height: auto;
 	    object-position: top;
 	}
 </style>
@@ -53,7 +53,7 @@
 
             <div class="form-group">
                 <div class="media">
-                	
+
                 	<div class="media-left mr-32pt">
                 		<label class="form-label">Logo</label>
                 		<div class="profile-avatar mb-16pt">
@@ -74,27 +74,22 @@
 				        <div class="page-separator">
 				            <div class="page-separator__text">Information</div>
 				        </div>
-
                         <div class="form-group">
 			                <label class="form-label">Institution name</label>
 			                {!! Form::text('name', null, array('placeholder' => 'Name', 'class' => 'form-control', 'tute-no-empty' => '')) !!}
 			            </div>
-
 			            <div class="form-group">
 			                <label class="form-label">Institution Tag</label>
 			                {!! Form::text('prefix', null, array('placeholder' => 'tag','class' => 'form-control', 'tute-no-empty' => '')) !!}
 			            </div>
-
 			            <div class="form-group">
 			                <label class="form-label">Admin Password</label>
 			                {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control', 'tute-no-empty' => '')) !!}
 			            </div>
-
 			            <div class="form-group">
 			                <label class="form-label">Confirm Password</label>
 			                {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control', 'tute-no-empty' => '')) !!}
 			            </div>
-
 			            <div class="page-separator mt-32pt">
 			                <div class="page-separator__text">Contact Information</div>
 			            </div>

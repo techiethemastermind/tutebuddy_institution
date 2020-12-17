@@ -11,9 +11,17 @@ Route::resource('institutions', 'InstitutionController');
 
 //===== User Management Routes =====//
 Route::resource('users','UserController');
-Route::get('admins','UserController@getAdmins')->name('users.adminsByAjax');
-Route::get('teachers','UserController@getTeachersByAjax')->name('users.teachersByAjax');
-Route::get('students','UserController@getStudentsByAjax')->name('users.studentsByAjax');
+Route::get('admins', 'UserController@admins')->name('users.admins');
+Route::get('teachers', 'UserController@teachers')->name('users.teachers');
+Route::get('students', 'UserController@students')->name('users.students');
+Route::get('ajax/admins','UserController@getAdminsByAjax')->name('users.adminsByAjax');
+Route::get('ajax/teachers','UserController@getTeachersByAjax')->name('users.teachersByAjax');
+Route::get('ajax/students','UserController@getStudentsByAjax')->name('users.studentsByAjax');
+
+Route::get('account', 'UserController@myAccount')->name('myaccount');
+Route::post('account/{id}/update', 'UserController@updateAccount')->name('myaccount.update');
+Route::get('my/instructors', 'UserController@studentInstructors')->name('student.instructors');
+Route::get('ajax/my-instructors', 'UserController@getStudentInstructorsByAjax')->name('student.getStudentInstructorsByAjax');
 
 //===== Roles Routes =====//
 Route::resource('roles','RoleController');
@@ -38,7 +46,7 @@ Route::get('ajax/courses/delete/forever/{id}', 'CourseController@foreverDelete')
 Route::get('ajax/course/add-favorite/{course_id}', 'CourseController@addFavorite')->name('course.addFavorite');
 Route::get('ajax/course/remove-favorite/{course_id}', 'CourseController@removeFavorite')->name('course.removeFavorite');
 Route::get('my/courses', 'CourseController@studentCourses')->name('student.courses');
-Route::get('ajax/my-courses/{type}', 'CourseController@getStudentCoursesByAjax')->name('student.getMyCoursesByAjax');
+Route::get('ajax/my-courses', 'CourseController@getStudentCoursesByAjax')->name('student.getMyCoursesByAjax');
 
 //===== Lessons Routes =====//
 Route::resource('lessons', 'LessonController');
@@ -130,3 +138,18 @@ Route::get('timetables/exam/{id}/edit', 'TimetableController@editExamTimeTable')
 Route::post('timetables/exam/{id}/update', 'TimetableController@updateExamTimeTable')->name('timetables.exam.update');
 Route::post('timetables/exam/create', 'TimetableController@storeTimeTable')->name('timetables.store');
 Route::post('ajax/examTimeTables/order', 'TimetableController@orderChange')->name('ajax.timetables.order');
+
+//=== Result Sheet ===//
+Route::get('results', 'ResultsController@student')->name('results.student');
+Route::get('ajax/results', 'ResultsController@getStudentTableData')->name('results.getTableDataByAjax');
+Route::get('results/detail/{id}', 'ResultsController@getResultDetail')->name('results.detail');
+
+//=== My Badges ===//
+Route::get('badges', 'ResultsController@badges')->name('results.student.badges');
+
+// Certificate
+Route::get('certificates', 'CertificateController@index')->name('certificates.index');
+Route::get('certificate/{id}/show', 'CertificateController@show')->name('certificates.show');
+Route::get('ajax/certificates', 'CertificateController@getCertificates')->name('table.getCertsByAjax');
+Route::post('certificates/generate', 'CertificateController@generateCertificate')->name('certificates.generate');
+Route::get('certificates/download', ['uses' => 'CertificateController@download', 'as' => 'certificates.download']);

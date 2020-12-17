@@ -22,7 +22,7 @@
             object-fit: cover;
             display: block;
             width: 250px;
-            height: 250px;
+            height: auto;
             object-position: top;
         }
     </style>
@@ -41,17 +41,37 @@
                     <h2 class="mb-0">Account</h2>
 
                     <ol class="breadcrumb p-0 m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-
-                        <li class="breadcrumb-item">
-                            <a href="">Account</a>
-                        </li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">
                             Edit Account
                         </li>
                     </ol>
                 </div>
             </div>
+
+            @if($user->hasRole('Institution Admin') || $user->hasRole('Admin'))
+            <div class="row" role="tablist">
+                <div class="col-auto mr-3">
+                    <a href="{{ route('admin.users.admins') }}" class="btn btn-outline-secondary">Back</a>
+                </div>
+            </div>
+            @endif
+
+            @if($user->hasRole('Teacher'))
+            <div class="row" role="tablist">
+                <div class="col-auto mr-3">
+                    <a href="{{ route('admin.users.teachers') }}" class="btn btn-outline-secondary">Back</a>
+                </div>
+            </div>
+            @endif
+
+            @if($user->hasRole('Student'))
+            <div class="row" role="tablist">
+                <div class="col-auto mr-3">
+                    <a href="{{ route('admin.users.students') }}" class="btn btn-outline-secondary">Back</a>
+                </div>
+            </div>
+            @endif
 
             @can('user_create')
             <div class="row" role="tablist">
@@ -103,7 +123,7 @@
 
                     <div class="media-body">
 
-                        <div class="page-separator mt-32pt">
+                        <div class="page-separator">
                             <div class="page-separator__text">User Information</div>
                         </div>
 
@@ -197,7 +217,7 @@
                             </div>
                         </div>
                         
-                        <div class="page-separator mt-32pt">
+                        <div class="page-separator mt-32pt mb-24pt">
                             <div class="page-separator__text">Contact Information</div>
                         </div>
 
@@ -257,32 +277,6 @@
                             {!! Form::text('address', null, array('placeholder' => 'Address', 'class' =>
                             'form-control')) !!}
                         </div>
-
-                        @if($user->hasRole('Teacher'))
-                        <div class="page-separator mt-32pt">
-                            <div class="page-separator__text">Profession</div>
-                        </div>
-
-                        <div class="form-group">
-                            <select id="categories" name="categories[]" class="form-control" multiple="multiple">
-                            @if(!empty($user->profession))
-
-                            @php $pros = json_decode($user->profession); @endphp
-
-                            @foreach($pros as $pro)
-                            <?php
-                                $category = App\Models\Category::find($pro);
-                                $name = !empty($category) ? $category->name : $pro;
-                            ?>
-                            <option value="{{ $pro }}" selected >{{ $name }}</option>
-                            @endforeach
-
-                            @endif
-                            </select>
-                        </div>
-
-                        @endif
-
                     </div>
                 </div>
             </div>

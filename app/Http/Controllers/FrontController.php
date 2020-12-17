@@ -20,7 +20,7 @@ class FrontController extends Controller
         if(!auth()->check()) {
             $institution = Institution::where('prefix', $prefix)->first();
             if($institution) {
-                return view('auth.login', compact('prefix'));
+                return view('auth.login', compact('prefix', 'institution'));
             } else {
                 
                 if($prefix == 'admin') { // For TB super admin

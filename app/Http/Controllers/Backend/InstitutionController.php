@@ -48,7 +48,7 @@ class InstitutionController extends Controller
         $logo = $request->has('logo') ? $request->file('logo') : false;
 
         if($logo) {
-            $logo_url = $this->saveImage($logo, 'logos');
+            $logo_url = $this->saveImage($logo, 'logo');
             $institution->logo = $logo_url;
             $institution->save();
         }
@@ -99,7 +99,7 @@ class InstitutionController extends Controller
 
         $logo = $request->has('logo') ? $request->file('logo') : false;
         if($logo) {
-            $logo_url = $this->saveImage($logo, 'logos');
+            $logo_url = $this->saveImage($logo, 'logo');
             $institution->logo = $logo_url;
             $institution->save();
         }

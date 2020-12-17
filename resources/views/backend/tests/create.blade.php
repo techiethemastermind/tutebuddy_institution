@@ -396,7 +396,7 @@ $(function() {
     // Add New Question
     $('#btn_new_question').on('click', function() {
 
-        if(!checkValidForm($('#frm_test'))){
+        if(!isValidForm($('#frm_test'))){
             return false;
         }
 
@@ -559,7 +559,7 @@ $(function() {
     $('#frm_test').on('submit', function(e) {
         e.preventDefault();
 
-        if(!checkValidForm($(this))){
+        if(!isValidForm($(this))){
             return false;
         }
 

@@ -37,7 +37,7 @@ class LessonController extends Controller
         $lesson = Lesson::find($id);
         $step = Step::find($request->step);
         $next = Step::where('lesson_id', $id)->where('step', $step->step + 1)->first();
-        return view('backend.lesson.show', compact('lesson', 'step', 'next'));
+        return view('backend.lessons.show', compact('lesson', 'step', 'next'));
     }
 
     /**
@@ -290,18 +290,16 @@ class LessonController extends Controller
         return '';
     }
 
-
     // Student Dashboard
     public function studentLiveSessions()
     {
         $count = $this->getStudentCounts();
-        return view('backend.lesson.student', compact('count'));
+        return view('backend.lessons.student', compact('count'));
     }
 
     public function getStudentLiveSessionsByAjax($type)
     {
-        $course_ids = DB::table('course_student')->where('user_id', auth()->user()->id)->pluck('course_id');
-        $course_ids = Course::whereIn('id', $course_ids)->where('end_date', '>', Carbon::now()->format('Y-m-d'))->pluck('id');
+        $course_ids = Course::where('end_date', '>', Carbon::now()->format('Y-m-d'))->pluck('id');
         $live_lesson_ids = Lesson::whereIn('course_id', $course_ids)->where('lesson_type', 1)->pluck('id');
 
         if($type == 'all') {
@@ -333,13 +331,12 @@ class LessonController extends Controller
 
     function getStudentCounts()
     {
-        $course_ids = DB::table('course_student')->where('user_id', auth()->user()->id)->pluck('course_id');
-        $course_ids = Course::whereIn('id', $course_ids)->where('end_date', '>', Carbon::now()->format('Y-m-d'))->pluck('id');
+        $course_ids = Course::where('end_date', '>', Carbon::now()->format('Y-m-d'))->pluck('id');
         $live_lesson_ids = Lesson::whereIn('course_id', $course_ids)->where('lesson_type', 1)->pluck('id');
         $schedules = Schedule::whereIn('lesson_id', $live_lesson_ids)->get();
         $all_count = count($schedules);
         $today_count = 0;
-        
+
         foreach($schedules as $schedule) {
             if($schedule && Carbon::parse($schedule->date . ' ' . $schedule->start_time)->dayOfWeek == Carbon::now()->dayOfWeek) {
                 $today_count++;
@@ -400,7 +397,7 @@ class LessonController extends Controller
 
             if($schedule->lesson->lesson_type == 1) {
                 $route = route('lessons.live', [$schedule->lesson->slug, $schedule->lesson->id]);
-                $result = live_schedule($schedule->lesson);
+                $result = live_schedule($schedule);
 
                 if($result['status']) {
                     $temp['action'] = '<a href="'. $route .'" target="_blank" class="btn btn-primary btn-sm">Join</a>';
@@ -423,7 +420,7 @@ class LessonController extends Controller
     public function instructorLiveSessions()
     {
         $count = $this->getInstructorCounts();
-        return view('backend.lesson.teacher', compact('count'));
+        return view('backend.lessons.teacher', compact('count'));
     }
 
     function getInstructorCounts()

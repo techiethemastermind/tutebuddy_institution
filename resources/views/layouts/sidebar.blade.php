@@ -21,6 +21,76 @@
                     </a>
                 </li>
 
+                @if(auth()->user()->hasRole('Student'))
+
+                <li class="sidebar-menu-item {{ Request::is('admin/my/course*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.student.courses') }}">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">import_contacts</span>
+                        <span class="sidebar-menu-text">All Subjects</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-menu-item {{ Request::is('admin/my/live*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.student.liveSessions') }}">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">live_tv</span>
+                        <span class="sidebar-menu-text">Live Sessions</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-menu-item">
+                    <a class="sidebar-menu-button js-sidebar-collapse" data-toggle="collapse" href="#my_task_menu">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">assignment</span>
+                        My Tasks
+                        <span class="ml-auto sidebar-menu-toggle-icon"></span>
+                    </a>
+
+                    <ul class="sidebar-submenu collapse sm-indent" id="my_task_menu" style="">
+                    
+                        <li class="sidebar-menu-item {{ Request::is('admin/my/assignment*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.student.assignments') }}">
+                                <span class="sidebar-menu-text">Assignments</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-menu-item {{ Request::is('admin/my/quiz*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.student.quizs') }}">
+                                <span class="sidebar-menu-text">Quizzes</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-menu-item {{ Request::is('admin/my/test*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.student.tests') }}">
+                                <span class="sidebar-menu-text">Tests</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Course Performance (Result) -->
+                <li class="sidebar-menu-item {{ Request::is('admin/result*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.results.student') }}">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">poll</span>
+                        <span class="sidebar-menu-text">Course Performance</span>
+                    </a>
+                </li>
+
+                <!-- Cert -->
+                <li class="sidebar-menu-item {{ Request::is('admin/certificate*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.certificates.index') }}">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">new_releases</span>
+                        <span class="sidebar-menu-text">My Certifications</span>
+                    </a>
+                </li>
+
+                <!-- Badges -->
+                <li class="sidebar-menu-item {{ Request::is('admin/badges*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.results.student.badges') }}">
+                        <i class="material-icons sidebar-menu-icon sidebar-menu-icon--left fa fa-medal"></i>
+                        <span class="sidebar-menu-text">My Badges</span>
+                    </a>
+                </li>
+                @endif
+
                 @can('course_access')
                 <li class="sidebar-menu-item">
                     <a class="sidebar-menu-button js-sidebar-collapse" data-toggle="collapse" href="#courses_menu">
@@ -48,7 +118,6 @@
                         @endcan
                     </ul>
                 </li>
-                @endcan
 
                 <li class="sidebar-menu-item">
                     <a class="sidebar-menu-button js-sidebar-collapse" data-toggle="collapse" href="#timetable_menu">
@@ -71,8 +140,9 @@
                         </li>
                     </ul>
                 </li>
+                @endcan
 
-                @if(auth()->user()->hasRole('Institution Admin') || auth()->user()->hasRole('Teacher'))
+                @can('task_access')
                 <li class="sidebar-menu-item">
                     <a class="sidebar-menu-button js-sidebar-collapse" data-toggle="collapse" href="#task_menu">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">assignment</span>
@@ -107,53 +177,62 @@
 
                     </ul>
                 </li>
-                @endif
+                @endcan
+
+                <!-- My Account -->
+                <li class="sidebar-menu-item {{ Request::is('admin/account*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.myaccount') }}">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_circle</span>
+                        <span class="sidebar-menu-text">My Account</span>
+                    </a>
+                </li>
             </ul>
 
+            @if(!auth()->user()->hasRole('Student'))
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu">
                 <!-- Sidebar Head -->
-                <div class="sidebar-heading">User Management</div>
+                <div class="sidebar-heading">School Manage</div>
 
-                @if(auth()->user()->hasRole('Administrator'))
-                <li class="sidebar-menu-item {{ Request::is('admin/users?role=admin*') ? 'active' : '' }}">
-                    <a class="sidebar-menu-button" href="{{ route('admin.users.index', ['role' => 'admins']) }}">
+                <li class="sidebar-menu-item {{ Request::is('admin/admin*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.users.admins') }}">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people</span>
                         <span class="sidebar-menu-text">Institution Admins</span>
                     </a>
                 </li>
-                @endif
-
-                @can('class_access')
-                <li class="sidebar-menu-item {{ ( Request::is('admin/users*') && 
-                ( isset($_GET['role']) && $_GET['role'] == 'teacher') ) ? 'active' : '' }}">
-                    <a class="sidebar-menu-button" href="{{ route('admin.users.index', ['role' => 'teacher']) }}">
+                <li class="sidebar-menu-item {{ Request::is('admin/teacher*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.users.teachers') }}">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">portrait</span>
                         <span class="sidebar-menu-text">Teachers</span>
                     </a>
                 </li>
-                @endcan
 
-                @can('class_access')
-                <li class="sidebar-menu-item {{ ( Request::is('admin/users*') && 
-                ( isset($_GET['role']) && $_GET['role'] == 'student') ) ? 'active' : '' }}">
-                    <a class="sidebar-menu-button" href="{{ route('admin.users.index', ['role' => 'student']) }}">
+                <li class="sidebar-menu-item {{ Request::is('admin/student*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.users.students') }}">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
                         <span class="sidebar-menu-text">Students</span>
                     </a>
                 </li>
-                @endcan
 
-                @can('class_access')
                 <li class="sidebar-menu-item {{ Request::is('admin/class*') ? 'active' : '' }}">
                     <a class="sidebar-menu-button" href="{{ route('admin.classes.index') }}">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">category</span>
                         <span class="sidebar-menu-text">Class Management</span>
                     </a>
                 </li>
+
+                @can('setting_access')
+                    <li class="sidebar-menu-item {{ Request::is('admin/settings/institution*') ? 'active' : '' }}">
+                        <a class="sidebar-menu-button" href="{{ route('admin.settings.institution') }}">
+                            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">account_balance</span>
+                            <span class="sidebar-menu-text">Setting</span>
+                        </a>
+                    </li>
                 @endcan
             </ul>
+            @endif
 
+            @can('system_access')
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu">
                 <!-- Sidebar Head -->
@@ -177,18 +256,10 @@
                         </li>
                         @endcan
 
-                        @can('user_access')
-                        <li class="sidebar-menu-item {{ Request::is('admin/user*') ? 'active' : '' }}">
-                            <a class="sidebar-menu-button" href="{{ route('admin.users.index') }}">
-                                <span class="sidebar-menu-text">Users</span>
-                            </a>
-                        </li>
-                        @endcan
-
                         @can('role_access')
                         <li class="sidebar-menu-item {{ Request::is('admin/roles*') ? 'active' : '' }}">
                             <a class="sidebar-menu-button" href="{{ route('admin.roles.index', auth()->user()->prefix) }}">
-                                <span class="sidebar-menu-text">Roles</span>
+                                <span class="sidebar-menu-text">Permissions</span>
                             </a>
                         </li>
                         @endcan
@@ -211,20 +282,12 @@
                                 </a>
                             </li>
                         @endcan
-
-                        @if(auth()->user()->hasRole('Institution Admin'))
-                            @can('setting_access')
-                                <li class="sidebar-menu-item {{ Request::is('admin/settings/institution*') ? 'active' : '' }}">
-                                    <a class="sidebar-menu-button" href="{{ route('admin.settings.institution') }}">
-                                        <span class="sidebar-menu-text">Institution</span>
-                                    </a>
-                                </li>
-                            @endcan
-                        @endif
                     </ul>
                 </li>
             </ul>
-            
+            @endcan
+
+
         </div>
     </div>
 </div>

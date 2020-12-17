@@ -530,42 +530,17 @@ class CourseController extends Controller
 
     public function studentCourses()
     {
-        $course_ids = DB::table('course_student')->where('user_id', auth()->user()->id)->pluck('course_id');
-        $count_all = Course::whereIn('id', $course_ids)->where('end_date', '>', Carbon::now()->format('Y-m-d'))->count();
-        $count_achieved = Course::whereIn('id', $course_ids)->where('end_date', '<', Carbon::now()->format('Y-m-d'))->count();
-        $count = [
-            'all' => $count_all,
-            'deleted' => $count_achieved
-        ];
-
-        return view('backend.course.student', compact('count'));
+        return view('backend.courses.student');
     }
 
-    public function getStudentCoursesByAjax($type)
+    public function getStudentCoursesByAjax()
     {
-        $course_ids = DB::table('course_student')->where('user_id', auth()->user()->id)->pluck('course_id');
-
-        switch($type) {
-            case 'all':
-                $courses = Course::whereIn('id', $course_ids)->where('end_date', '>', Carbon::now()->format('Y-m-d'))->get();
-            break;
-
-            case 'deleted':
-                $courses = Course::whereIn('id', $course_ids)->where('end_date', '<', Carbon::now()->format('Y-m-d'))->get();
-            break;
-        }
-
+        $courses = Course::all();
         $data = $this->getStudentData($courses);
-
-        $count = [
-            'all' => Course::whereIn('id', $course_ids)->count(),
-            'deleted' => Course::whereIn('id', $course_ids)->where('end_date', '<', Carbon::now()->format('Y-m-d'))->count()
-        ];
 
         return response()->json([
             'success' => true,
-            'data' => $data,
-            'count' => $count
+            'data' => $data
         ]);
     }
 
@@ -606,11 +581,6 @@ class CourseController extends Controller
                                     </div>
                                 </div>
                             </div>';
-            
-            if(!empty($course->category))
-                $temp['category'] = $course->category->name;
-            else 
-                $temp['category'] = 'No Category';
 
             $temp['progress'] = '<div class="d-flex flex-column">
                                     <small class="js-lists-values-status text-50 mb-4pt">'. $course->progress() . '% </small>
@@ -618,7 +588,7 @@ class CourseController extends Controller
                                 </div>';
 
             $show_route = route('courses.show', $course->slug);
-            $btn_show = view('backend.buttons.show', ['show_route' => $show_route]);
+            $btn_show = view('layouts.buttons.show', ['show_route' => $show_route]);
             $temp['action'] = $btn_show . '&nbsp;';
 
             array_push($data, $temp);
@@ -680,6 +650,6 @@ class CourseController extends Controller
     {
         $favorites = DB::table('course_favorite')->where('user_id', auth()->user()->id)->pluck('course_id');
         $courses = Course::whereIn('id', $favorites)->paginate(10);
-        return view('backend.course.favorites', compact('courses'));
+        return view('backend.courses.favorites', compact('courses'));
     }
 }

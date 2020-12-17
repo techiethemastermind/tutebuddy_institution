@@ -199,7 +199,7 @@ $(function() {
     $('#frm_assignments').on('submit', function(e) {
         e.preventDefault();
 
-        if(!checkValidForm($(this))){
+        if(!isValidForm($(this))){
             return false;
         }
 
@@ -228,7 +228,7 @@ $(function() {
 
                     }, function(val) {
                         if (val) {
-                            var url = '/dashboard/assignments/' + res.assignment_id + '/edit';
+                            var url = '/admin/assignments/' + res.assignment_id + '/edit';
                             window.location.href = url;
                         }
                     });
