@@ -136,8 +136,6 @@
                     <button type="button" id="btn_add_new" class="btn btn-outline-secondary btn-block mb-24pt mb-sm-0"
                         data-toggle="modal" data-target="#modal_new">+ Add New</button>
                 </div>
-
-                
             </div>
 
             <div class="col-md-3">

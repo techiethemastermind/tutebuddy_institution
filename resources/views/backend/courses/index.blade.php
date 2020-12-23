@@ -83,6 +83,7 @@
                         </a>
                     </div>
 
+                    @can('course_delete')
                     <div class="col-auto border-left border-right">
                         <a href="{{ route('admin.getCoursesByAjax', 'deleted') }}" data-toggle="tab" role="tab"
                             class="dashboard-area-tabs__tab card-body d-flex flex-row align-items-center justify-content-start">
@@ -93,6 +94,7 @@
                             </span>
                         </a>
                     </div>
+                    @endcan
                 </div>
             </div>
 

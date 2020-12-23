@@ -27,7 +27,6 @@
         }
     </style>
 
-
 @endpush
 
 <!-- Header Layout Content -->
@@ -135,20 +134,40 @@
                                     'form-control')) !!}
                                 </div>
                             </div>
-                            @if(auth()->user()->hasRole('Administrator'))
+
                             <div class="col-md-6">
                                 <div class="form-group mb-24pt">
                                     <label class="form-label">Role</label>
+                                    @if(auth()->user()->hasRole('Administrator'))
                                     {!! Form::select('roles[]', $roles, $userRole, array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+                                    @else
+                                    {!! Form::select('roles[]', $roles, $userRole, array('class' => 'form-control', 'disabled'=>true, 'multiple', 'data-toggle'=>'select')) !!}
+                                    @endif
                                 </div>
                             </div>
-                            @endif
                         </div>
 
+                        @if($user->hasRole('Student'))
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Grade:</label>
+                                    {!! Form::select('grade', $grades, $user->grade, array('class' => 'form-control')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">division:</label>
+                                    {!! Form::select('division', $divisions, $user->division, array('class' => 'form-control')) !!}
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
+                        @if($user->hasRole('Teacher'))
                         <div class="row">
                             <div class="col-md-12">
-                            @if($user->hasRole('Teacher'))
-
                                 <div class="form-group">
                                     <label class="form-label">Headline</label>
                                     {!! Form::text('headline', null, array('placeholder' => 'Headline', 'class' =>
@@ -160,10 +179,9 @@
                                     {!! Form::textarea('about', null, array('placeholder' => 'About You...', 'class' =>
                                     'form-control', 'rows' => 5)) !!}
                                 </div>
-
-                            @endif
                             </div>
                         </div>
+                        @endif
 
                         <div class="row mt-24pt">
 

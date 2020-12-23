@@ -38,11 +38,13 @@
                 </div>
             </div>
 
+            @can('timetable_create')
             <div class="row" role="tablist">
                 <div class="col-auto">
                     <a href="" class="btn btn-outline-secondary">Add New</a>
                 </div>
             </div>
+            @endcan
         </div>
     </div>
 

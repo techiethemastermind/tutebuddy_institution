@@ -74,14 +74,30 @@ class TimetableController extends Controller
 
 			$temp['divisions'] = $divisions_html;
 			$temp['type'] = 'pdf';
+
+			$show_route = route('admin.timetables.class.show', $item->id);
+			$btn_show = view('layouts.buttons.show', ['show_route' => $show_route])->render();
 			
 			$edit_route = route('admin.timetables.class.edit', $item->id);
-			$btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route]);
+			$btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route])->render();
 
 			$delete_route = route('admin.timetables.class.delete', $item->id);
-			$btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route]);
+			$btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route])->render();
 
-           	$temp['actions'] = $btn_edit . '&nbsp' .$btn_delete;
+			$temp['actions'] = '';
+
+			if(auth()->user()->hasPermissionTo('timetable_view')) {
+				$temp['actions'] .= $btn_show . '&nbsp';
+			}
+
+			if(auth()->user()->hasPermissionTo('timetable_edit')) {
+				$temp['actions'] .= $btn_edit . '&nbsp';
+			}
+
+			if(auth()->user()->hasPermissionTo('timetable_delete')) {
+				$temp['actions'] .= $btn_delete;
+			}
+
            	array_push($data, $temp);
 		}
 
@@ -91,12 +107,27 @@ class TimetableController extends Controller
 		]);
 	}
 
+	/**
+	 * Display of Class Timetable
+	 */
+	public function showClassTimeTable($id)
+	{
+		$class = Grade::find($id);
+		return view('backend.timetables.class-show', compact('class'));
+	}
+
+	/**
+	 * Edit of Class Timetable
+	 */
 	public function editClassTimeTable($id)
 	{
 		$class = Grade::find($id);
 		return view('backend.timetables.class-edit', compact('class'));
 	}
 
+	/**
+	 * Update of Class Timetable
+	 */
 	public function updateClassTimeTable(Request $request, $id)
 	{
 		$inputs = $request->all();
@@ -132,6 +163,9 @@ class TimetableController extends Controller
 		]);
 	}
 
+	/**
+	 * Delete of Class Timetable
+	 */
 	public function deleteClassTimeTable($id)
 	{
 		try {
@@ -150,18 +184,36 @@ class TimetableController extends Controller
         }
 	}
 
+	/**
+	 * Display of Exam timetables
+	 */
 	public function getExamTimeTable()
 	{
 		$classes = Grade::paginate(5);
 		return view('backend.timetables.exam', compact('classes'));
 	}
 
+	/**
+	 * Show of Exam timetable
+	 */
+	public function showExamTimetable($id)
+	{
+		$class = Grade::find($id);
+		return view('backend.timetables.exam-show', compact('class'));
+	}
+
+	/**
+	 * Edit of Exam timetable
+	 */
 	public function editExamTimeTable($id)
 	{
 		$class = Grade::find($id);
 		return view('backend.timetables.exam-edit', compact('class'));
 	}
 
+	/**
+	 * Store Timetable
+	 */
 	public function storeTimeTable(Request $request)
 	{
 		$name = $request->name;
@@ -179,6 +231,9 @@ class TimetableController extends Controller
 		return back()->with('success', 'Created Successfully');
 	}
 
+	/**
+	 * Update Exam Timetable
+	 */
 	public function updateExamTimeTable(Request $request, $id)
 	{
 		$timetable = Timetable::find($id);
@@ -202,6 +257,9 @@ class TimetableController extends Controller
 		]);
 	}
 
+	/**
+	 * Change order
+	 */
 	public function orderChange(Request $request)
 	{
 		if(isset($request->data)) {
@@ -217,5 +275,25 @@ class TimetableController extends Controller
 		return response()->json([
 			'success' => true
 		]);
+	}
+
+	/**
+	 * Student Timetable
+	 */
+	public function studentTimetables()
+	{
+		if(!empty(auth()->user()->grade)) {
+			$grade = auth()->user()->grade[0];
+			$examTimetables = $grade->examTimeTables();
+			if(!empty(auth()->user()->division)) {
+				$division = auth()->user()->division;
+				$classTimetable = $grade->classTimeTableForDivision($division[0]->id);
+				return view('backend.timetables.student', compact('classTimetable', 'examTimetables'));
+			} else {
+				return redirect('admin.dashboard')->with('warning', 'Not assigned Grade by Admin. Please wait');
+			}
+		} else {
+			return redirect('admin.dashboard')->with('warning', 'Not assigned Grade by Admin. Please wait');
+		}
 	}
 }

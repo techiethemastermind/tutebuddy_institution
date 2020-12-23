@@ -17,11 +17,11 @@ Route::get('students', 'UserController@students')->name('users.students');
 Route::get('ajax/admins','UserController@getAdminsByAjax')->name('users.adminsByAjax');
 Route::get('ajax/teachers','UserController@getTeachersByAjax')->name('users.teachersByAjax');
 Route::get('ajax/students','UserController@getStudentsByAjax')->name('users.studentsByAjax');
-
 Route::get('account', 'UserController@myAccount')->name('myaccount');
 Route::post('account/{id}/update', 'UserController@updateAccount')->name('myaccount.update');
 Route::get('my/instructors', 'UserController@studentInstructors')->name('student.instructors');
 Route::get('ajax/my-instructors', 'UserController@getStudentInstructorsByAjax')->name('student.getStudentInstructorsByAjax');
+Route::post('users/csv/{type}', 'UserController@importCSV')->name('users.import.csv');
 
 //===== Roles Routes =====//
 Route::resource('roles','RoleController');
@@ -128,16 +128,20 @@ Route::get('ajax/my-quizs/{type}', 'QuizController@getStudentQuizsByAjax')->name
 
 //===== Timetable Routes =====//
 Route::get('timetables/class', 'TimetableController@getClassTimeTable')->name('timetables.class');
+Route::get('timetables/class/{id}/show', 'TimetableController@showClassTimeTable')->name('timetables.class.show');
 Route::get('timetables/class/{id}/edit', 'TimetableController@editClassTimeTable')->name('timetables.class.edit');
 Route::delete('timetables/class/{id}/delete', 'TimetableController@deleteClassTimeTable')->name('timetables.class.delete');
 Route::post('timetables/class/{id}/update', 'TimetableController@updateClassTimeTable')->name('timetables.class.update');
 Route::get('ajax/classTimeTables', 'TimetableController@getClassTimetableByAjax')->name('ajax.getClassTimetableByAjax');
 
 Route::get('timetables/exam', 'TimetableController@getExamTimeTable')->name('timetables.exam');
+Route::get('timetables/exam/{id}/show', 'TimetableController@showExamTimeTable')->name('timetables.exam.show');
 Route::get('timetables/exam/{id}/edit', 'TimetableController@editExamTimeTable')->name('timetables.exam.edit');
 Route::post('timetables/exam/{id}/update', 'TimetableController@updateExamTimeTable')->name('timetables.exam.update');
 Route::post('timetables/exam/create', 'TimetableController@storeTimeTable')->name('timetables.store');
 Route::post('ajax/examTimeTables/order', 'TimetableController@orderChange')->name('ajax.timetables.order');
+
+Route::get('my/timetables', 'TimetableController@studentTimetables')->name('student.timetables');
 
 //=== Result Sheet ===//
 Route::get('results', 'ResultsController@student')->name('results.student');
@@ -153,3 +157,18 @@ Route::get('certificate/{id}/show', 'CertificateController@show')->name('certifi
 Route::get('ajax/certificates', 'CertificateController@getCertificates')->name('table.getCertsByAjax');
 Route::post('certificates/generate', 'CertificateController@generateCertificate')->name('certificates.generate');
 Route::get('certificates/download', ['uses' => 'CertificateController@download', 'as' => 'certificates.download']);
+
+// Workspace for Teachers
+Route::get('live-sessions/all', 'LessonController@instructorLiveSessions')->name('instructor.liveSessions');
+
+// Messages Routes
+Route::get('messages', 'MessagesController@index')->name('messages.index');
+Route::get('messages/users/{key}', 'MessagesController@getUsers')->name('messages.users');
+Route::get('messages/get', 'MessagesController@getMessages')->name('messages.get');
+Route::get('messages/last', 'MessagesController@lastMessages')->name('messages.last');
+
+Route::post('messages/reply', 'MessagesController@reply')->name('messages.reply');
+Route::post('messages/unread', 'MessagesController@getUnreadMessages')->name('messages.unread');
+
+Route::get('messages/get/enroll-thread', 'MessagesController@getEnrollThread')->name('messages.getEnrollThread');
+Route::post('messages/enroll-send', 'MessagesController@sendEnrollChat')->name('messages.sendEnrollChat');

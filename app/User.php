@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Cmgmyr\Messenger\Traits\Messagable;
 
 use App\Models\Institution;
 
@@ -15,6 +16,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
+    use Messagable;
 
     /**
      * The attributes that are mass assignable.
@@ -76,6 +78,11 @@ class User extends Authenticatable
     public function grade()
     {
         return $this->belongsToMany(Models\Grade::class, 'class_user');
+    }
+
+    public function division()
+    {
+        return $this->belongsToMany(Models\Division::class, 'division_user');
     }
 
     public function chapters()

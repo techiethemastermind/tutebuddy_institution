@@ -30,29 +30,23 @@
                 </div>
             </div>
 
-            <div class="row" role="tablist">
-                <div class="col-auto mr-3">
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">Go To Home</a>
-                </div>
-            </div>
-
             @can('user_create')
             <div class="row" role="tablist">
                 <div class="col-auto mr-3">
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-outline-secondary">Add New</a>
+                    <a href="{{ route('admin.users.create', ['t'=>'teacher']) }}" class="btn btn-outline-secondary">Add New</a>
                 </div>
             </div>
             @endcan
 
             <div class="row" role="tablist">
                 <div class="col-auto mr-3">
-                    <a href="#" class="btn btn-outline-secondary">Upload by CSV</a>
+                    <a href="#" class="btn btn-outline-secondary" data-toggle="modal" data-target="#csvUploadModal">Upload by CSV</a>
                 </div>
             </div>
 
             <div class="row" role="tablist">
                 <div class="col-auto">
-                    <a href="#" class="btn btn-outline-secondary">Download CSV Template</a>
+                    <a href="{{ asset('/assets/files/teachers.csv') }}" class="btn btn-outline-secondary" download>Download CSV Template</a>
                 </div>
             </div>
         </div>
@@ -82,6 +76,42 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Form -->
+<div class="modal fade" id="csvUploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Import CSV file</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="form-horizontal" method="POST" action="{{ route('admin.users.import.csv', 'teacher') }}"
+                    enctype="multipart/form-data">{{ csrf_field() }}
+                <div class="modal-body mx-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bootstrap-touchspin-down" id="importCsvFilelbl">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" name="csv_file" class="custom-file-input" id="importCsvFile"
+                                aria-describedby="importCsvFilelbl" accept=".xlsx, .xls, .csv">
+                            <label class="custom-file-label" for="importCsvFile">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <button type="button" id="btn_csv_import" class="btn btn-primary">Import</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('after-scripts')
@@ -123,6 +153,18 @@
                         table.ajax.reload();
                     } else {
                         swal("Warning!", res.message, "warning");
+                    }
+                }
+            });
+        });
+
+        $('#btn_csv_import').on('click', function(e) {
+            e.preventDefault();
+            $('#csvUploadModal form').ajaxSubmit({
+                success: function(res) {
+                    if(res.success) {
+                        $('#csvUploadModal').modal('toggle');
+                        table.ajax.reload();
                     }
                 }
             });

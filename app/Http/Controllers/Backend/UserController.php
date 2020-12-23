@@ -13,6 +13,8 @@ use Hash;
 use App\Http\Controllers\Traits\FileUploadTrait;
 use Illuminate\Support\Str;
 use App\Models\Institution;
+use App\Models\Grade;
+use App\Models\Division;
 
 class UserController extends Controller
 {
@@ -247,6 +249,12 @@ class UserController extends Controller
             $temp['email'] = '<strong>' . $user->email . '</strong>';
             $temp['class'] = '<strong>' . $user->grade[0]->name . '</strong>';
 
+            if($user->division->count() > 0) {
+                $temp['division'] = '<strong>' . $user->division[0]->name . '</strong>';
+            } else {
+                $temp['division'] = 'N/A';
+            }            
+
             if($user->status) {
                 $temp['status'] = '<div class="d-flex flex-column">
                                 <small class="js-lists-values-status text-50 mb-4pt">Active</small>
@@ -306,18 +314,41 @@ class UserController extends Controller
                 return back()->with('error', 'Admin user is limited');
             }
         }
-    
-        $user = User::create($input);
 
+        $user = User::create($input);
         $avatar = $request->has('avatar') ? $request->file('avatar') : false;
         if($avatar) {
             $avatar_url = $this->saveImage($avatar, 'avatar');
             $user->avatar = $avatar_url;
             $user->save();
         }
-        
+
         $user->assignRole($request->input('roles'));
-    
+        if(isset($input['grade'])) {
+            $grade_user = DB::table('class_user')->updateOrInsert(
+                [
+                    'grade_id' => $input['grade'],
+                    'user_id' => $user->id
+                ],
+                [
+                    'grade_id' => $input['grade'],
+                    'user_id' => $user->id
+                ]
+            );
+        }
+        if(isset($input['division'])) {
+            $division_user = DB::table('division_user')->updateOrInsert(
+                [
+                    'division_id' => $input['division'],
+                    'user_id' => $user->id
+                ],
+                [
+                    'division_id' => $input['division'],
+                    'user_id' => $user->id
+                ]
+            );
+        }
+
         return redirect()->route('admin.users.edit', $user->id)
                         ->with('success','User created successfully');
     }
@@ -345,7 +376,15 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
-        return view('backend.users.edit',compact('user', 'roles', 'userRole'));
+        $grades = Grade::pluck('name', 'id')->all();
+
+        if(!empty($user->grade)) {
+            $divisions = $user->grade[0]->divisions->pluck('name', 'id');
+        } else {
+            $divisions = Division::pluck('name', 'id')->all();
+        }
+        
+        return view('backend.users.edit', compact('user', 'roles', 'userRole', 'grades', 'divisions'));
     }
     
     /**
@@ -356,7 +395,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {    
+    {
         $input = $request->all();
 
         if(!empty($input['password'])) { 
@@ -375,9 +414,24 @@ class UserController extends Controller
             $user->save();
         }
 
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
-    
-        $user->assignRole($request->input('roles'));
+        if(isset($input['grade'])) {
+            DB::table('class_user')->updateOrInsert(
+                ['user_id' => $id],
+                ['grade_id' => $input['grade']]
+            );
+        }
+
+        if(isset($input['division'])) {
+            DB::table('division_user')->updateOrInsert(
+                ['user_id' => $id],
+                ['division_id' => $input['division']]
+            );
+        }
+
+        if(isset($input['roles'])) {
+            DB::table('model_has_roles')->where('model_id', $id)->delete();
+            $user->assignRole($request->input('roles'));
+        }
     
         return back()->with('success','User updated successfully');
     }
@@ -450,11 +504,6 @@ class UserController extends Controller
             $user->save();
         }
 
-        if(isset($input['categories'])) {
-            $user->profession = json_encode($input['categories']);
-            $user->save();
-        }
-
         if(isset($input['qualification'])) {
             $user->qualifications = json_encode($input['qualification']);
             $user->save();
@@ -471,126 +520,103 @@ class UserController extends Controller
         ]);
     }
 
-    public function search(Request $request)
+    /**
+     * Upload Users by CSV file
+     */
+    public function importCSV(Request $request, $type)
     {
-        $params = $request->all();
-    }
+        $path = $request->file('csv_file')->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+        $csv_data = array_slice($data, 0);
+        $my_institution = auth()->user()->institution;
+        $grades = $my_institution->classes->pluck('id', 'name');
+        $divisions = $my_institution->divisions->pluck('id', 'name');
 
-    public function studentInstructors()
-    {
-        return view('backend.users.my-teachers');
-    }
+        $start = false;
+        $u_data = [];
 
-    public function getStudentInstructorsByAjax()
-    {
-        $course_ids = DB::table('course_student')->where('user_id', auth()->user()->id)->pluck('course_id');
-        $teacher_ids = DB::table('course_user')->whereIn('course_id', $course_ids)->pluck('user_id');
-        $teachers = User::whereIn('id', $teacher_ids)->get();
+        foreach($csv_data as $data) {
+            if($start) {
+                if($type == 'teacher') {
+                    $user_data = [
+                        'uuid' => Str::uuid()->toString(),
+                        'name' => $data[0],
+                        'headline' => $data[1],
+                        'about' => $data[2],
+                        'email' => $data[3],
+                        'phone_number' => $data[4],
+                        'country' => $data[5],
+                        'state' => $data[6],
+                        'city' => $data[7],
+                        'zip' => $data[8],
+                        'address' => $data[9],
+                        'timezone' => $my_institution->timezone
+                    ];
+    
+                    $user_data['password'] = Hash::make('secret');
 
-        $data = [];
-        foreach($teachers as $teacher) {
-            $temp = [];
-            $temp['index'] = '<div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input js-check-selected-row" data-domfactory-upgraded="check-selected-row">
-                        <label class="custom-control-label"><span class="text-hide">Check</span></label>
-                    </div>';
+                    // Check Email and if not exist then add user
+                    $user_count = User::where('email', $user_data['email'])->count();
+                    if($user_count < 1) {
+                        $user = User::create($user_data);
+                        $user->assignRole(['Teacher']);
+                    }
+                }
 
-            if(empty($teacher->avatar)) {
-                $avatar = '<span class="avatar-title rounded-circle">'. substr($teacher->name, 0, 2) .'</span>';
+                if($type == 'student') {
+                    
+                    $user_data = [
+                        'uuid' => Str::uuid()->toString(),
+                        'name' => $data[0],
+                        'email' => $data[3],
+                        'phone_number' => $data[4],
+                        'country' => $data[5],
+                        'state' => $data[6],
+                        'city' => $data[7],
+                        'zip' => $data[8],
+                        'address' => $data[9],
+                        'timezone' => $my_institution->timezone
+                    ];
+                    $user_data['password'] = Hash::make('secret');
+
+                    // Check Email and if not exist then add user
+                    $user_count = User::where('email', $user_data['email'])->count();
+
+                    if($user_count < 1) {
+                        $user = User::create($user_data);
+                        $user->assignRole(['Student']);
+
+                        $grade_user = DB::table('class_user')->updateOrInsert(
+                            [
+                                'grade_id' => $grades[$data[1]],
+                                'user_id' => $user->id
+                            ],
+                            [
+                                'grade_id' => $grades[$data[1]],
+                                'user_id' => $user->id
+                            ]
+                        );
+    
+                        $division_user = DB::table('division_user')->updateOrInsert(
+                            [
+                                'division_id' => $divisions[$data[2]],
+                                'user_id' => $user->id
+                            ],
+                            [
+                                'division_id' => $divisions[$data[2]],
+                                'user_id' => $user->id
+                            ]
+                        );
+                    }
+                }
+
             } else {
-                $avatar = '<img src="'. asset('/storage/avatars/' . $teacher->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
+                $start = true;
             }
-
-            $temp['name'] = '<div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
-                                <div class="avatar avatar-sm mr-8pt">'. $avatar .'</div>
-                                <div class="media-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex d-flex flex-column">
-                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $teacher->name .'</strong></p>
-                                            <small class="js-lists-values-email text-50">'. $teacher->headline .'</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>';
-
-            $temp['email'] = '<strong>' . $teacher->email . '</strong>';
-
-            $btn_follow = '<a href="#" target="_blank" class="btn btn-primary btn-sm">Follow</a>';
-            $btn_show = '<a href="'. route('profile.show', $teacher->uuid) .'" class="btn btn-accent btn-sm">View Profile</a>';
-
-            $temp['action'] = $btn_follow . '&nbsp;' . $btn_show;
-
-            array_push($data, $temp);
         }
 
         return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
-    }
-
-    public function enrolledStudents()
-    {
-        return view('backend.users.teacher');
-    }
-
-    public function getEnrolledStudentsByAjax()
-    {
-        $course_ids = DB::table('course_user')->where('user_id', auth()->user()->id)->pluck('course_id');
-        $student_ids = DB::table('course_student')->whereIn('course_id', $course_ids)->pluck('user_id');
-        $students = User::whereIn('id', $student_ids)->get();
-
-        $data = [];
-        foreach($students as $student) {
-            $temp = [];
-            $temp['index'] = '<div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input js-check-selected-row" data-domfactory-upgraded="check-selected-row">
-                        <label class="custom-control-label"><span class="text-hide">Check</span></label>
-                    </div>';
-            
-            if(!empty($student->avatar)) {
-                $avatar = '<img src="'. asset('/storage/avatars/' . $student->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
-            } else {
-                $avatar = '<span class="avatar-title rounded-circle">'. substr($student->name, 0, 2) .'</span>';
-            }
-
-            $temp['name'] = '<div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
-                                <div class="avatar avatar-sm mr-8pt">
-                                    '. $avatar .'
-                                </div>
-                                <div class="media-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex d-flex flex-column">
-                                            <p class="mb-0"><strong class="js-lists-values-name">'. $student->name .'</strong></p>
-                                            <small class="js-lists-values-email text-50">'. $student->email .'</small>
-                                        </div>
-                                        <div class="d-flex align-items-center ml-24pt">
-                                            <i class="material-icons text-20 icon-16pt">comment</i>
-                                            <small class="ml-4pt"><strong class="text-50">1</strong></small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>';
-            $temp['course'] = '<strong>'. $student->studentCourse()->title .'</strong>';
-            $temp['start_date'] = '<strong>'. $student->studentCourse()->start_date .'</strong>';
-            $temp['end_date'] = '<strong>'. $student->studentCourse()->end_date .'</strong>';
-
-            if($student->studentCourse()->progress() > 99) {
-                $status = '<span class="indicator-line rounded bg-success"></span>';
-            } else {
-                $status = '<span class="indicator-line rounded bg-primary"></span>';
-            }
-            $temp['status'] = '<div class="d-flex flex-column">
-                                    <small class="js-lists-values-status text-50 mb-4pt">'. $student->studentCourse()->progress() .'%</small>
-                                    '. $status .'
-                                </div>';
-
-            array_push($data, $temp);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $data
+            'success' => true
         ]);
     }
 }

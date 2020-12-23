@@ -23,18 +23,37 @@
 
                 @if(auth()->user()->hasRole('Student'))
 
-                <li class="sidebar-menu-item {{ Request::is('admin/my/course*') ? 'active' : '' }}">
-                    <a class="sidebar-menu-button" href="{{ route('admin.student.courses') }}">
-                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">import_contacts</span>
-                        <span class="sidebar-menu-text">All Subjects</span>
+                <li class="sidebar-menu-item">
+                    <a class="sidebar-menu-button js-sidebar-collapse" data-toggle="collapse" href="#my_study_menu">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">laptop_chromebook</span>
+                        My Study
+                        <span class="ml-auto sidebar-menu-toggle-icon"></span>
                     </a>
-                </li>
 
-                <li class="sidebar-menu-item {{ Request::is('admin/my/live*') ? 'active' : '' }}">
-                    <a class="sidebar-menu-button" href="{{ route('admin.student.liveSessions') }}">
-                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">live_tv</span>
-                        <span class="sidebar-menu-text">Live Sessions</span>
-                    </a>
+                    <ul class="sidebar-submenu collapse sm-indent" id="my_study_menu" style="">
+
+                        <li class="sidebar-menu-item {{ Request::is('admin/my/timetables*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.student.timetables') }}">
+                                <!-- <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">access_time</span> -->
+                                <span class="sidebar-menu-text">Timetables</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-menu-item {{ Request::is('admin/my/course*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.student.courses') }}">
+                                <!-- <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">import_contacts</span> -->
+                                <span class="sidebar-menu-text">Subjects</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-menu-item {{ Request::is('admin/my/live*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.student.liveSessions') }}">
+                                <!-- <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">live_tv</span> -->
+                                <span class="sidebar-menu-text">Live Sessions</span>
+                            </a>
+                        </li>
+                    </ul>
+
                 </li>
 
                 <li class="sidebar-menu-item">
@@ -118,6 +137,9 @@
                         @endcan
                     </ul>
                 </li>
+                @endcan
+
+                @can('timetable_access')
 
                 <li class="sidebar-menu-item">
                     <a class="sidebar-menu-button js-sidebar-collapse" data-toggle="collapse" href="#timetable_menu">
@@ -140,6 +162,7 @@
                         </li>
                     </ul>
                 </li>
+
                 @endcan
 
                 @can('task_access')
@@ -179,6 +202,35 @@
                 </li>
                 @endcan
 
+                <!-- Discussion -->
+                <li class="sidebar-menu-item">
+                    <a class="sidebar-menu-button js-sidebar-collapse" data-toggle="collapse" href="#community_menu">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people</span>
+                        @lang('navs.sidebar.discussion')
+                        <span class="ml-auto sidebar-menu-toggle-icon"></span>
+                    </a>
+                    <ul class="sidebar-submenu collapse sm-indent" id="community_menu">
+                        <li class="sidebar-menu-item {{ Request::is('admin/discussion*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.discussions.index') }}">
+                                <span class="sidebar-menu-text">@lang('navs.sidebar.my_topics')</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item {{ Request::is('admin/topic*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.discussions.topics') }}">
+                                <span class="sidebar-menu-text">@lang('navs.sidebar.discussion_topics')</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Messages -->
+                <li class="sidebar-menu-item {{ Request::is('admin/message*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.messages.index') }}">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">send</span>
+                        <span class="sidebar-menu-text">@lang('navs.sidebar.messages')</span>
+                    </a>
+                </li>
+
                 <!-- My Account -->
                 <li class="sidebar-menu-item {{ Request::is('admin/account*') ? 'active' : '' }}">
                     <a class="sidebar-menu-button" href="{{ route('admin.myaccount') }}">
@@ -188,7 +240,7 @@
                 </li>
             </ul>
 
-            @if(!auth()->user()->hasRole('Student'))
+            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Institution Admin') )
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu">
                 <!-- Sidebar Head -->

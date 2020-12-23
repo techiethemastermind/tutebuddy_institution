@@ -45,6 +45,8 @@
         <div class="class-item card">
             <a href="#" class="accordion__toggle" data-toggle="collapse" data-target="#lesson-toc-79" data-parent="#parent" aria-expanded="true">
                 <span class="flex">{{ $class->name }}</span>
+                <span class="accordion__toggle-icon material-icons class-edit mr-16pt" 
+                    data-route="{{ route('admin.timetables.exam.show', $class->id) }}">remove_red_eye</span>
                 <span class="accordion__toggle-icon material-icons class-edit" 
                     data-route="{{ route('admin.timetables.exam.edit', $class->id) }}">edit</span>
             </a>

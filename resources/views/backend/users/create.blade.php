@@ -41,7 +41,6 @@
 
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-
                         <li class="breadcrumb-item">
                             <a href="{{ route('admin.users.index') }}">Users</a>
                         </li>
@@ -54,7 +53,13 @@
 
             <div class="row" role="tablist">
                 <div class="col-auto mr-3">
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">Go To List</a>
+                    @if(isset($_GET['t']) && $_GET['t'] == 'teacher')
+                    <a href="{{ route('admin.users.teachers') }}" class="btn btn-outline-secondary">Back</a>
+                    @elseif(isset($_GET['t']) && $_GET['t'] == 'student')
+                    <a href="{{ route('admin.users.students') }}" class="btn btn-outline-secondary">Back</a>
+                    @else
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">Back</a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -83,7 +88,6 @@
                                 <label class="custom-file-label" for="avatar_file">Choose file</label>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="media-body">
@@ -100,29 +104,33 @@
                                     'form-control', 'tute-no-empty' => '')) !!}
                                 </div>
                             </div>
+                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Institution Admin'))
                             <div class="col-md-6">
                                 <div class="form-group mb-24pt">
                                     <label class="form-label">Role</label>
                                     {!! Form::select('roles[]', $roles, 'Student', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
                                 </div>
                             </div>
+                            @endif
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                            	<div class="form-group">
-                                    <label class="form-label">Headline</label>
-                                    {!! Form::text('headline', null, array('placeholder' => 'Headline', 'class' =>
-                                    'form-control')) !!}
-                                </div>
+                        @if(isset($_GET['t']) && $_GET['t'] == 'teacher')
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Headline</label>
+                                        {!! Form::text('headline', null, array('placeholder' => 'Headline', 'class' =>
+                                        'form-control')) !!}
+                                    </div>
 
-                                <div class="form-group">
-                                    <label class="form-label">About you</label>
-                                    {!! Form::textarea('about', null, array('placeholder' => 'About You...', 'class' =>
-                                    'form-control', 'rows' => 5)) !!}
+                                    <div class="form-group">
+                                        <label class="form-label">About you</label>
+                                        {!! Form::textarea('about', null, array('placeholder' => 'About You...', 'class' =>
+                                        'form-control', 'rows' => 5)) !!}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
 
                         <div class="row">
                             <div class="col-md-6">
@@ -141,6 +149,36 @@
                                 </div>
                             </div>
                         </div>
+
+                        @if(isset($_GET['t']) && $_GET['t'] == 'student')
+                        <div class="page-separator mt-32pt">
+                            <div class="page-separator__text">Grade and Division</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="form-label">Grade:</label>
+                                    <select name="grade" id="grade" class="form-control">
+                                        @foreach(auth()->user()->institution->classes as $grade)
+                                        <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="form-label">Division:</label>
+                                    <select name="division" id="division" class="form-control">
+                                        @foreach(auth()->user()->institution->divisions as $division)
+                                        <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                         
                         <div class="page-separator mt-32pt">
                             <div class="page-separator__text">Contact Information</div>
@@ -250,5 +288,8 @@
         var target = $('#user_avatar');
         display_image(this, target);
     });
+
+    $('#grade').select2();
+    $('#division').select2();
 </script>
 @endpush

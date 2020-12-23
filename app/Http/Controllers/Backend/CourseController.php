@@ -489,9 +489,9 @@ class CourseController extends Controller
             $delete_route = route('admin.courses.destroy', $course->id);
             $publish_route = route('admin.courses.publish', $course->id);
 
-            $btn_show = view('layouts.buttons.show', ['show_route' => $show_route]);
-            $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route]);
-            $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route]);
+            $btn_show = view('layouts.buttons.show', ['show_route' => $show_route])->render();
+            $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route])->render();
+            $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route])->render();
 
             if($course->published == 2) {
                 $btn_publish = '<a href="'. $publish_route. '" class="btn btn-success btn-sm" data-action="publish" data-toggle="tooltip"
@@ -503,10 +503,18 @@ class CourseController extends Controller
                 $btn_publish = '';
             }
 
-            if(auth()->user()->hasRole('Administrator')) {
-                $temp['action'] = $btn_show . '&nbsp;' . $btn_edit . '&nbsp;' . $btn_publish . '&nbsp;' . $btn_delete;
+            if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Institution Admin')) {
+                $temp['action'] = $btn_show . '&nbsp;' . $btn_publish . '&nbsp;';
             } else {
-                $temp['action'] = $btn_show . '&nbsp;' . $btn_edit . '&nbsp;' . $btn_delete;
+                $temp['action'] = $btn_show . '&nbsp;';
+            }
+            
+            if(auth()->user()->hasPermissionTo('course_edit')) {
+                $temp['action'] .= $btn_edit . '&nbsp;';
+            }
+
+            if(auth()->user()->hasPermissionTo('course_delete')) {
+                $temp['action'] .= $btn_delete . '&nbsp;';
             }
 
             if($course->trashed()) {
