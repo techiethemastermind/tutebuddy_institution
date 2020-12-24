@@ -378,12 +378,11 @@ class UserController extends Controller
         $userRole = $user->roles->pluck('name', 'name')->all();
         $grades = Grade::pluck('name', 'id')->all();
 
-        if(!empty($user->grade)) {
+        if($user->grade->count() > 0) {
             $divisions = $user->grade[0]->divisions->pluck('name', 'id');
         } else {
             $divisions = Division::pluck('name', 'id')->all();
         }
-        
         return view('backend.users.edit', compact('user', 'roles', 'userRole', 'grades', 'divisions'));
     }
     
