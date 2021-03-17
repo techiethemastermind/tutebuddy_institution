@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class Division extends Model
 {
+    protected $guarded = [];
+
     protected static function boot()
     {
         parent::boot();

@@ -30,6 +30,53 @@
     </div>
 
     <div class="container page__container">
+        <div class="page-section">
+            <div class="row row mb-32pt">
+                <div class="col-lg-3">
+                    <a href="{{ route('admin.users.index') }}?tab=teacher">
+                        <div class="card border-1 border-left-3 border-left-accent text-center mb-lg-0">
+                            <div class="card-body">
+                                <h4 class="h2 mb-0">{{ $teachers_count }}</h4>
+                                <div><label class="form-label">Teachers</label></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="{{ route('admin.users.index') }}?tab=student">
+                        <div class="card border-1 border-left-3 border-left-accent-yellow text-center mb-lg-0">
+                            <div class="card-body">
+                                <h4 class="h2 mb-0">{{ $students_count }}</h4>
+                                <div><label class="form-label">@lang('labels.backend.dashboard.students')</label></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="{{ route('admin.courses.index') }}">
+                        <div class="card border-1 border-left-3 border-left-primary text-center mb-lg-0">
+                            <div class="card-body">
+                                <h4 class="h2 mb-0">{{ $courses_count }}</h4>
+                                <div><label class="form-label">@lang('labels.backend.dashboard.active_courses')</label></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="{{ route('admin.courses.index') }}">
+                        <div class="card border-1 border-left-3 border-left-dark text-center mb-lg-0">
+                            <div class="card-body">
+                                <h4 class="h2 mb-0">{{ $classes_count }}</h4>
+                                <div><label class="form-label">Grades</label></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container page__container">
 
         @if(count($courses) > 0)
         <div class="page-section">

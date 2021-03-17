@@ -9,6 +9,7 @@ use App\Models\Institution;
 use App\User;
 use Hash;
 use App\Http\Controllers\Traits\FileUploadTrait;
+use Illuminate\Support\Str;
 
 class InstitutionController extends Controller
 {
@@ -55,6 +56,7 @@ class InstitutionController extends Controller
     
         // Create a New Institution Admin
         $user_data = [
+            'uuid' => Str::uuid()->toString(),
         	'name' => $input['prefix'] . ' Admin',
         	'email' => $input['email'],
         	'institution_id' => $institution->id,

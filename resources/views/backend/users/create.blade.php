@@ -105,12 +105,24 @@
                                 </div>
                             </div>
                             @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Institution Admin'))
-                            <div class="col-md-6">
-                                <div class="form-group mb-24pt">
-                                    <label class="form-label">Role</label>
-                                    {!! Form::select('roles[]', $roles, 'Student', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+
+                                @if($_GET['t'] == 'teacher')
+                                <div class="col-md-6">
+                                    <div class="form-group mb-24pt">
+                                        <label class="form-label">Role</label>
+                                        {!! Form::select('roles[]', $roles, 'Teacher', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+                                    </div>
                                 </div>
-                            </div>
+                                @endif
+
+                                @if($_GET['t'] == 'student')
+                                <div class="col-md-6">
+                                    <div class="form-group mb-24pt">
+                                        <label class="form-label">Role</label>
+                                        {!! Form::select('roles[]', $roles, 'Student', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+                                    </div>
+                                </div>
+                                @endif
                             @endif
                         </div>
 

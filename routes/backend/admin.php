@@ -35,6 +35,8 @@ Route::post('settings/institution', 'ConfigController@saveInstitutionSettings')-
 //===== Class Routes =====//
 Route::resource('classes','ClassController');
 Route::get('ajax/get-classes', 'ClassController@getTableData')->name('ajax.getClassesTableData');
+Route::post('ajax/create-class', 'ClassController@createClass')->name('ajax.createClass');
+Route::get('classes-generate', 'ClassController@generate')->name('classes.generate');
 
 //===== Courses Routes =====//
 Route::resource('courses', 'CourseController');
@@ -47,6 +49,7 @@ Route::get('ajax/course/add-favorite/{course_id}', 'CourseController@addFavorite
 Route::get('ajax/course/remove-favorite/{course_id}', 'CourseController@removeFavorite')->name('course.removeFavorite');
 Route::get('my/courses', 'CourseController@studentCourses')->name('student.courses');
 Route::get('ajax/my-courses', 'CourseController@getStudentCoursesByAjax')->name('student.getMyCoursesByAjax');
+Route::Post('courses/complete', 'CourseController@complete')->name('courses.complete');
 
 //===== Lessons Routes =====//
 Route::resource('lessons', 'LessonController');

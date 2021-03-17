@@ -31,3 +31,6 @@ Route::get('quiz-result/{lesson_slug}/{quiz_id}', 'StudentController@quizResult'
 Route::get('test/{lesson_slug}/{test_id}', 'StudentController@startTest')->name('student.test.show');
 Route::post('test/save', 'StudentController@saveTest')->name('student.test.save');
 Route::get('test-result/{lesson_slug}/{test_id}', 'StudentController@TestResult')->name('student.test.result');
+
+Route::get('lesson/{id}/complete', 'LessonsController@completeLesson')->name('lesson.complete');
+Route::get('ajax/step/{id}/complete/{type}', 'LessonsController@completeStep')->name('ajax.step.complete');

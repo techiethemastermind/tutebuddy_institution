@@ -16,6 +16,7 @@ use App\Models\Lesson;
 use App\Models\Step;
 use App\Models\Media;
 use App\Models\Grade;
+use App\Models\ChapterStudent;
 
 use App\Services\ColorService;
 use App\Services\CalendarService;
@@ -369,6 +370,28 @@ class CourseController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    /**
+     * Complete course
+     */
+    public function complete(Request $request) {
+        $course = Course::find($request->course_id);
+        $update_data = [
+            'model_type' => Course::class,
+            'model_id' => $request->course_id,
+            'user_id' => auth()->user()->id,
+            'course_id' => $request->course_id
+        ];
+
+        try {
+            ChapterStudent::updateOrCreate($update_data, $update_data);
+            return redirect()->route('courses.show', $course->slug);
+        } catch (Exception $e) {
+
+            return back()->withErrors([$e->getMessage()]);
+        }
+
     }
 
     /**

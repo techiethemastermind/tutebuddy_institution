@@ -35,10 +35,18 @@
             @can('class_create')
             <div class="row" role="tablist">
                 <div class="col-auto">
-                    <a href="{{ route('admin.classes.create') }}" class="btn btn-outline-secondary">New Class</a>
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#classCreateModal">New Class</a>
                 </div>
             </div>
             @endcan
+
+            @if($classes_count == 0)
+            <div class="row" role="tablist">
+                <div class="col-auto ml-2">
+                    <a href="{{ route('admin.classes.generate') }}" class="btn btn-outline-secondary">Generate Classes</a>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 
@@ -66,6 +74,47 @@
     </div>
 </div>
 <!-- // END Header Layout Content -->
+
+<!-- Modal for Class create -->
+<div class="modal fade" id="classCreateModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Class: <span class="course-title"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frm_class" method="POST" action="{{ route('admin.ajax.createClass') }}">@csrf
+                    <div class="form-group mb-3">
+                        <label for="class_name" class="form-label">Class Name:</label>
+                        <input type="text" name="name" class="form-control" placeholder="Grade.." tute-no-empty>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="class_name" class="form-label">Class Order:</label>
+                        <input type="number" name="value" min="1" class="form-control" placeholder="10" tute-no-empty>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="class_name" class="form-label">Class Type:</label>
+                        <select name="class_type" name="type" class="form-control">
+                            <option value="grade">Grade</option>
+                            <option value="college">College</option>
+                            <option value="graduation">Graduation</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button id="btn_create" class="btn btn-outline-primary btn-create">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @push('after-scripts')
 
@@ -104,6 +153,40 @@
                         table.ajax.reload();
                     } else {
                         swal("Warning!", res.message, "warning");
+                    }
+                }
+            });
+        });
+
+        $('#btn_create').on('click', function(e) {
+
+            var form = $('#frm_class');
+
+            if(!isValidForm(form)) {
+                return false;
+            }
+
+            form.ajaxSubmit({
+                success: function(res) {
+                    console.log(res);
+                    if(res.success) {
+                        swal({
+                            title: "Successfully Created",
+                            text: "New Class is created",
+                            type: 'success',
+                            showCancelButton: false,
+                            showConfirmButton: true,
+                            confirmButtonText: 'Confirm',
+                            cancelButtonText: 'Cancel',
+                            dangerMode: false,
+
+                        }, function(val) {
+                            if (val) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        swal('Error!', 'Something error happend, Please try again!', 'error');
                     }
                 }
             });

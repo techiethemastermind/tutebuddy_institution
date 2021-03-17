@@ -54,10 +54,10 @@ class LoginController extends Controller
             }
         } elseif($user->institution_id == 0) {
             return redirect()->intended($this->redirectTo);
+        } else {
+            auth()->logout();
+            return back()->with('warning', 'Wrong Credentials added!');
         }
-        
-        auth()->logout();
-        return back()->with('warning', 'Wrong Credentials added!');
     }
 
     public function logout(Request $request)

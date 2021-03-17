@@ -181,8 +181,8 @@
                     @endif
 
                     @if($course->progress() == 100)
-                        @if(!$course->isUserCertified())
-                        <form method="post" action="{{route('admin.certificates.generate')}}"
+                        @if(!$course->isCompleted())
+                        <form method="post" action="{{route('admin.courses.complete')}}"
                             style="display: inline-block;">
                             @csrf
                             <input type="hidden" value="{{$course->id}}" name="course_id">
@@ -193,7 +193,7 @@
                         </form>
                         @else
                         <button disabled="disabled" class="btn btn-white">
-                            <i class="material-icons icon--left">done</i> @lang('labels.frontend.course.certified')
+                            <i class="material-icons icon--left">done</i> Course is completed
                         </button>
                         @endif
                     @endif
@@ -241,7 +241,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="container page__container">
         <div class="row">

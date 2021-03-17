@@ -33,6 +33,16 @@ class Course extends Model
                     $builder->where('class_id', Auth::user()->grade[0]->id);
                 });
             }
+
+            if(Auth::user()->hasRole('Teacher')) {
+                static::addGlobalScope('filter', function (Builder $builder) {
+                    $builder->where('institution_id', Auth::user()->institution->id);
+
+                    $builder->whereHas('teachers', function ($q) {
+                        $q->where('course_user.user_id', '=', auth()->user()->id);
+                    });
+                });
+            };
         }
 
         static::deleting(function ($course) { // before delete() method call this
@@ -139,6 +149,16 @@ class Course extends Model
         $status = false;
         $certified = auth()->user()->certificates()->where('course_id', '=', $this->id)->first();
         if ($certified != null) {
+            $status = true;
+        }
+        return $status;
+    }
+
+    public function isCompleted()
+    {
+        $status = false;
+        $chapter = DB::table('chapter_students')->where('user_id', auth()->user()->id)->where('course_id', $this->id)->first();
+        if($chapter != null) {
             $status = true;
         }
         return $status;

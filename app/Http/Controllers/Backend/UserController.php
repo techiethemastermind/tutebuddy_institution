@@ -80,8 +80,14 @@ class UserController extends Controller
      */
     public function getAdminsByAjax()
     {
-        $inst_users = User::role('Institution Admin')->get();
-        $admin_users = User::role('Admin')->get();
+        if(auth()->user()->hasRole('Administrator')) {
+            $inst_users = User::role('Institution Admin')->get();
+            $admin_users = User::role('Admin')->get();
+        } else {
+            $inst_users = User::role('Institution Admin')->where('institution_id', '=', auth()->user()->institution_id)->get();
+            $admin_users = User::role('Admin')->where('institution_id', '=', auth()->user()->institution_id)->get();
+        }
+        
         $users = collect();
 
         foreach($inst_users as $user) {
@@ -157,7 +163,7 @@ class UserController extends Controller
 
     public function getTeachersByAjax()
     {
-        $users = User::role('Teacher')->get();
+        $users = User::role('Teacher')->where('institution_id', auth()->user()->institution->id)->get();
         $data = [];
         $i = 1;
         foreach($users as $user) {
@@ -220,7 +226,7 @@ class UserController extends Controller
 
     public function getStudentsByAjax(Request $request)
     {
-        $users = User::role('Student')->get();
+        $users = User::role('Student')->where('institution_id', auth()->user()->institution_id)->get();
         $data = [];
         $i = 1;
         foreach($users as $user) {
@@ -314,6 +320,9 @@ class UserController extends Controller
                 return back()->with('error', 'Admin user is limited');
             }
         }
+
+        $input['uuid'] = Str::uuid()->toString();
+        $input['institution_id'] = auth()->user()->institution->id;
 
         $user = User::create($input);
         $avatar = $request->has('avatar') ? $request->file('avatar') : false;
@@ -434,7 +443,7 @@ class UserController extends Controller
     
         return back()->with('success','User updated successfully');
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -551,7 +560,7 @@ class UserController extends Controller
                         'address' => $data[9],
                         'timezone' => $my_institution->timezone
                     ];
-    
+
                     $user_data['password'] = Hash::make('secret');
 
                     // Check Email and if not exist then add user

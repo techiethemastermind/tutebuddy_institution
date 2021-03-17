@@ -12,6 +12,8 @@ class Grade extends Model
 {
     public $table = 'classes';
 
+    protected $guarded = [];
+
     protected static function boot()
     {
         parent::boot();

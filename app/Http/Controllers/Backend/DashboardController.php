@@ -19,6 +19,7 @@ use App\Models\AssignmentResult;
 use App\Models\TestResultAnswers;
 use App\Models\Quiz;
 use App\Models\QuizResults;
+use App\Models\Grade;
 
 class DashboardController extends Controller
 {
@@ -62,8 +63,17 @@ class DashboardController extends Controller
             $quiz_ids = Quiz::whereIn('course_id', $course_ids)->limit(5)->pluck('id');
             $quizResults = QuizResults::whereIn('quiz_id', $quiz_ids)->limit(5)->get();
 
+            $teachers_count = User::role('Teacher')->where('institution_id', auth()->user()->institution_id)->count();
+            $students_count = User::role('Student')->where('institution_id', auth()->user()->institution_id)->count();
+            $courses_count = Course::where('published', 1)->count();
+            $classes_count  = Grade::count();
+
             return view('backend.dashboard.institution', 
                 compact(
+                    'teachers_count',
+                    'students_count',
+                    'courses_count',
+                    'classes_count',
                     'courses',
                     'schedules',
                     'students',

@@ -32,7 +32,8 @@ class ClassController extends Controller
      */
     public function index()
     {
-        return view('backend.classes.index');
+        $classes_count = Grade::all()->count();
+        return view('backend.classes.index', compact('classes_count'));
     }
 
     /** Get Table Data **/
@@ -70,7 +71,12 @@ class ClassController extends Controller
             $temp['students'] = $class->students->count();
 
             $edit_route = route('admin.classes.edit', $class->id);
-            $temp['action'] = view('layouts.buttons.edit', ['edit_route' => $edit_route]) . '&nbsp;';
+            $delete_route = route('admin.classes.destroy', $class->id);
+
+            $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route])->render();
+            $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route])->render();
+
+            $temp['action'] = $btn_edit . '&nbsp;' . $btn_delete;
 
             array_push($data, $temp);
         }
@@ -78,6 +84,24 @@ class ClassController extends Controller
         return response()->json([
             'success' => true,
             'data' => $data
+        ]);
+    }
+
+    /** create a new class */
+    public function createClass(Request $request)
+    {
+        $data = $request->all();
+        $class_data = [
+            'name' => $data['name'],
+            'value' => $data['value'] - 1,
+            'type' => $data['class_type'],
+            'institution_id' => auth()->user()->institution_id
+        ];
+
+        $class = Grade::create($class_data);
+        
+        return response()->json([
+            'success' => true
         ]);
     }
 
@@ -136,5 +160,90 @@ class ClassController extends Controller
         }
 
         return back()->with('success', 'successfully updated');
+    }
+
+    /** Generate Standard Classes for Institution */
+    public function generate()
+    {
+        $institution_id = auth()->user()->institution_id;
+        // For Grade
+        for($i = 0; $i < 10; $i++) {
+            $data = [
+                'name' => 'Grade' . ($i + 1),
+                'value' => $i,
+                'type' => 'grade',
+                'institution_id' => $institution_id
+            ];
+
+            Grade::create($data);
+        }
+
+        // For College
+        for($i = 0; $i < 2; $i++) {
+            $data = [
+                'name' => 'College' . ($i + 1),
+                'value' => $i,
+                'type' => 'college',
+                'institution_id' => $institution_id
+            ];
+
+            Grade::create($data);
+        }
+
+        // For Graduation
+        for($i = 0; $i < 3; $i++) {
+            $data = [
+                'name' => 'Graduation' . ($i + 1),
+                'value' => $i,
+                'type' => 'graduation',
+                'institution_id' => $institution_id
+            ];
+
+            Grade::create($data);
+        }
+
+        // Add divisions
+        $divisions = ['A', 'B', 'C', 'D'];
+        foreach($divisions as $division)
+        {
+            Division::create([
+                'institution_id' => $institution_id,
+                'name' => $division
+            ]);
+        }
+
+        $classes = Grade::where('institution_id', $institution_id)->get();
+        $divisions = Division::where('institution_id', $institution_id)->get();
+        foreach($classes as $class)
+        {
+            foreach($divisions as $division) {
+                $insert_data = [
+                    'grade_id' => $class->id,
+                    'division_id' => $division->id
+                ];
+                DB::table('class_division')->insert($insert_data);
+            }
+        }
+
+        return back()->with('success', 'Successfully Generated');
+    }
+
+    /** delete a class */
+    public function destroy($id)
+    {
+        try {
+            Grade::find($id)->delete();
+
+            return response()->json([
+                'success' => true,
+                'action' => 'destroy'
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }
