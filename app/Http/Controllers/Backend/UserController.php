@@ -106,7 +106,7 @@ class UserController extends Controller
             $temp['no'] = $i++;
 
             if(empty($user->avatar)) {
-                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->name, 0, 2) .'</span>';
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->first_name, 0, 2) .'</span>';
             } else {
                 $avatar = '<img src="'. asset('/storage/avatars/' . $user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
             }
@@ -116,7 +116,7 @@ class UserController extends Controller
                                 <div class="media-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex d-flex flex-column">
-                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $user->name .'</strong></p>
+                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $user->fullName() .'</strong></p>
                                             <small class="js-lists-values-email text-50">'. $user->institution->name .'</small>
                                         </div>
                                     </div>
@@ -172,7 +172,7 @@ class UserController extends Controller
             $temp['no'] = $i++;
 
             if(empty($user->avatar)) {
-                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->name, 0, 2) .'</span>';
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->first_name, 0, 2) .'</span>';
             } else {
                 $avatar = '<img src="'. asset('/storage/avatars/' . $user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
             }
@@ -182,7 +182,7 @@ class UserController extends Controller
                                 <div class="media-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex d-flex flex-column">
-                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $user->name .'</strong></p>
+                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $user->fullName() .'</strong></p>
                                             <small class="js-lists-values-email text-50">'. $user->headline .'</small>
                                         </div>
                                     </div>
@@ -235,7 +235,7 @@ class UserController extends Controller
             $temp['no'] = $i++;
 
             if(empty($user->avatar)) {
-                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->name, 0, 2) .'</span>';
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->first_name, 0, 2) .'</span>';
             } else {
                 $avatar = '<img src="'. asset('/storage/avatars/' . $user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
             }
@@ -245,7 +245,7 @@ class UserController extends Controller
                                 <div class="media-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex d-flex flex-column">
-                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $user->name .'</strong></p>
+                                            <p class="mb-0"><strong class="js-lists-values-lead">'. $user->fullName() .'</strong></p>
                                             <small class="js-lists-values-email text-50">'. $user->institution->name .'</small>
                                         </div>
                                     </div>
@@ -548,16 +548,13 @@ class UserController extends Controller
                 if($type == 'teacher') {
                     $user_data = [
                         'uuid' => Str::uuid()->toString(),
-                        'name' => $data[0],
-                        'headline' => $data[1],
-                        'about' => $data[2],
-                        'email' => $data[3],
-                        'phone_number' => $data[4],
-                        'country' => $data[5],
-                        'state' => $data[6],
-                        'city' => $data[7],
-                        'zip' => $data[8],
-                        'address' => $data[9],
+                        'user_name' => strtolower($data[1]),
+                        'headline' => $data[0],
+                        'first_name' => $data[1],
+                        'middle_name' => $data[2],
+                        'last_name' => $data[3],
+                        'email' => $data[4],
+                        'phone_number' => $data[5],
                         'timezone' => $my_institution->timezone
                     ];
 

@@ -1,4 +1,2 @@
-First and Last name,Headline,About You,Email,Phone number,Country,State,City,Zip,Address
-Grisha Belinsky,Programing Teacher,remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,grisha1@gmail.com,123456789,India,Punjab,Mumbei,123456,184 rue du Faubourg Saint Denis
-Mikhail Lebedenko,History Teacher,"the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ips",mikhail@gmail.com,123456789,India,Punjab,Mumbei,123456,184 rue du Faubourg Saint Denis
-Daniel Timchenko,Mathmatics Teacher," and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and m",daniel@gmail.com,123456789,India,Punjab,Mumbei,123456,184 rue du Faubourg Saint Denis
+Title,First Name,Middle Name,Last Name,Email Address,Phone Number (optional)
+English Teacher,Johe,Middle,Doe,teacher@institution_name.com,
