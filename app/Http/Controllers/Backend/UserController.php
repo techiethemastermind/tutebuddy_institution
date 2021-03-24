@@ -460,7 +460,7 @@ class UserController extends Controller
             $user->assignRole($request->input('roles'));
         }
     
-        return back()->with('success','User updated successfully');
+        return back()->with('success', 'User updated successfully');
     }
 
     /**
@@ -567,7 +567,7 @@ class UserController extends Controller
                 if($type == 'teacher') {
                     $user_data = [
                         'uuid' => Str::uuid()->toString(),
-                        'user_name' => strtolower($data[1]),
+                        'user_name' => strtolower($data[1]) . '_' . uniqid(),
                         'headline' => $data[0],
                         'first_name' => $data[1],
                         'middle_name' => $data[2],
@@ -591,14 +591,13 @@ class UserController extends Controller
                     
                     $user_data = [
                         'uuid' => Str::uuid()->toString(),
-                        'name' => $data[0],
-                        'email' => $data[3],
-                        'phone_number' => $data[4],
-                        'country' => $data[5],
-                        'state' => $data[6],
-                        'city' => $data[7],
-                        'zip' => $data[8],
-                        'address' => $data[9],
+                        'user_name' => strtolower($data[1]) . '_' . uniqid(),
+                        'email' => $data[4],
+                        'first_name' => $data[1],
+                        'middle_name' => $data[2],
+                        'last_name' => $data[3],
+                        'roll_no' => $data[6],
+                        'birthday' => $data[5],
                         'timezone' => $my_institution->timezone
                     ];
                     $user_data['password'] = Hash::make('secret');

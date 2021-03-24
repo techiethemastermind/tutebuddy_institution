@@ -138,9 +138,13 @@ function isValidForm(Form)
     $.each(no_empty_eles, function(idx, ele) {
         if ($(ele).val() == '') {
             $(ele).addClass('is-invalid');
-            var err_msg = $('<div class="invalid-feedback">Title is required field.</div>');
-            err_msg.insertAfter($(ele));
-            $(ele).focus();
+            if($(ele).siblings('.invalid-feedback').length < 1) {
+                var err_msg = $('<div class="invalid-feedback">Title is required field.</div>');
+                err_msg.insertAfter($(ele));
+            }
+            if(idx == 0) {
+                $(ele).focus();
+            }
             invalid_found = true;
         }
     });
@@ -177,9 +181,13 @@ $(document).on('submit', 'form', function(e) {
     $.each(no_empty_eles, function(idx, ele) {
         if ($(ele).val() == '') {
             $(ele).addClass('is-invalid');
-            var err_msg = $('<div class="invalid-feedback">Title is required field.</div>');
-            err_msg.insertAfter($(ele));
-            $(ele).focus();
+            if($(ele).siblings('.invalid-feedback').length < 1) {
+                var err_msg = $('<div class="invalid-feedback">Title is required field.</div>');
+                err_msg.insertAfter($(ele));
+            }
+            if(idx == 0) {
+                $(ele).focus();
+            }
             invalid_found = true;
         }
     });

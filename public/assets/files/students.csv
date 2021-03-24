@@ -1,4 +1,2 @@
-First and Last name,Grade,Division,Email,Phone number,Country,State,City,Zip,Address
-Grisha Belinsky,Grade 1,A,student_grisha1@gmail.com,123456789,India,Punjab,Mumbei,123456,184 rue du Faubourg Saint Denis
-Mikhail Lebedenko,Grade 1,B,student_mikhail@gmail.com,123456789,India,Punjab,Mumbei,123456,184 rue du Faubourg Saint Denis
-Daniel Timchenko,Grade 2,A,student_daniel@gmail.com,123456789,India,Punjab,Mumbei,123456,184 rue du Faubourg Saint Denis
+Student ID,First Name,Middle Name,Last Name,Email,Date of Birthday,Roll No,Class,Division
+12,Grisha,Georgi,Belinsky,student@fpi.com,12/32/1999,12,Grade 2,A

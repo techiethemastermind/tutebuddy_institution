@@ -39,7 +39,7 @@
                             @if(!empty(auth()->user()->avatar))
                             <img src="{{ asset('/storage/avatars/' . auth()->user()->avatar) }}" alt="people" class="avatar-img rounded-circle">
                             @else
-                            <span class="avatar-title rounded-circle">{{ substr(auth()->user()->name, 0, 2) }}</span>
+                            <span class="avatar-title rounded-circle">{{ substr(auth()->user()->first_name, 0, 2) }}</span>
                             @endif
 
                         </span>
@@ -47,11 +47,11 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="dropdown-header">
-                            <strong>{{ auth()->user()->name }}</strong>
+                            <strong>{{ auth()->user()->user_name }}</strong>
                         </div>
                         <a class="dropdown-item" href="{{ route('admin.myaccount') }}">My Account</a>
-                        <a class="dropdown-item" href="">Help Center</a>
-                        <a class="dropdown-item" href="">Forum</a>
+                        <!-- <a class="dropdown-item" href="">Help Center</a>
+                        <a class="dropdown-item" href="">Forum</a> -->
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}

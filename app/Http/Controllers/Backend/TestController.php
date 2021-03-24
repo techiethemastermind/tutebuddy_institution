@@ -133,11 +133,11 @@ class TestController extends Controller
             $delete_route = route('admin.tests.destroy', $item->id);
             $publish_route = route('admin.test.publish', $item->id);
 
-            $btn_edit = view('backend.buttons.edit', ['edit_route' => $edit_route]);
-            $btn_delete = view('backend.buttons.delete', ['delete_route' => $delete_route]);
+            $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route]);
+            $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route]);
 
             $show_route = route('student.test.show', [$item->lesson->slug, $item->id]);
-            $btn_show = view('backend.buttons.show', ['show_route' => $show_route]);
+            $btn_show = view('layouts.buttons.show', ['show_route' => $show_route]);
 
             if($item->published == 0) {
                 $btn_publish = '<a href="'. $publish_route. '" class="btn btn-success btn-sm" data-action="publish" data-toggle="tooltip"

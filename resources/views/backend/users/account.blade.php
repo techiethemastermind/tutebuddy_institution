@@ -131,16 +131,51 @@ if(!isset($_GET["active"])) {
                                             <label class="custom-file-label" for="avatar_file">@lang('labels.backend.general.choose_file')</label>
                                         </div>
                                     </div>
-
                                 </div>
+                                
                                 <div class="media-body">
-                                    <div class="form-group">
-                                        <label class="form-label">@lang('labels.backend.my_account.profile_name')</label>
-                                        {!! Form::text('name', null, array('placeholder' => "@lang('labels.backend.general.name')",'class' =>
-                                        'form-control')) !!}
-                                        <small class="form-text text-muted">
-                                            @lang('string.backend.my_account.profile_name')
-                                        </small>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">User Name</label>
+                                                {!! Form::text('user_name', null, array('placeholder' => "User Name",'class' =>
+                                                    'form-control')) !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Email Address</label>
+                                                {!! Form::text('email', null, array('placeholder' => "Email Address",'class' =>
+                                                    'form-control')) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">First Name</label>
+                                                {!! Form::text('first_name', null, array('placeholder' => "First Name",'class' =>
+                                                'form-control')) !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Middle Name</label>
+                                                {!! Form::text('middle_name', null, array('placeholder' => "Middle Name",'class' =>
+                                                'form-control')) !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Last Name</label>
+                                                {!! Form::text('last_name', null, array('placeholder' => "Last Name",'class' =>
+                                                'form-control')) !!}
+                                            </div>
+                                        </div>
                                     </div>
 
                                     @if($user->hasRole('Instructor'))
@@ -158,67 +193,6 @@ if(!isset($_GET["active"])) {
                                     </div>
 
                                     @endif
-
-                                    <div class="page-separator mt-32pt">
-                                        <div class="page-separator__text bg-white">@lang('labels.backend.my_account.contact_information')</div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">@lang('labels.backend.my_account.email_address')</label>
-                                                {!! Form::text('email', null, array('placeholder' => "@lang('labels.backend.my_account.email_address')", 'class' =>
-                                                'form-control')) !!}
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">@lang('labels.backend.my_account.phone_number')</label>
-                                                {!! Form::text('phone_number', null, array('placeholder' => "@lang('labels.backend.my_account.phone_number')", 'class' =>
-                                                'form-control')) !!}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">@lang('labels.backend.my_account.country')</label>
-                                                {!! Form::text('country', null, array('placeholder' => "@lang('labels.backend.my_account.country')", 'class' =>
-                                                'form-control')) !!}
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">@lang('labels.backend.my_account.state')</label>
-                                                {!! Form::text('state', null, array('placeholder' => "@lang('labels.backend.my_account.state')", 'class' =>
-                                                'form-control')) !!}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">@lang('labels.backend.my_account.city')</label>
-                                                {!! Form::text('city', null, array('placeholder' => "@lang('labels.backend.my_account.city')", 'class' =>
-                                                'form-control')) !!}
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">@lang('labels.backend.my_account.zip_code')</label>
-                                                {!! Form::text('zip', null, array('placeholder' => "@lang('labels.backend.my_account.zip_code')", 'class' =>
-                                                'form-control')) !!}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">@lang('labels.backend.my_account.address')</label>
-                                        {!! Form::text('address', null, array('placeholder' => "@lang('labels.backend.my_account.address')", 'class' =>
-                                        'form-control')) !!}
-                                    </div>
 
                                     <div class="row">
                                         <div class="col-md-6">

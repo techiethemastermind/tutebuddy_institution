@@ -320,9 +320,9 @@ class QuizController extends Controller
             $delete_route = route('admin.quizs.destroy', $quiz->id);
             $publish_route = route('admin.quizs.publish', $quiz->id);
 
-            $btn_show = view('backend.buttons.show', ['show_route' => $show_route]);
-            $btn_edit = view('backend.buttons.edit', ['edit_route' => $edit_route]);
-            $btn_delete = view('backend.buttons.delete', ['delete_route' => $delete_route]);
+            $btn_show = view('layouts.buttons.show', ['show_route' => $show_route]);
+            $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route]);
+            $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route]);
 
             if($quiz->published == 0) {
                 $btn_publish = '<a href="'. $publish_route. '" class="btn btn-success btn-sm" data-action="publish" data-toggle="tooltip"
