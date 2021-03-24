@@ -57,6 +57,8 @@
                     <a href="{{ route('admin.users.teachers') }}" class="btn btn-outline-secondary">Back</a>
                     @elseif(isset($_GET['t']) && $_GET['t'] == 'student')
                     <a href="{{ route('admin.users.students') }}" class="btn btn-outline-secondary">Back</a>
+                    @elseif(isset($_GET['t']) && $_GET['t'] == 'admin')
+                    <a href="{{ route('admin.users.admins') }}" class="btn btn-outline-secondary">Back</a>
                     @else
                     <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">Back</a>
                     @endif
@@ -66,9 +68,6 @@
     </div>
 
     <div class="page-section container page__container">
-        <div class="page-separator">
-            <div class="page-separator__text">Profile &amp; Privacy</div>
-        </div>
 
         {!! Form::open(array('route' => 'admin.users.store', 'files' => true, 'method'=>'POST', 'files' => true)) !!}
 
@@ -76,7 +75,10 @@
             <div class="form-group">
                 <div class="media">
                     <div class="media-left mr-32pt">
-                        <label class="form-label">User photo</label>
+                        <div class="page-separator mb-4">
+                            <div class="page-separator__text">User Photo</div>
+                        </div>
+                        
                         <div class="profile-avatar mb-16pt">
                             <img src="{{ asset('/assets/img/avatars/no-avatar.jpg') }}"
                                     id="user_avatar" alt="people" width="150" class="rounded-circle" />
@@ -92,22 +94,33 @@
 
                     <div class="media-body">
 
-                        <div class="page-separator mt-32pt">
+                        <div class="page-separator mb-4">
                             <div class="page-separator__text">User Information</div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">User Name</label>
-                                    {!! Form::text('name', null, array('placeholder' => 'Name','class' =>
-                                    'form-control', 'tute-no-empty' => '')) !!}
-                                </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Institution</label>
+                                <select class="form-control" name="institution" id="institions">
+                                    @foreach($institutions as $institution)
+                                    <option value="{{ $institution->id }}">{{ $institution->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
+
                             @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Institution Admin'))
 
-                                @if($_GET['t'] == 'teacher')
-                                <div class="col-md-6">
+                                @if(isset($_GET['t']) && $_GET['t'] == 'admin')
+                                <div class="col-md-8">
+                                    <div class="form-group mb-24pt">
+                                        <label class="form-label">Role</label>
+                                        {!! Form::select('roles[]', $roles, 'Institution Admin', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+                                    </div>
+                                </div>
+                                @endif
+                                
+                                @if(isset($_GET['t']) && $_GET['t'] == 'teacher')
+                                <div class="col-md-8">
                                     <div class="form-group mb-24pt">
                                         <label class="form-label">Role</label>
                                         {!! Form::select('roles[]', $roles, 'Teacher', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
@@ -115,8 +128,8 @@
                                 </div>
                                 @endif
 
-                                @if($_GET['t'] == 'student')
-                                <div class="col-md-6">
+                                @if(isset($_GET['t']) && $_GET['t'] == 'student')
+                                <div class="col-md-8">
                                     <div class="form-group mb-24pt">
                                         <label class="form-label">Role</label>
                                         {!! Form::select('roles[]', $roles, 'Student', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
@@ -124,6 +137,49 @@
                                 </div>
                                 @endif
                             @endif
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    {!! Form::text('first_name', null, array('placeholder' => 'First Name','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Middle Name</label>
+                                    {!! Form::text('middle_name', null, array('placeholder' => 'Middle Name','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    {!! Form::text('last_name', null, array('placeholder' => 'Last Name','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    {!! Form::text('email', null, array('placeholder' => 'Email', 'class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    {!! Form::text('phone_number', null, array('placeholder' => 'Phone Number', 'class' =>
+                                    'form-control')) !!}
+                                </div>
+                            </div>
                         </div>
 
                         @if(isset($_GET['t']) && $_GET['t'] == 'teacher')
@@ -192,7 +248,7 @@
                         </div>
                         @endif
                         
-                        <div class="page-separator mt-32pt">
+                        <!-- <div class="page-separator mt-32pt">
                             <div class="page-separator__text">Contact Information</div>
                         </div>
 
@@ -251,7 +307,7 @@
                             <label class="form-label">Address</label>
                             {!! Form::text('address', null, array('placeholder' => 'Address', 'class' =>
                             'form-control')) !!}
-                        </div>
+                        </div> -->
 
                         <div class="row mt-48pt">
                             <div class="col-md-4">

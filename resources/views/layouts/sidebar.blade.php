@@ -300,6 +300,14 @@
 
                     <ul class="sidebar-submenu collapse sm-indent" id="access_menu" style="">
 
+                        @can('user_access')
+                        <li class="sidebar-menu-item {{ Request::is('admin/user*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.users.index') }}">
+                                <span class="sidebar-menu-text">All Users</span>
+                            </a>
+                        </li>
+                        @endcan
+
                         @can('institution_access')
                         <li class="sidebar-menu-item {{ Request::is('admin/institution*') ? 'active' : '' }}">
                             <a class="sidebar-menu-button" href="{{ route('admin.institutions.index') }}">

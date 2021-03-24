@@ -100,7 +100,10 @@
             <div class="form-group">
                 <div class="media">
                     <div class="media-left mr-32pt">
-                        <label class="form-label">User photo</label>
+                        <div class="page-separator mb-4">
+                            <div class="page-separator__text">User Photo</div>
+                        </div>
+
                         <div class="profile-avatar mb-16pt">
                             @if($user->avatar)
                                 <img src="{{ asset('/storage/avatars/' . $user->avatar) }}"
@@ -122,17 +125,22 @@
 
                     <div class="media-body">
 
-                        <div class="page-separator">
+                        <div class="page-separator mb-4">
                             <div class="page-separator__text">User Information</div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">User Name</label>
-                                    {!! Form::text('name', null, array('placeholder' => 'Name','class' =>
-                                    'form-control')) !!}
-                                </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Institution</label>
+                                <select class="form-control" name="institution" id="institions">
+                                    @foreach($institutions as $institution)
+                                    @if($institution->id == $user->institution->id)
+                                    <option value="{{ $institution->id }}" selected>{{ $institution->name }}</option>
+                                    @else
+                                    <option value="{{ $institution->id }}">{{ $institution->name }}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div class="col-md-6">
@@ -143,6 +151,49 @@
                                     @else
                                     {!! Form::select('roles[]', $roles, $userRole, array('class' => 'form-control', 'disabled'=>true, 'multiple', 'data-toggle'=>'select')) !!}
                                     @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    {!! Form::text('first_name', null, array('placeholder' => 'First Name','class' =>
+                                    'form-control')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Middle Name</label>
+                                    {!! Form::text('middle_name', null, array('placeholder' => 'Middle Name','class' =>
+                                    'form-control')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    {!! Form::text('last_name', null, array('placeholder' => 'Last Name','class' =>
+                                    'form-control')) !!}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    {!! Form::text('email', null, array('placeholder' => 'Email', 'class' =>
+                                    'form-control')) !!}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    {!! Form::text('phone_number', null, array('placeholder' => 'Phone Number', 'class' =>
+                                    'form-control')) !!}
                                 </div>
                             </div>
                         </div>
@@ -235,66 +286,6 @@
                             </div>
                         </div>
                         
-                        <div class="page-separator mt-32pt mb-24pt">
-                            <div class="page-separator__text">Contact Information</div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Email Address</label>
-                                    {!! Form::text('email', null, array('placeholder' => 'Email', 'class' =>
-                                    'form-control')) !!}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Phone Number</label>
-                                    {!! Form::text('phone_number', null, array('placeholder' => 'Phone Number', 'class' =>
-                                    'form-control')) !!}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Country</label>
-                                    {!! Form::text('country', null, array('placeholder' => 'Country', 'class' =>
-                                    'form-control')) !!}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">State</label>
-                                    {!! Form::text('state', null, array('placeholder' => 'State', 'class' =>
-                                    'form-control')) !!}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">City</label>
-                                    {!! Form::text('city', null, array('placeholder' => 'City', 'class' =>
-                                    'form-control')) !!}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Zip code</label>
-                                    {!! Form::text('zip', null, array('placeholder' => 'Zip Code', 'class' =>
-                                    'form-control')) !!}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Address</label>
-                            {!! Form::text('address', null, array('placeholder' => 'Address', 'class' =>
-                            'form-control')) !!}
-                        </div>
                     </div>
                 </div>
             </div>

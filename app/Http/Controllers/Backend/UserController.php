@@ -40,7 +40,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $institutions = Institution::all();
-        $users = User::orderBy('created_at','desc')->paginate(10);
+        $users = User::where('institution_id', '!=', 0)->orderBy('created_at','desc')->paginate(10);
         $action = 'users';
         return view('backend.users.index',compact('users', 'institutions', 'action'));
     }
@@ -163,7 +163,12 @@ class UserController extends Controller
 
     public function getTeachersByAjax()
     {
-        $users = User::role('Teacher')->where('institution_id', auth()->user()->institution->id)->get();
+        if(auth()->user()->institution) {
+            $users = User::role('Teacher')->where('institution_id', auth()->user()->institution->id)->get();
+        } else {
+            $users = User::role('Teacher')->get();
+        }
+        
         $data = [];
         $i = 1;
         foreach($users as $user) {
@@ -226,7 +231,12 @@ class UserController extends Controller
 
     public function getStudentsByAjax(Request $request)
     {
-        $users = User::role('Student')->where('institution_id', auth()->user()->institution_id)->get();
+        if(auth()->user()->institution) {
+            $users = User::role('Student')->where('institution_id', auth()->user()->institution_id)->get();
+        } else {
+            $users = User::role('Student')->get();
+        }
+
         $data = [];
         $i = 1;
         foreach($users as $user) {
@@ -301,7 +311,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name','name')->all();
-        return view('backend.users.create', compact('roles'));
+        $institutions = Institution::all();
+        return view('backend.users.create', compact('roles', 'institutions'));
     }
     
     /**
@@ -322,8 +333,14 @@ class UserController extends Controller
         }
 
         $input['uuid'] = Str::uuid()->toString();
-        $input['institution_id'] = auth()->user()->institution->id;
+        $input['user_name'] = $input['first_name'] . '_' . uniqid();
 
+        if(auth()->user()->institution) {
+            $input['institution_id'] = auth()->user()->institution->id;
+        } else {
+            $input['institution_id'] = $input['institution'];
+        }
+    
         $user = User::create($input);
         $avatar = $request->has('avatar') ? $request->file('avatar') : false;
         if($avatar) {
@@ -387,12 +404,14 @@ class UserController extends Controller
         $userRole = $user->roles->pluck('name', 'name')->all();
         $grades = Grade::pluck('name', 'id')->all();
 
+        $institutions = Institution::all();
+
         if($user->grade->count() > 0) {
             $divisions = $user->grade[0]->divisions->pluck('name', 'id');
         } else {
             $divisions = Division::pluck('name', 'id')->all();
         }
-        return view('backend.users.edit', compact('user', 'roles', 'userRole', 'grades', 'divisions'));
+        return view('backend.users.edit', compact('user', 'roles', 'userRole', 'grades', 'divisions', 'institutions'));
     }
     
     /**

@@ -39,7 +39,7 @@
             @can('user_create')
                 <div class="row" role="tablist">
                     <div class="col-auto mr-3">
-                        <a href="{{ route('admin.users.create') }}" class="btn btn-outline-secondary">Add New</a>
+                        <a href="{{ route('admin.users.create', ['t'=>'admin']) }}" class="btn btn-outline-secondary">Add New</a>
                     </div>
                 </div>
             @endcan
