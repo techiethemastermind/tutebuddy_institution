@@ -263,13 +263,17 @@ class UserController extends Controller
                             </div>';
             
             $temp['email'] = '<strong>' . $user->email . '</strong>';
-            // dd($user->grade->first());
-            $temp['class'] = '<strong>' . !empty($user->grade->first()) ? $user->grade->first()->name : ''  . '</strong>';
+            
+            if($user->grade->count() > 0) {
+                $temp['class'] = '<strong>' . $user->grade->first()->name  . '</strong>';
+            } else {
+                $temp['class'] = '<strong>N/A</strong>';
+            }
 
             if($user->division->count() > 0) {
-                $temp['division'] = '<strong>' . !empty($user->division->first()) ? $user->division->first()->name : '' . '</strong>';
+                $temp['division'] = '<strong>' . $user->division->first()->name . '</strong>';
             } else {
-                $temp['division'] = 'N/A';
+                $temp['division'] = '<strong>N/A</strong>';
             }            
 
             if($user->status) {
