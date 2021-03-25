@@ -263,7 +263,7 @@ class UserController extends Controller
                             </div>';
             
             $temp['email'] = '<strong>' . $user->email . '</strong>';
-            dd($user->grade);
+            dd($user->grade->first());
             $temp['class'] = '<strong>' . ($user->grade->count() > 0) ? $user->grade->first()->name : ''  . '</strong>';
 
             if($user->division->count() > 0) {
