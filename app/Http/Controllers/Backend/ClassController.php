@@ -111,7 +111,7 @@ class ClassController extends Controller
         $class = Grade::find($id);
         $courses = Course::pluck('title', 'id')->all();
         $divisions = Division::pluck('name', 'id')->all();
-        $students = User::role('Student')->pluck('name', 'id')->all();
+        $students = User::role('Student')->pluck('user_name', 'id')->all();
         return view('backend.classes.edit', compact('class', 'courses', 'divisions', 'students'));
     }
 
