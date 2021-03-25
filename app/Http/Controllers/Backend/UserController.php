@@ -572,6 +572,7 @@ class UserController extends Controller
                 if($type == 'teacher') {
                     $user_data = [
                         'uuid' => Str::uuid()->toString(),
+                        'institution_id' => $my_institution->id,
                         'user_name' => strtolower($data[1]) . '_' . uniqid(),
                         'headline' => $data[0],
                         'first_name' => $data[1],
@@ -596,6 +597,7 @@ class UserController extends Controller
                     
                     $user_data = [
                         'uuid' => Str::uuid()->toString(),
+                        'institution_id' => $my_institution->id,
                         'user_name' => strtolower($data[1]) . '_' . uniqid(),
                         'email' => $data[4],
                         'first_name' => $data[1],
