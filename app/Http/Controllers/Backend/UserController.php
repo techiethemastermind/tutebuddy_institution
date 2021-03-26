@@ -565,7 +565,27 @@ class UserController extends Controller
         $divisions = $my_institution->divisions->pluck('id', 'name');
 
         $start = false;
-        $u_data = [];
+        $_emails = [];
+
+        // Check email is duplicated or not
+        foreach($csv_data as $data) {
+            $user_count = User::where('email', $data[4])->count();
+            if($user_count > 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Email address already exist. duplicated email address is ' . $data[4]
+                ]);
+            }
+
+            if(!in_array($data[4], $_emails)) {
+                array_push($_emails, $data[4]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Email address duplicated. duplicated email address is ' . $data[4]
+                ]);
+            }
+        }
 
         foreach($csv_data as $data) {
             if($start) {
@@ -584,13 +604,8 @@ class UserController extends Controller
                     ];
 
                     $user_data['password'] = Hash::make('secret');
-
-                    // Check Email and if not exist then add user
-                    $user_count = User::where('email', $user_data['email'])->count();
-                    if($user_count < 1) {
-                        $user = User::create($user_data);
-                        $user->assignRole(['Teacher']);
-                    }
+                    $user = User::create($user_data);
+                    $user->assignRole(['Teacher']);
                 }
 
                 if($type == 'student') {
@@ -609,35 +624,30 @@ class UserController extends Controller
                     ];
                     $user_data['password'] = Hash::make('secret');
 
-                    // Check Email and if not exist then add user
-                    $user_count = User::where('email', $user_data['email'])->count();
+                    $user = User::create($user_data);
+                    $user->assignRole(['Student']);
 
-                    if($user_count < 1) {
-                        $user = User::create($user_data);
-                        $user->assignRole(['Student']);
+                    $grade_user = DB::table('class_user')->updateOrInsert(
+                        [
+                            'grade_id' => $grades[$data[1]],
+                            'user_id' => $user->id
+                        ],
+                        [
+                            'grade_id' => $grades[$data[1]],
+                            'user_id' => $user->id
+                        ]
+                    );
 
-                        $grade_user = DB::table('class_user')->updateOrInsert(
-                            [
-                                'grade_id' => $grades[$data[1]],
-                                'user_id' => $user->id
-                            ],
-                            [
-                                'grade_id' => $grades[$data[1]],
-                                'user_id' => $user->id
-                            ]
-                        );
-    
-                        $division_user = DB::table('division_user')->updateOrInsert(
-                            [
-                                'division_id' => $divisions[$data[2]],
-                                'user_id' => $user->id
-                            ],
-                            [
-                                'division_id' => $divisions[$data[2]],
-                                'user_id' => $user->id
-                            ]
-                        );
-                    }
+                    $division_user = DB::table('division_user')->updateOrInsert(
+                        [
+                            'division_id' => $divisions[$data[2]],
+                            'user_id' => $user->id
+                        ],
+                        [
+                            'division_id' => $divisions[$data[2]],
+                            'user_id' => $user->id
+                        ]
+                    );
                 }
 
             } else {

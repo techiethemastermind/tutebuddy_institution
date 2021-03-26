@@ -165,6 +165,8 @@
                     if(res.success) {
                         $('#csvUploadModal').modal('toggle');
                         table.ajax.reload();
+                    } else {
+                        swal("Error!", res.message, "error");
                     }
                 }
             });
