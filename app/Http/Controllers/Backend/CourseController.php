@@ -449,7 +449,6 @@ class CourseController extends Controller
         $i = 0;
 
         foreach($courses as $course) {
-            dd($course->grade);
             $i++;
             $temp = [];
             $temp['index'] = '';
@@ -464,7 +463,7 @@ class CourseController extends Controller
                                     <div class="d-flex flex-column">
                                         <small class="js-lists-values-project">
                                             <strong>' . $course->title . '</strong></small>
-                                        <small class="js-lists-values-location text-50">'. !empty($course->grade) ? $course->grade->name : 'N/A' .'</small>
+                                        <small class="js-lists-values-location text-50">'. isset($course->grade->name) ? $course->grade->name : 'N/A' .'</small>
                                     </div>
                                 </div>
                             </div>';
