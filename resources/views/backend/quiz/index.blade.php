@@ -201,6 +201,36 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('#tbl_quizs').on('click', 'a[data-action="restore"]', function(e) {
+
+    e.preventDefault();
+        var url = $(this).attr('href');
+
+        swal({
+            title: "Are you sure?",
+            text: "This quiz will recovered",
+            type: 'info',
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'Confirm',
+            cancelButtonText: 'Cancel',
+            dangerMode: false,
+        }, function (val) {
+            if(val) {
+                $.ajax({
+                    method: 'GET',
+                    url: url,
+                    success: function(res) {
+                        if(res.success) {
+                            table.ajax.reload();
+                            $(document).find('.tooltip.show').remove();
+                        }
+                    }
+                });
+            }
+        });
+    });
 });
 
 $('#courses').on('change', function() {
