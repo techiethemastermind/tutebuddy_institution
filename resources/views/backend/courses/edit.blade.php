@@ -206,7 +206,7 @@
                                 <label class="form-label">Teacher</label>
                                 <select name="teacher" class="form-control">
                                     @foreach($teachers as $teacher)
-                                    <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                                    <option value="{{ $teacher->id }}">{{ $teacher->fullName() }}</option>
                                     @endforeach
                                 </select>
                             </div>

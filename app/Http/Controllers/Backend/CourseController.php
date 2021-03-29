@@ -227,7 +227,12 @@ class CourseController extends Controller
      */
     public function edit($id, CalendarService $calendarService)
     {
-    	$teachers = User::role('Teacher')->get();
+        if(auth()->user()->hasRole('Administrator')) {
+            $teachers = User::role('Teacher')->get();
+        } else {
+            $teachers = User::role('Teacher')->where('institution_id', auth()->user()->institution->id)->get();
+        }
+    	
     	$classes = Grade::all();
         $course = Course::find($id);
         $schedules = $calendarService->getOnePeriodSchedule($id);
