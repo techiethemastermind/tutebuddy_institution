@@ -209,15 +209,15 @@
                                 <div class="avatar avatar-sm avatar-online media-left mr-16pt">
                                     @if(empty($course->teachers[0]->avatar))
                                     <span
-                                        class="avatar-title rounded-circle">{{ substr($course->teachers[0]->name, 0, 2) }}</span>
+                                        class="avatar-title rounded-circle">{{ substr($course->teachers->first()->fullName(), 0, 2) }}</span>
                                     @else
                                     <img src="{{ asset('/storage/avatars/' . $course->teachers[0]->avatar) }}"
-                                        alt="{{ $course->teachers[0]->name }}" class="avatar-img rounded-circle">
+                                        alt="{{ $course->teachers->first()->fullName() }}" class="avatar-img rounded-circle">
                                     @endif
                                 </div>
                                 <div class="media-body">
                                     <a class="card-title m-0"
-                                        href="{{ route('profile.show', $course->teachers[0]->uuid) }}">{{ $course->teachers[0]->name }}</a>
+                                        href="{{ route('profile.show', $course->teachers[0]->uuid) }}">{{ $course->teachers->first()->fullName() }}</a>
                                     <p class="text-50 lh-1 mb-0">Instructor</p>
                                 </div>
                             </div>
@@ -399,13 +399,13 @@
                         <div class="pt-sm-32pt pt-md-0 d-flex flex-column">
                             <div class="avatar avatar-xl avatar-online mb-lg-16pt">
                                 @if(empty($teacher->avatar))
-                                <span class="avatar-title rounded-circle">{{ substr($teacher->name, 0, 2) }}</span>
+                                <span class="avatar-title rounded-circle">{{ substr($teacher->fullName(), 0, 2) }}</span>
                                 @else
-                                <img src="{{ asset('/storage/avatars/'. $teacher->avatar) }}" alt="{{ $teacher->name }}"
+                                <img src="{{ asset('/storage/avatars/'. $teacher->avatar) }}" alt="{{ $teacher->fullName() }}"
                                     class="avatar-img rounded-circle">
                                 @endif
                             </div>
-                            <h4 class="m-0">{{ $teacher->name }}</h4>
+                            <h4 class="m-0">{{ $teacher->fullName() }}</h4>
                             <p class="lh-1">
                                 <small class="text-muted">Angular, Web Development</small>
                             </p>
@@ -584,12 +584,12 @@
                             <img src="{{ asset('storage/avatars/' . $review->user->avatar ) }}" alt="avatar"
                                 class="avatar-img rounded-circle">
                             @else
-                            <span class="avatar-title rounded-circle">{{ substr($review->user->name, 0, 2) }}</span>
+                            <span class="avatar-title rounded-circle">{{ substr($review->user->fullName(), 0, 2) }}</span>
                             @endif
                         </a>
                         <div class="flex">
                             <p class="small text-muted m-0">{{ $review->created_at->diffforhumans() }}</p>
-                            <a href="{{ route('profile.show', $review->user->uuid) }}" class="card-title">{{ $review->user->name }}</a>
+                            <a href="{{ route('profile.show', $review->user->uuid) }}" class="card-title">{{ $review->user->fullName() }}</a>
                         </div>
                     </div>
                 </div>

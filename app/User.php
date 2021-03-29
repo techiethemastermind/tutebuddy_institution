@@ -83,4 +83,9 @@ class User extends Authenticatable
     {
         return !empty($this->first_name) ? $this->first_name . ' ' . $this->middle_name . ' ' . $this->last_name : $this->user_name ;
     }
+
+    public function reviews()
+    {
+        return $this->morphMany(Models\Review::class, 'reviewable');
+    }
 }

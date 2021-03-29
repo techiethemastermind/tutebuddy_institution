@@ -579,7 +579,7 @@ $(function() {
 
                         }, function(val) {
                             if (val) {
-                                var url = '/dashboard/tests/' + res.test_id + '/edit';
+                                var url = '/admin/tests/' + res.test_id + '/edit';
                                 window.location.href = url;
                             }
                         });
