@@ -449,11 +449,18 @@ class CourseController extends Controller
         $i = 0;
 
         foreach($courses as $course) {
-            var_dump($course->grade);
+
             $i++;
             $temp = [];
             $temp['index'] = '';
             $temp['no'] = $i;
+
+            if($course->grade) {
+                $grade_name = $course->grade->name;
+            } else {
+                $grade_name = 'N/A';
+            }
+
             $temp['title'] = '<div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
                                 <div class="avatar avatar-sm mr-8pt">
                                     <span class="avatar-title rounded bg-primary text-white">'
@@ -464,7 +471,7 @@ class CourseController extends Controller
                                     <div class="d-flex flex-column">
                                         <small class="js-lists-values-project">
                                             <strong>' . $course->title . '</strong></small>
-                                        <small class="js-lists-values-location text-50">'. isset($course->grade) ? $course->grade->name : 'N/A' .'</small>
+                                        <small class="js-lists-values-location text-50">'. $grade_name .'</small>
                                     </div>
                                 </div>
                             </div>';
