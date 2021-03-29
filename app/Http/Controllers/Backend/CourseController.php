@@ -449,6 +449,7 @@ class CourseController extends Controller
         $i = 0;
 
         foreach($courses as $course) {
+            dd($course->grade);
             $i++;
             $temp = [];
             $temp['index'] = '';
