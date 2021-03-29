@@ -51,9 +51,9 @@
                             </a>
                             <p class="lh-1 d-flex align-items-center mb-0">
                                 <span class="text-50 small font-weight-bold mr-8pt">
-                                    {{ $assignment->course->teachers[0]->name }},
+                                    {{ $assignment->course->teachers->first()->fullName() }},
                                 </span>
-                                <span class="text-50 small">{{ $assignment->course->teachers[0]->headline }}</span>
+                                <span class="text-50 small">{{ $assignment->course->teachers->first()->headline }}</span>
                             </p>
                         </div>
                     </div>

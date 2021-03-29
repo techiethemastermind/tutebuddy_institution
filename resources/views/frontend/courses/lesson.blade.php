@@ -47,10 +47,9 @@
                             </a>
                             <div class="d-flex">
                                 <span class="text-50 small font-weight-bold mr-8pt">
-                                    @foreach($lesson->course->teachers as $teacher)
-                                    {{ $teacher->name }},
-                                    @endforeach
+                                    {{ $lesson->course->teachers->first()->fullName() }},
                                 </span>
+                                <span class="text-50 small">{{ $lesson->course->teachers->first()->headline }}</span>
                             </div>
                         </div>
                     </div>
