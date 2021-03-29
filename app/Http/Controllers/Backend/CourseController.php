@@ -463,7 +463,7 @@ class CourseController extends Controller
                                     <div class="d-flex flex-column">
                                         <small class="js-lists-values-project">
                                             <strong>' . $course->title . '</strong></small>
-                                        <small class="js-lists-values-location text-50">'. $course->grade->name .'</small>
+                                        <small class="js-lists-values-location text-50">'. !empty($course->grade) ? $course->grade->name : 'N/A' .'</small>
                                     </div>
                                 </div>
                             </div>';
