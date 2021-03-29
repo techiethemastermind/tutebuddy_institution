@@ -81,6 +81,6 @@ class User extends Authenticatable
     // Get Full Name
     public function fullName()
     {
-        return $this->first_name . ' ' . $this->middle_name . ' ' . $this->last_name;
+        return !empty($this->first_name) ? $this->first_name . ' ' . $this->middle_name . ' ' . $this->last_name : $this->user_name ;
     }
 }

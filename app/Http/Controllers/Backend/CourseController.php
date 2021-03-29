@@ -92,7 +92,11 @@ class CourseController extends Controller
      * Create a Course.
      */ 
     public function create() {
-    	$teachers = User::role('Teacher')->get();
+    	if(auth()->user()->hasRole('Administrator')) {
+            $teachers = User::role('Teacher')->get();
+        } else {
+            $teachers = User::role('Teacher')->where('institution_id', auth()->user()->institution->id)->get();
+        }
     	$classes = Grade::all();
         return view('backend.courses.create', compact('teachers', 'classes'));
     }
