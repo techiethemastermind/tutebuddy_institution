@@ -72,7 +72,7 @@
             </div>
             @endif
 
-            @can('user_create')
+            <!-- @can('user_create')
             <div class="row" role="tablist">
                 <div class="col-auto mr-3">
                     <a href="{{ route('admin.users.create') }}" class="btn btn-outline-secondary">Add New</a>
@@ -88,7 +88,7 @@
                     {!! Form::close() !!}
                 </div>
             </div>
-            @endcan
+            @endcan -->
         </div>
     </div>
 
