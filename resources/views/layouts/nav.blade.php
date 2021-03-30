@@ -39,7 +39,7 @@
                             @if(!empty(auth()->user()->avatar))
                             <img src="{{ asset('/storage/avatars/' . auth()->user()->avatar) }}" alt="people" class="avatar-img rounded-circle">
                             @else
-                            <span class="avatar-title rounded-circle">{{ substr(auth()->user()->first_name, 0, 2) }}</span>
+                            <span class="avatar-title rounded-circle">{{ substr(auth()->user()->fullName(), 0, 2) }}</span>
                             @endif
 
                         </span>

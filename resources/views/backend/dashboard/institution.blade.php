@@ -33,7 +33,7 @@
         <div class="page-section">
             <div class="row row mb-32pt">
                 <div class="col-lg-3">
-                    <a href="{{ route('admin.users.index') }}?tab=teacher">
+                    <a href="{{ route('admin.users.teachers') }}">
                         <div class="card border-1 border-left-3 border-left-accent text-center mb-lg-0">
                             <div class="card-body">
                                 <h4 class="h2 mb-0">{{ $teachers_count }}</h4>
@@ -43,7 +43,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3">
-                    <a href="{{ route('admin.users.index') }}?tab=student">
+                    <a href="{{ route('admin.users.students') }}">
                         <div class="card border-1 border-left-3 border-left-accent-yellow text-center mb-lg-0">
                             <div class="card-body">
                                 <h4 class="h2 mb-0">{{ $students_count }}</h4>
@@ -63,7 +63,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3">
-                    <a href="{{ route('admin.courses.index') }}">
+                    <a href="{{ route('admin.classes.index') }}">
                         <div class="card border-1 border-left-3 border-left-dark text-center mb-lg-0">
                             <div class="card-body">
                                 <h4 class="h2 mb-0">{{ $classes_count }}</h4>

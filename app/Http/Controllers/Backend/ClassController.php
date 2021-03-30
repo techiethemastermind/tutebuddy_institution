@@ -111,7 +111,18 @@ class ClassController extends Controller
         $class = Grade::find($id);
         $courses = Course::pluck('title', 'id')->all();
         $divisions = Division::pluck('name', 'id')->all();
-        $students = User::role('Student')->pluck('user_name', 'id')->all();
+        $students = [];
+        if(!auth()->user()->hasRole('Administrator')) {
+            $student_objs = User::role('Student')->where('institution_id', auth()->user()->institution->id)->get();
+        } else {
+            $student_objs = User::role('Student')->get();
+        }
+
+        foreach($student_objs as $obj) {
+            $temp = [$obj->id => $obj->fullName()];
+            $students += $temp;
+        }
+        
         return view('backend.classes.edit', compact('class', 'courses', 'divisions', 'students'));
     }
 
