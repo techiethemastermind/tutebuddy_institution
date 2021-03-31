@@ -291,8 +291,8 @@ $(document).ready(function() {
 
     if('{{ $courses->count() }}' < 1) {
         swal({
-            title: "You have no courses",
-            text: "Please add a course to schedule first",
+            title: "You have no subjects",
+            text: "Please add a subject to schedule first",
             type: 'info',
             showCancelButton: true,
             showConfirmButton: true,

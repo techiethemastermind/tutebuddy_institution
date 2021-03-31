@@ -123,7 +123,7 @@
                         @can('course_access')
                         <li class="sidebar-menu-item {{ Request::is('admin/course*') ? 'active' : '' }}">
                             <a class="sidebar-menu-button" href="{{ route('admin.courses.index') }}">
-                                <span class="sidebar-menu-text">Courses</span>
+                                <span class="sidebar-menu-text">Subjects</span>
                             </a>
                         </li>
                         @endcan
@@ -244,32 +244,39 @@
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu">
                 <!-- Sidebar Head -->
-                <div class="sidebar-heading">School Manage</div>
+                <div class="sidebar-heading">My Institution</div>
 
                 <li class="sidebar-menu-item {{ Request::is('admin/admin*') ? 'active' : '' }}">
                     <a class="sidebar-menu-button" href="{{ route('admin.users.admins') }}">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people</span>
-                        <span class="sidebar-menu-text">Institution Admins</span>
+                        <span class="sidebar-menu-text">Manage Admins</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{ Request::is('admin/teacher*') ? 'active' : '' }}">
                     <a class="sidebar-menu-button" href="{{ route('admin.users.teachers') }}">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">portrait</span>
-                        <span class="sidebar-menu-text">Teachers</span>
+                        <span class="sidebar-menu-text">Manage Teachers</span>
                     </a>
                 </li>
 
                 <li class="sidebar-menu-item {{ Request::is('admin/student*') ? 'active' : '' }}">
                     <a class="sidebar-menu-button" href="{{ route('admin.users.students') }}">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
-                        <span class="sidebar-menu-text">Students</span>
+                        <span class="sidebar-menu-text">Manage Students</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-menu-item {{ Request::is('admin/curriculum*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.curriculums.index') }}">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">category</span>
+                        <span class="sidebar-menu-text">Manage Curriculums</span>
                     </a>
                 </li>
 
                 <li class="sidebar-menu-item {{ Request::is('admin/class*') ? 'active' : '' }}">
                     <a class="sidebar-menu-button" href="{{ route('admin.classes.index') }}">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">category</span>
-                        <span class="sidebar-menu-text">Class Management</span>
+                        <span class="sidebar-menu-text">Manage Classes</span>
                     </a>
                 </li>
 

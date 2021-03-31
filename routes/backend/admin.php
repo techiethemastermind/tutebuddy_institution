@@ -175,3 +175,6 @@ Route::post('messages/unread', 'MessagesController@getUnreadMessages')->name('me
 
 Route::get('messages/get/enroll-thread', 'MessagesController@getEnrollThread')->name('messages.getEnrollThread');
 Route::post('messages/enroll-send', 'MessagesController@sendEnrollChat')->name('messages.sendEnrollChat');
+
+// Curriculum Routes
+Route::resource('curriculums', 'CurriculumsController');

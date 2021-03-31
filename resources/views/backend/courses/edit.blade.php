@@ -47,7 +47,7 @@
             <div class="flex d-flex flex-column flex-sm-row align-items-center">
 
                 <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-                    <h2 class="mb-0">Edit Course</h2>
+                    <h2 class="mb-0">Edit Subject</h2>
 
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item">
@@ -55,7 +55,7 @@
                         </li>
 
                         <li class="breadcrumb-item">
-                            <a href="{{ route('admin.courses.index') }}">Courses</a>
+                            <a href="{{ route('admin.courses.index') }}">Subjects</a>
                         </li>
 
                         <li class="breadcrumb-item active">
@@ -92,25 +92,25 @@
                         <div class="page-separator__text">Edit Course</div>
                     </div>
 
-                    <label class="form-label">Course Title</label>
+                    <label class="form-label">Subject Title</label>
                     <div class="form-group mb-24pt">
                         <input type="text" name="title"
                             class="form-control form-control-lg" placeholder="Course Title" value="{{ $course->title }}" tute-no-empty>
                     </div>
 
-                    <label class="form-label">Course Description</label>
+                    <label class="form-label">Subject Description</label>
                     <div class="form-group mb-24pt">
                         <textarea name="short_description" class="form-control" cols="100%" rows="5"
                             placeholder="Short description">{{ $course->short_description }}</textarea>
-                        <small class="form-text text-muted">Shortly describe this course.</small>
+                        <small class="form-text text-muted">Shortly describe this subject.</small>
                     </div>
 
                     <div class="form-group mb-32pt">
-                        <label class="form-label">About Course</label>
+                        <label class="form-label">About Subject</label>
 
                         <!-- quill editor -->
                         <div style="min-height: 150px;" id="course_editor" class="mb-0">{!! $course->description !!}</div>
-                        <small class="form-text text-muted">describe about this course.</small>
+                        <small class="form-text text-muted">describe about this subject.</small>
                     </div>
 
                     <!-- Lessons -->
@@ -248,7 +248,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <small class="form-text text-muted">Course will start and end date</small>
+                                <small class="form-text text-muted">Subject will start and end date</small>
                             </div>
 
                             <!-- Timezone -->

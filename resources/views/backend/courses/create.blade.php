@@ -42,7 +42,7 @@
             <div class="flex d-flex flex-column flex-sm-row align-items-center">
 
                 <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-                    <h2 class="mb-0">Create Course</h2>
+                    <h2 class="mb-0">Create Subject</h2>
 
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item">
@@ -77,28 +77,28 @@
                 <div class="col-md-8">
 
                     <div class="page-separator">
-                        <div class="page-separator__text">Create Course</div>
+                        <div class="page-separator__text">Create Subject</div>
                     </div>
 
-                    <label class="form-label">Course Title</label>
+                    <label class="form-label">Subject Title</label>
                     <div class="form-group mb-24pt">
                         <input type="text" name="title"
                             class="form-control form-control-lg" placeholder="Course Title" value="" tute-no-empty>
                     </div>
 
-                    <label class="form-label">Course Description</label>
+                    <label class="form-label">Subject Description</label>
                     <div class="form-group mb-24pt">
                         <textarea name="short_description" class="form-control" cols="100%" rows="5"
                             placeholder="Short description"></textarea>
-                        <small class="form-text text-muted">Shortly describe this course. It will show under title</small>
+                        <small class="form-text text-muted">Shortly describe this subject. It will show under title</small>
                     </div>
 
                     <div class="form-group mb-32pt">
-                        <label class="form-label">About Course</label>
+                        <label class="form-label">About Subject</label>
 
                         <!-- quill editor -->
                         <div style="min-height: 150px;" id="course_editor" class="mb-0"></div>
-                        <small class="form-text text-muted">Describe about this course. What you will teach?</small>
+                        <small class="form-text text-muted">Describe about this subject. What you will teach?</small>
                     </div>
 
                     <div class="page-separator">
@@ -114,7 +114,7 @@
                     <div class="card">
                         <div class="card-header text-center">
                             <button type="button" id="btn_save_course" class="btn btn-accent">Save Draft</button>
-                            <button type="button" id="btn_publish_course" class="btn btn-primary">Publish Course</button>
+                            <button type="button" id="btn_publish_course" class="btn btn-primary">Publish Subject</button>
                         </div>
                         <div class="list-group list-group-flush" id="save_status">
                             <div class="list-group-item d-flex">
@@ -181,7 +181,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <small class="form-text text-muted">Course will start and end date</small>
+                                <small class="form-text text-muted">Subject will start and end date</small>
                             </div>
 
                             <!-- Timezone -->

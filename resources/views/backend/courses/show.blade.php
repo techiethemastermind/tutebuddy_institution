@@ -63,7 +63,7 @@
                 <div class="container page__container">
                     <h1 class="text-white">{{ $course->title }}</h1>
                     <p class="lead text-white-50 measure-hero-lead mb-24pt">{{ $course->short_description }}</p>
-                    <a href="#" class="btn btn-white">Resume course</a>
+                    <a href="#" class="btn btn-white">Resume subject</a>
                 </div>
             </div>
             <div
@@ -166,7 +166,7 @@
                 <div class="container page__container">
                     <div class="mb-lg-64pt">
                         <div class="page-separator">
-                            <div class="page-separator__text">About this course</div>
+                            <div class="page-separator__text">About this subject</div>
                         </div>
                         <div class="course-description"></div>
                     </div>
@@ -464,8 +464,8 @@
     <div class="page-section">
         <div class="container page__container">
             <div class="page-heading">
-                <h4>Top Development Courses</h4>
-                <a href="" class="text-underline ml-sm-auto">See Development Courses</a>
+                <h4>Top Subjects</h4>
+                <a href="" class="text-underline ml-sm-auto">See Subjects</a>
             </div>
 
             <div class="position-relative carousel-card">

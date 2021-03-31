@@ -47,7 +47,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="dropdown-header">
-                            <strong>{{ auth()->user()->user_name }}</strong>
+                            <strong>{{ auth()->user()->fullName() }}</strong>
                         </div>
                         <a class="dropdown-item" href="{{ route('admin.myaccount') }}">My Account</a>
                         <!-- <a class="dropdown-item" href="">Help Center</a>

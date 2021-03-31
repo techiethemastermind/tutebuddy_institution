@@ -106,7 +106,7 @@ class UserController extends Controller
             $temp['no'] = $i++;
 
             if(empty($user->avatar)) {
-                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->first_name, 0, 2) .'</span>';
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->fullName(), 0, 2) .'</span>';
             } else {
                 $avatar = '<img src="'. asset('/storage/avatars/' . $user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
             }
@@ -177,7 +177,7 @@ class UserController extends Controller
             $temp['no'] = $i++;
 
             if(empty($user->avatar)) {
-                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->first_name, 0, 2) .'</span>';
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->fullName(), 0, 2) .'</span>';
             } else {
                 $avatar = '<img src="'. asset('/storage/avatars/' . $user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
             }
@@ -245,7 +245,7 @@ class UserController extends Controller
             $temp['no'] = $i++;
 
             if(empty($user->avatar)) {
-                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->first_name, 0, 2) .'</span>';
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($user->fullName(), 0, 2) .'</span>';
             } else {
                 $avatar = '<img src="'. asset('/storage/avatars/' . $user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
             }
