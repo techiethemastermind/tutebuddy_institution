@@ -51,6 +51,7 @@
                             <th style="width: 18px;" class="pr-0"></th>
                             <th>Subject</th>
                             <th>Classes</th>
+                            <th>Divisions</th>
                             <th>Teachers</th>
                             <th>Action</th>
                         </tr>
@@ -132,6 +133,7 @@
                     { data: 'index'},
                     { data: 'subject'},
                     { data: 'classes'},
+                    { data: 'divisions' },
                     { data: 'teachers'},
                     { data: 'actions'}
                 ],
@@ -155,6 +157,8 @@
                 }
             });
         });
+
+        $('body').tooltip({selector: '[data-toggle="tooltip"]'});
 	});
 </script>
 

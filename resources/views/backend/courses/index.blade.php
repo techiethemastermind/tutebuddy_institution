@@ -98,9 +98,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive" data-toggle="lists" data-lists-sort-by="js-lists-values-date"
-                data-lists-sort-desc="true"
-                data-lists-values='["js-lists-values-no"]'>
+            <div class="table-responsive" data-toggle="lists">
 
                 <table id="tbl_courses" class="table mb-0 thead-border-top-0 table-nowrap" data-page-length='10'>
                     <thead>

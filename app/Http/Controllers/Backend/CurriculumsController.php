@@ -94,11 +94,19 @@ class CurriculumsController extends Controller
                         </div>
                     </div>';
 
+            $temp['divisions'] = '';
+
+            foreach($subject->grade->divisions as $division) {
+                $temp['divisions'] .= '<div class="avatar avatar-sm mr-8pt">
+                            <span class="avatar-title rounded bg-light text-black-100">'. $division->name .'</span>
+                        </div>';
+            }
+
             $temp['teachers'] = '';
 
             foreach($subject->teachers as $teacher) {
 
-                $temp['teachers'] .= '<div class="avatar avatar-sm mr-8pt" data-toggle="tooltip" data-original-title="{{ $teacher->fullName() }}">
+                $temp['teachers'] .= '<div class="avatar avatar-sm mr-8pt" data-toggle="tooltip" data-original-title="'. $teacher->fullName() .'">
                                         <span class="avatar-title rounded-circle bg-warning">' . substr($teacher->fullName(), 0, 2) . '</span>
                                     </div>';
             }
