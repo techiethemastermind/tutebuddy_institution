@@ -124,6 +124,9 @@ class CurriculumsController extends Controller
         $subject->class_id = $request->grade;
         $subject->save();
 
+        // Remove exsiting Items
+        DB::table('course_user')->where('course_id', $request->subject_id)->delete();
+
         // Add teachers to Subject
         foreach($request->teachers as $teacher) {
             DB::table('course_user')->updateOrInsert(
