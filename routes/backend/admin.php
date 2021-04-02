@@ -178,3 +178,4 @@ Route::post('messages/enroll-send', 'MessagesController@sendEnrollChat')->name('
 
 // Curriculum Routes
 Route::resource('curriculums', 'CurriculumsController');
+Route::get('ajax/curriculums', 'CurriculumsController@getCurriculumsTableData')->name('ajax.getCurriculumsTableData');

@@ -2,6 +2,17 @@
 
 @section('content')
 
+@push('after-scripts')
+
+<!-- Select2 -->
+<link rel="stylesheet" href="{{ asset('assets/css/select2.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet">
+
+<!-- jQuery Datatable CSS -->
+<link type="text/css" href="{{ asset('assets/plugin/datatables.min.css') }}" rel="stylesheet">
+
+@endpush
+
 <!-- Header Layout Content -->
 <div class="mdk-header-layout__content page-content ">
 
@@ -34,24 +45,119 @@
 
         <div class="card dashboard-area-tabs p-relative o-hidden mb-lg-32pt">
             <div class="table-responsive" data-toggle="lists">
-                <table id="tbl_classes" class="table mb-0 thead-border-top-0 table-nowrap" data-page-length='10'>
+                <table id="tbl_curriculums" class="table mb-0 thead-border-top-0 table-nowrap" data-page-length='10'>
                     <thead>
                         <tr>
                             <th style="width: 18px;" class="pr-0"></th>
                             <th>Subject</th>
                             <th>Classes</th>
-                            <th>Curriculum Name</th>
                             <th>Teachers</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Curriculum Edit Modal -->
+@foreach($subjects as $subject)
+<div class="modal fade" id="modal_curriculum_{{ $subject->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Curriculum</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                {!! Form::open(['method' => 'PATCH', 'route' => ['admin.curriculums.update', $subject->id], 'id'=>'frm_curriculum']) !!}
+
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <!-- <div class="form-group">
+                            <label class="form-label">Curriculum Name:</label>
+                            <input type="text" name="curriculum_name" class="form-control" value="" tute-no-empty>
+                        </div> -->
+
+                        <div class="form-group">
+                            <label class="form-label">Grades:</label>
+                            {!! Form::select('grade', $grades, $subject->grade->id, array('class' => 'form-control', 'data-toggle'=>'select')) !!}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Teachers:</label>
+                            {!! Form::select('teachers[]', $teachers, $subject->teachers, array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="subject_id" value="{{ $subject->id }}">
+
+                {!! Form::close() !!}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn_save_curriculum" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+@push('after-scripts')
+
+<!-- Select2 -->
+<script src="{{ asset('assets/js/select2.min.js') }}"></script>
+<script src="{{ asset('assets/js/select2.js') }}"></script>
+
+<script src="{{ asset('assets/plugin/datatables.min.js') }}"></script>
+
+<script type="text/javascript">
+
+	$(function() {
+
+        var table = $('#tbl_curriculums').DataTable(
+            {
+                lengthChange: false,
+                searching: false,
+                ordering:  false,
+                info: false,
+                ajax: "{{ route('admin.ajax.getCurriculumsTableData') }}",
+                columns: [
+                    { data: 'index'},
+                    { data: 'subject'},
+                    { data: 'classes'},
+                    { data: 'teachers'},
+                    { data: 'actions'}
+                ],
+                oLanguage: {
+                    sEmptyTable: "You have no Classes"
+                }
+            }
+        );
+
+		$('#btn_save_curriculum').on('click', function(e) {
+
+            if(!isValidForm($('#frm_curriculum'))) {
+                return false;
+            }
+
+            $('#frm_curriculum').ajaxSubmit({
+                success: function(res) {
+                    if(res.success) {
+                        table.ajax.reload();
+                    }
+                }
+            });
+        });
+	});
+</script>
+
+@endpush
 
 @endsection

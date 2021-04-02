@@ -239,6 +239,10 @@ iframe.no-video {
     font-weight: 500;
 }
 
+[dir=ltr] .avatar-title {
+    text-transform: uppercase;
+}
+
 /******************* Responsive CSS ***********************/
 [dir=ltr] .desktop-only {
     display: none;
