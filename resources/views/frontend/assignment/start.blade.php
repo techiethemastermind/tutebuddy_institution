@@ -22,7 +22,7 @@
                     </a>
                     @endif
 
-                    @if(auth()->user()->hasRole('Instructor'))
+                    @if(auth()->user()->hasRole('Teacher'))
                     <a href="{{ route('admin.assignments.index') }}" class="nav-link h-auto">
                         <i class="material-icons icon--left">keyboard_backspace</i> Back to LIST
                     </a>
@@ -30,8 +30,17 @@
                 </div>
                 <div class="nav-item navbar-list__item">
                     <div class="d-flex align-items-center flex-nowrap">
+
+                        <?php
+                            if($assignment->lesson->steps->count() > 0) {
+                                $route = route('lessons.show', [$assignment->course->slug, $assignment->lesson->slug, $assignment->lesson->steps[0]->step]);
+                            } else {
+                                $route = route('courses.show', [$assignment->course->slug]);
+                            }
+                        ?>
+
                         <div class="mr-16pt">
-                            <a href="{{ route('lessons.show', [$assignment->course->slug, $assignment->lesson->slug, 1]) }}">
+                            <a href="{{ $route }}">
                                 @if(!empty($assignment->course->course_image))
                                 <img src="{{ asset('storage/uploads/thumb/' . $assignment->course->course_image) }}"
                                     width="40" alt="Angular" class="rounded">
@@ -61,7 +70,7 @@
             </nav>
             
             <nav class="nav navbar-nav ml-sm-auto align-items-center align-items-sm-end d-none d-lg-flex">
-                @if(auth()->user()->hasRole('Instructor'))
+                @if(auth()->user()->hasRole('Teacher'))
                 <div class="">
                     <a href="{{ route('admin.assignments.edit', $assignment->id) }}" class="btn btn-accent">Edit</a>
                     @if($assignment->published == 0)
