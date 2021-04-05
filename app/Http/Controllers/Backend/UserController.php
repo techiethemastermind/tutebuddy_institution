@@ -619,9 +619,11 @@ class UserController extends Controller
                         'middle_name' => $data[2],
                         'last_name' => $data[3],
                         'roll_no' => $data[6],
+                        'student_no' => $data[0],
                         'birthday' => $data[5],
                         'timezone' => $my_institution->timezone
                     ];
+                    
                     $user_data['password'] = Hash::make('secret');
 
                     $user = User::create($user_data);
@@ -629,22 +631,22 @@ class UserController extends Controller
 
                     $grade_user = DB::table('class_user')->updateOrInsert(
                         [
-                            'grade_id' => $grades[$data[1]],
+                            'grade_id' => $grades[$data[7]],
                             'user_id' => $user->id
                         ],
                         [
-                            'grade_id' => $grades[$data[1]],
+                            'grade_id' => $grades[$data[7]],
                             'user_id' => $user->id
                         ]
                     );
 
                     $division_user = DB::table('division_user')->updateOrInsert(
                         [
-                            'division_id' => $divisions[$data[2]],
+                            'division_id' => $divisions[$data[8]],
                             'user_id' => $user->id
                         ],
                         [
-                            'division_id' => $divisions[$data[2]],
+                            'division_id' => $divisions[$data[8]],
                             'user_id' => $user->id
                         ]
                     );
