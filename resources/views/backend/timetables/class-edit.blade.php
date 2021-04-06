@@ -55,6 +55,14 @@
 
     <div class="page-section container page__container">
 
+        @if($class->divisions->count() < 1)
+        <div class="page-section">
+            <div class="form-group text-center">
+                <a href="{{ route('admin.classes.edit', $class->id) }}" class="btn btn-primary btn-block">Add Divisions to this class first</a>
+            </div>
+        </div>
+        @endif
+
         {!! Form::model($class, ['method'=>'POST', 'files' => true, 'id' => 'frm_timetable', 'route'=>['admin.timetables.class.update', $class->id]]) !!}
 
         @foreach($class->divisions as $division)

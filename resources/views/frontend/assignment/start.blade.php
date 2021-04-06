@@ -54,7 +54,7 @@
                             </a>
                         </div>
                         <div class="flex">
-                            <a href="{{ route('lessons.show', [$assignment->course->slug, $assignment->lesson->slug, 1]) }}"
+                            <a href="{{ $route }}"
                                 class="card-title text-body mb-0">
                                 {{ $assignment->course->title }} | {{ $assignment->lesson->title }}
                             </a>

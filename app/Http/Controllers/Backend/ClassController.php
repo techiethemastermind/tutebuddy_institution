@@ -139,7 +139,10 @@ class ClassController extends Controller
                 'class_id' => $class_id
             ]);
         }
+        // Remove existing divisions
+        DB::table('class_division')->where('grade_id', $class_id)->delete();
 
+        // Insert new divisions
         if(isset($data['division'])) {
             foreach ($data['division'] as $item) {
                 DB::table('class_division')->updateOrInsert(
@@ -155,6 +158,10 @@ class ClassController extends Controller
             }
         }
 
+        // Remove existing students
+        DB::table('class_user')->where('grade_id', $class_id)->delete();
+
+        // Insert new students
         if(isset($data['students'])) {
             foreach ($data['students'] as $item) {
                 DB::table('class_user')->updateOrInsert(

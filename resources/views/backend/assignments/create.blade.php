@@ -127,7 +127,7 @@
                             <!-- Set Lesson -->
                             <div class="form-group">
                                 <label class="form-label">Lessons</label>
-                                <select name="lesson_id" class="form-control"></select>
+                                <select name="lesson_id" class="form-control" tute-no-empty></select>
                             </div>
 
                             <!-- Set Duration -->
@@ -228,10 +228,12 @@ $(function() {
 
                     }, function(val) {
                         if (val) {
-                            var url = '/admin/assignments/' + res.assignment_id + '/edit';
+                            var url = "{{ route('admin.assignments.index') }}";
                             window.location.href = url;
                         }
                     });
+                } else {
+                    swal('Error!', res.message, 'error');
                 }
             },
             error: function(err) {

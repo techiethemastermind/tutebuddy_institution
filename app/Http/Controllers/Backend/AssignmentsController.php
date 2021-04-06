@@ -61,8 +61,22 @@ class AssignmentsController extends Controller
      */
     public function store(Request $request)
     {
-
         $data = $request->all();
+        // validate
+        if(!isset($data['course_id'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Assignment need to select a course'
+            ]);
+        }
+
+        if(!isset($data['lesson_id'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Assignment need to select a lesson'
+            ]);
+        }
+
         $assignment = Assignment::create($data);
 
         // Attachment
