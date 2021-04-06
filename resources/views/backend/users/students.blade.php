@@ -161,9 +161,11 @@
             e.preventDefault();
             $('#csvUploadModal form').ajaxSubmit({
                 success: function(res) {
+                    $('#csvUploadModal').modal('toggle');
                     if(res.success) {
-                        $('#csvUploadModal').modal('toggle');
                         table.ajax.reload();
+                    } else {
+                        swal("Error!", res.message, "error");
                     }
                 }
             });
