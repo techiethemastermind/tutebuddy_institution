@@ -49,28 +49,36 @@ class TimetableController extends Controller
 							</div>';
 			
 			$divisions_html = '';
-			foreach($item->divisions as $division) {
-				$divisions_html .= '<div class="avatar avatar-sm mr-8pt">
-										<span class="avatar-title rounded bg-light text-black-100">'. $division->name .'</span>
-									</div>';
-
-				if($item->classTimeTableForDivision($division->id)) {
-					if($item->classTimeTableForDivision($division->id)->type == 'pdf') {
-						$temp['preview'] = '<div class="avatar avatar-xxl avatar-4by3">
-												<embed src="'. asset('/storage/attachments/' . $item->classTimeTableForDivision($division->id)->url) .'" alt="Avatar" class="avatar-img rounded">
-											</div>';
+			if($item->divisions->count() > 0) {
+				foreach($item->divisions as $division) {
+					$divisions_html .= '<div class="avatar avatar-sm mr-8pt">
+											<span class="avatar-title rounded bg-light text-black-100">'. $division->name .'</span>
+										</div>';
+	
+					if($item->classTimeTableForDivision($division->id)) {
+						if($item->classTimeTableForDivision($division->id)->type == 'pdf') {
+							$temp['preview'] = '<div class="avatar avatar-xxl avatar-4by3">
+													<embed src="'. asset('/storage/attachments/' . $item->classTimeTableForDivision($division->id)->url) .'" alt="Avatar" class="avatar-img rounded">
+												</div>';
+						} else {
+							$temp['preview'] = '<div class="avatar avatar-xxl avatar-4by3">
+													<img src="'. asset('/storage/attachments/' . $item->classTimeTableForDivision($division->id)->url) .'" alt="Avatar" class="avatar-img rounded">
+												</div>';
+						}
+						
 					} else {
 						$temp['preview'] = '<div class="avatar avatar-xxl avatar-4by3">
-												<img src="'. asset('/storage/attachments/' . $item->classTimeTableForDivision($division->id)->url) .'" alt="Avatar" class="avatar-img rounded">
+												<img src="'. asset('/assets/img/no-image.jpg') .'" alt="Avatar" class="avatar-img rounded">
 											</div>';
 					}
-					
-				} else {
-					$temp['preview'] = '<div class="avatar avatar-xxl avatar-4by3">
-											<img src="'. asset('/assets/img/no-image.jpg') .'" alt="Avatar" class="avatar-img rounded">
-										</div>';
 				}
+			} else {
+				$divisions_html .= 'N/A';
+				$temp['preview'] = '<div class="avatar avatar-xxl avatar-4by3">
+										<img src="'. asset('/assets/img/no-image.jpg') .'" alt="Avatar" class="avatar-img rounded">
+									</div>';
 			}
+			
 
 			$temp['divisions'] = $divisions_html;
 			$temp['type'] = 'pdf';
