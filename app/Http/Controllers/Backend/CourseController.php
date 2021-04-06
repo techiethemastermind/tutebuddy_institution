@@ -116,11 +116,6 @@ class CourseController extends Controller
             'slug' => $this->get_slug($data['title']),
             'short_description' => $data['short_description'],
             'description' => $data['course_description'],
-            'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
-            'repeat' => $data['repeat'],
-            'repeat_value' => $data['repeat_value'],
-            'repeat_type' => $data['repeat_type'],
             'style' => rand(0, 10)
         ];
 
@@ -261,11 +256,6 @@ class CourseController extends Controller
             'slug' => $this->get_slug($data['title']),
             'short_description' => $data['short_description'],
             'description' => $data['course_description'],
-            'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
-            'repeat' => $data['repeat'],
-            'repeat_value' => $data['repeat_value'],
-            'repeat_type' => $data['repeat_type'],
             'style' => rand(0, 10)
         ];
 
@@ -514,13 +504,6 @@ class CourseController extends Controller
                 $temp['status'] = '<div class="d-flex flex-column">
                                     <small class="js-lists-values-status text-50 mb-4pt">Pending</small>
                                     <span class="indicator-line rounded bg-info"></span>
-                                </div>';
-            }
-
-            if($course->end_date < Carbon::now()->format('Y-m-d')) {
-                $temp['status'] = '<div class="d-flex flex-column">
-                                    <small class="js-lists-values-status text-50 mb-4pt">Out date</small>
-                                    <span class="indicator-line rounded bg-danger"></span>
                                 </div>';
             }
 

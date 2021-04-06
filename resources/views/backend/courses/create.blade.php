@@ -157,66 +157,6 @@
                     </div>
 
                     <div class="page-separator">
-                        <div class="page-separator__text">Time Setting</div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-
-                            <!-- Set Date -->
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6 pr-1">
-                                        <div class="form-group mb-0">
-                                            <label class="form-label">Start Date:</label>
-                                            <input name="start_date" type="hidden" class="form-control flatpickr-input"
-                                                data-toggle="flatpickr" value="<?php echo date("Y-m-d"); ?>">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 pl-1">
-                                        <div class="form-group mb-0">
-                                            <label class="form-label">End Date:</label>
-                                            <input name="end_date" type="hidden" class="form-control flatpickr-input"
-                                                data-toggle="flatpickr" value="<?php echo date("Y-m-d"); ?>">
-                                        </div>
-                                    </div>
-                                </div>
-                                <small class="form-text text-muted">Subject will start and end date</small>
-                            </div>
-
-                            <!-- Timezone -->
-                            <div class="form-group">
-                                <label class="form-label">Your Timezone</label>
-                                <select name="timezone" class="form-control"></select>
-                                <small class="form-text text-muted">Select timezone</small>
-                            </div>
-
-                            <!-- Repeat -->
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input id="chk_repeat" type="checkbox" class="custom-control-input" checked>
-                                    <label for="chk_repeat" class="custom-control-label form-label">Repeat</label>
-                                    <input type="hidden" name="repeat" value="1">
-                                </div>
-                            </div>
-
-                            <div class="form-group" for="chk_repeat">
-                                <div class="row">
-                                    <div class="col-md-6 pr-1">
-                                        <input type="number" name="repeat_value" value="1" class="form-control" min="1">
-                                    </div>
-                                    <div class="col-md-6 pl-1">
-                                        <select id="custom-select" name="repeat_type" class="form-control custom-select">
-                                            <option value="week">Weeks</option>
-                                            <option value="month">Months</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="page-separator">
                         <div class="page-separator__text">Thumbnail</div>
                     </div>
 
