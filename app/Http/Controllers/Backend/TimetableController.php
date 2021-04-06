@@ -50,6 +50,9 @@ class TimetableController extends Controller
 			
 			$divisions_html = '';
 			if($item->divisions->count() > 0) {
+
+				$previewed = false;
+
 				foreach($item->divisions as $division) {
 					$divisions_html .= '<div class="avatar avatar-sm mr-8pt">
 											<span class="avatar-title rounded bg-light text-black-100">'. $division->name .'</span>
@@ -65,11 +68,15 @@ class TimetableController extends Controller
 													<img src="'. asset('/storage/attachments/' . $item->classTimeTableForDivision($division->id)->url) .'" alt="Avatar" class="avatar-img rounded">
 												</div>';
 						}
+
+						$previewed = true;
 						
 					} else {
-						$temp['preview'] = '<div class="avatar avatar-xxl avatar-4by3">
+						if(!$previewed) {
+							$temp['preview'] = '<div class="avatar avatar-xxl avatar-4by3">
 												<img src="'. asset('/assets/img/no-image.jpg') .'" alt="Avatar" class="avatar-img rounded">
 											</div>';
+						}
 					}
 				}
 			} else {
@@ -158,7 +165,9 @@ class TimetableController extends Controller
 						Timetable::create([
 							'grade_id' => $id,
 							'division_id' => $division_id,
+							'name' => $file->getClientOriginalName(),
 							'type' => array_last(explode('.', $file->getClientOriginalName())),
+							'order' => $division_id,
 							'url' => $this->saveFile($file)
 						]);
 					}

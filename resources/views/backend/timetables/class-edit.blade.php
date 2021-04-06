@@ -108,22 +108,22 @@
                         @if($class->classTimeTableForDivision($division->id))
                             <div class="form-group">
                                 <label class="form-label">File Name:</label>
-                                <label class="form-label text-muted">{{ $class->classTimeTableForDivision($division->id)->url }}</label>
+                                <label for="file_name_{{ $division->id }}" class="form-label text-muted">{{ $class->classTimeTableForDivision($division->id)->name }}</label>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">File Type:</label>
-                                <label class="form-label text-muted">{{ $class->classTimeTableForDivision($division->id)->type }}</label>
+                                <label for="file_type_{{ $division->id }}" class="form-label text-muted">{{ $class->classTimeTableForDivision($division->id)->type }}</label>
                             </div>
                         @else
                             <div class="form-group mb-0">
                                 <label class="form-label">File Name:</label>
-                                <label class="form-label text-muted">Not Set</label>
+                                <label for="file_name_{{ $division->id }}" class="form-label text-muted">Not Set</label>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">File Type:</label>
-                                <label class="form-label text-muted">Image</label>
+                                <label for="file_type_{{ $division->id }}" class="form-label text-muted">Image</label>
                             </div>
                         @endif
 
@@ -131,7 +131,7 @@
                             <label class="form-label">Upload new Timetable Image or PDF file</label>
                             <div class="custom-file">
                                 <input type="file" name="file_timetable_{{ $division->id }}" class="custom-file-input" id="avatar_file_{{ $division->id }}"
-                                    file-preview="#file_preview_{{ $division->id }}" accept=".gif,.jpg,.jpeg,.png,.pdf">
+                                    file-preview="#file_preview_{{ $division->id }}" accept=".gif,.jpg,.jpeg,.png,.pdf" data-id="{{ $division->id }}">
                                 <label class="custom-file-label" for="avatar_file_{{ $division->id }}">Choose file</label>
                             </div>
                             <small class="form-text text-muted">PFD or image files</small>
@@ -204,6 +204,8 @@
             var file = this.files[0];
             var file_type = file.type;
             $('label[for="'+ $(this).attr('id') +'"]').text(file.name);
+            $('label[for="file_name_'+ $(this).attr('data-id') +'"]').text(file.name);
+            $('label[for="file_type_'+ $(this).attr('data-id') +'"]').text(file.type);
 
             var ele_embed = $($(this).attr('file-preview')).find('embed');
             var ele_img = $($(this).attr('file-preview')).find('img');

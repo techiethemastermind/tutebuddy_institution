@@ -37,7 +37,7 @@ class Grade extends Model
 
     public function divisions()
     {
-        return $this->belongsToMany(Division::class, 'class_division');
+        return $this->belongsToMany(Division::class, 'class_division')->orderBy('division_id');
     }
 
     public function students()

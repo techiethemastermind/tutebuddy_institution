@@ -310,7 +310,7 @@
                             <label class="form-label">Title:</label>
                             <input type="text" name="lesson_title"
                                 class="form-control form-control-lg @error('lesson_title') is-invalid @enderror"
-                                placeholder="@lang('labels.backend.courses.fields.title')" value="">
+                                placeholder="Lesson Title" value="">
                             @error('lesson_title')
                             <div class="invalid-feedback">Title is required field.</div>
                             @enderror
