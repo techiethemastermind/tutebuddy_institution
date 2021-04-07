@@ -76,7 +76,7 @@
             </div>
             <div class="modal-body">
 
-                {!! Form::open(['method' => 'PATCH', 'route' => ['admin.curriculums.update', $subject->id], 'id'=>'frm_curriculum']) !!}
+                {!! Form::open(['method' => 'PATCH', 'route' => ['admin.curriculums.update', $subject->id]]) !!}
 
                 <div class="row">
                     <div class="col-12 mb-3">
@@ -87,12 +87,14 @@
 
                         <div class="form-group">
                             <label class="form-label">Grades:</label>
-                            {!! Form::select('grade', $grades, $subject->grade->id, array('class' => 'form-control', 'data-toggle'=>'select')) !!}
+                            {!! Form::select('grade', $grades, $subject->grade->id, 
+                            array('class' => 'form-control', 'data-toggle'=>'select')) !!}
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Teachers:</label>
-                            {!! Form::select('teachers[]', $teachers, $subject->teachers, array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+                            {!! Form::select('teachers[]', $teachers, $subject->teachers, 
+                            array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
                         </div>
                     </div>
                 </div>
@@ -103,7 +105,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btn_save_curriculum" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-primary save_curriculum" data-dismiss="modal">Save</button>
             </div>
         </div>
     </div>
@@ -143,13 +145,15 @@
             }
         );
 
-		$('#btn_save_curriculum').on('click', function(e) {
+		$('div.modal').on('click', 'button.save_curriculum', function(e) {
 
-            if(!isValidForm($('#frm_curriculum'))) {
+            var form = $(this).closest('div.modal').find('form');
+
+            if(!isValidForm(form)) {
                 return false;
             }
 
-            $('#frm_curriculum').ajaxSubmit({
+            form.ajaxSubmit({
                 success: function(res) {
                     if(res.success) {
                         table.ajax.reload();

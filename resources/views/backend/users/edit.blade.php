@@ -272,14 +272,14 @@
                                         <div class="controls form-inline">
                                             <label class="form-label col-lg-3">Password:</label>
                                             <input class="form-control col-lg-8" type="password" name="password"
-                                                placeholder="New Password" value="" tute-no-empty>
+                                                placeholder="New Password" value="">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="controls form-inline">
                                             <label class="form-label col-lg-3">Confirm Password:</label>
                                             <input class="form-control col-lg-8" type="password" name="confirm_password"
-                                                placeholder="Confirm Password" value="" tute-no-empty>
+                                                placeholder="Confirm Password" value="">
                                         </div>
                                     </div>
                                 </div>

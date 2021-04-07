@@ -99,37 +99,17 @@
             </div>
 
             <div class="table-responsive" data-toggle="lists">
-
                 <table id="tbl_courses" class="table mb-0 thead-border-top-0 table-nowrap" data-page-length='10'>
                     <thead>
                         <tr>
                             <th style="width: 18px;" class="pr-0"></th>
-
-                            <th style="width: 40px;">
-                                <a href="javascript:void(0)" class="sort"
-                                    data-sort="js-lists-values-no">No.</a>
-                            </th>
-
-                            <th>
-                                <a href="javascript:void(0)" class="sort"
-                                    data-sort="js-lists-values-title">Title</a>
-                            </th>
-
-                            <th>
-                                <a href="javascript:void(0)" class="sort"
-                                    data-sort="js-lists-values-title">Owner</a>
-                            </th>
-
-                            <th>
-                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-status">Status</a>
-                            </th>
-
-                            <th>
-                                <a href="javascript:void(0)" class="sort desc" data-sort="js-lists-values-date">Actions</a>
-                            </th>
+                            <th style="width: 40px;">No.</th>
+                            <th>Title</th>
+                            <th>Owner</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-
                     <tbody class="list" id="projects"></tbody>
                 </table>
             </div>

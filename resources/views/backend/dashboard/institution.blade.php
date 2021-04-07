@@ -57,7 +57,7 @@
                         <div class="card border-1 border-left-3 border-left-primary text-center mb-lg-0">
                             <div class="card-body">
                                 <h4 class="h2 mb-0">{{ $courses_count }}</h4>
-                                <div><label class="form-label">@lang('labels.backend.dashboard.active_courses')</label></div>
+                                <div><label class="form-label">Active Subjects</label></div>
                             </div>
                         </div>
                     </a>

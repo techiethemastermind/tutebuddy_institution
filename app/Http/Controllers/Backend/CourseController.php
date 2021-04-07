@@ -484,7 +484,7 @@ class CourseController extends Controller
                                         <div class="flex d-flex flex-column">
                                             <p class="mb-0"><strong class="js-lists-values-lead">'
                                             . $course->institution->name . '</strong></p>
-                                            <small class="js-lists-values-email text-50">'. $course->teachers[0]->name . '</small>
+                                            <small class="js-lists-values-email text-50">'. $course->teachers->first()->name . '</small>
                                         </div>
                                     </div>
                                 </div>
@@ -516,14 +516,12 @@ class CourseController extends Controller
             $btn_edit = view('layouts.buttons.edit', ['edit_route' => $edit_route])->render();
             $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route])->render();
 
-            if($course->published == 2) {
+            if($course->published == 0) {
                 $btn_publish = '<a href="'. $publish_route. '" class="btn btn-success btn-sm" data-action="publish" data-toggle="tooltip"
                     data-title="Publish"><i class="material-icons">arrow_upward</i></a>';
-            } else if($course->published == 1) {
+            } else {
                 $btn_publish = '<a href="'. $publish_route. '" class="btn btn-info btn-sm" data-action="publish" data-toggle="tooltip"
                     data-title="UnPublish"><i class="material-icons">arrow_downward</i></a>';
-            } else {
-                $btn_publish = '';
             }
 
             if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Institution Admin')) {
