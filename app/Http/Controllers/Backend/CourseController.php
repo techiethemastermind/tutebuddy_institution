@@ -484,7 +484,7 @@ class CourseController extends Controller
                                         <div class="flex d-flex flex-column">
                                             <p class="mb-0"><strong class="js-lists-values-lead">'
                                             . $course->institution->name . '</strong></p>
-                                            <small class="js-lists-values-email text-50">'. $course->teachers->first()->name . '</small>
+                                            <small class="js-lists-values-email text-50">'. $course->teachers->first()->fullName() . '</small>
                                         </div>
                                     </div>
                                 </div>
