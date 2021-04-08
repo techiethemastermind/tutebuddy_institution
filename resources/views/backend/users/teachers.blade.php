@@ -88,7 +88,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form-horizontal" method="POST" action="{{ route('admin.users.import.csv', 'teacher') }}"
+            <form id="frm_upload" class="form-horizontal" method="POST" action="{{ route('admin.users.import.csv', 'teacher') }}"
                     enctype="multipart/form-data">{{ csrf_field() }}
                 <div class="modal-body mx-3">
                     <div class="input-group">
@@ -97,7 +97,7 @@
                         </div>
                         <div class="custom-file">
                             <input type="file" name="csv_file" class="custom-file-input" id="importCsvFile"
-                                aria-describedby="importCsvFilelbl" accept=".xlsx, .xls, .csv">
+                                aria-describedby="importCsvFilelbl" accept=".xlsx, .xls, .csv" tute-no-empty>
                             <label class="custom-file-label" for="importCsvFile">Choose file</label>
                         </div>
                     </div>
@@ -159,7 +159,9 @@
         });
 
         $('#btn_csv_import').on('click', function(e) {
+            
             e.preventDefault();
+
             $('#csvUploadModal form').ajaxSubmit({
                 success: function(res) {
                     if(res.success) {

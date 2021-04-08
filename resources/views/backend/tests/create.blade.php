@@ -393,6 +393,12 @@ $(function() {
         }
     });
 
+    $('input[type="number"]').on('keypress', function(e) {
+        if(e.which == 45) {
+            return false;
+        }
+    });
+
     // Add New Question
     $('#btn_new_question').on('click', function() {
 
@@ -579,7 +585,7 @@ $(function() {
 
                         }, function(val) {
                             if (val) {
-                                var url = '/admin/tests/' + res.test_id + '/edit';
+                                var url = "{{ route('admin.tests.index') }}"
                                 window.location.href = url;
                             }
                         });

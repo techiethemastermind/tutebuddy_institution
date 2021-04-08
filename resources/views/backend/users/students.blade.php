@@ -158,7 +158,9 @@
         });
 
         $('#btn_csv_import').on('click', function(e) {
+            
             e.preventDefault();
+
             $('#csvUploadModal form').ajaxSubmit({
                 success: function(res) {
                     $('#csvUploadModal').modal('toggle');

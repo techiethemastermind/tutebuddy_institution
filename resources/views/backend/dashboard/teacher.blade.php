@@ -463,8 +463,8 @@
                         <span class="h3 text-white m-0">1</span>
                     </div>
                     <div class="flex">
-                        <div class="card-title mb-4pt">@lang('labels.backend.dashboard.create_course')</div>
-                        <p class="card-subtitle text-black-70">Create your courses to teach</p>
+                        <div class="card-title mb-4pt">Create Lessons</div>
+                        <p class="card-subtitle text-black-70">Create your lessons to teach</p>
                     </div>
                 </div>
                 <div class="d-flex col-md align-items-center border-bottom border-md-0 mb-16pt mb-md-0 pb-16pt pb-md-0">
@@ -472,8 +472,8 @@
                         <span class="h3 text-white m-0">2</span>
                     </div>
                     <div class="flex">
-                        <div class="card-title mb-4pt">@lang('labels.backend.dashboard.create_lesson')</div>
-                        <p class="card-subtitle text-black-70">Create lessons under courses.</p>
+                        <div class="card-title mb-4pt">Start Teaching</div>
+                        <p class="card-subtitle text-black-70">Create shedules to teach with live session.</p>
                     </div>
                 </div>
                 <div class="d-flex col-md align-items-center">
@@ -481,16 +481,10 @@
                         <span class="h3 text-white m-0">3</span>
                     </div>
                     <div class="flex">
-                        <div class="card-title mb-4pt">@lang('labels.backend.dashboard.start_teaching')</div>
-                        <p class="card-subtitle text-black-70">Create shedules to teach with live session.</p>
+                        <div class="card-title mb-4pt">Create Tasks</div>
+                        <p class="card-subtitle text-black-70">Create tasks to teach.</p>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="page-section">
-            <div class="form-group text-center">
-                <a href="{{ route('admin.courses.create') }}" class="btn btn-primary btn-block">Create your first course</a>
             </div>
         </div>
         @endif

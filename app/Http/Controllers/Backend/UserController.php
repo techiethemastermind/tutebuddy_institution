@@ -218,7 +218,11 @@ class UserController extends Controller
             $delete_route = route('admin.users.destroy', $user->id);
             $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route])->render();
 
-            $temp['actions'] = $btn_show . '&nbsp;' . $btn_edit . '&nbsp;' . $btn_delete;
+            if($user->courses->count() > 0) {
+                $temp['actions'] = $btn_show . '&nbsp;' . $btn_edit;
+            } else {
+                $temp['actions'] = $btn_show . '&nbsp;' . $btn_edit . '&nbsp;' . $btn_delete;
+            }
 
             array_push($data, $temp);
         }
@@ -476,6 +480,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $user = User::find($id);
+        
+        if($user->courses->count() > 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This user is assigned to subjects'
+            ]);
+        }
+
         try {
             User::find($id)->delete();
 
@@ -557,6 +570,13 @@ class UserController extends Controller
      */
     public function importCSV(Request $request, $type)
     {
+        if(!$request->file('csv_file')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'File not attached'
+            ]);
+        }
+        
         $path = $request->file('csv_file')->getRealPath();
         $data = array_map('str_getcsv', file($path));
         $csv_data = array_slice($data, 0);
