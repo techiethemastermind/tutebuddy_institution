@@ -128,12 +128,14 @@ class CurriculumsController extends Controller
     public function update(Request $request)
     {
         $subject = Course::find($request->subject_id);
+
         // Update Grade;
         $subject->class_id = $request->grade;
         $subject->save();
 
         // Remove exsiting Items
         DB::table('course_user')->where('course_id', $request->subject_id)->delete();
+        DB::table('curriculum')->where('course_id', $request->subject_id)->delete();
 
         // Add teachers to Subject
         foreach($request->teachers as $teacher) {
@@ -144,6 +146,19 @@ class CurriculumsController extends Controller
                 ],
                 [
                     'course_id' => $request->subject_id,
+                    'user_id' => $teacher
+                ]
+            );
+
+            DB::table('curriculum')->updateOrInsert(
+                [
+                    'course_id' => $request->subject_id,
+                    'class_id' => $request->grade,
+                    'user_id' => $teacher
+                ],
+                [
+                    'course_id' => $request->subject_id,
+                    'class_id' => $request->grade,
                     'user_id' => $teacher
                 ]
             );

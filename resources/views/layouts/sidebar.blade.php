@@ -135,6 +135,22 @@
                             </a>
                         </li>
                         @endcan
+
+                        @if(auth()->user()->hasRole('Teacher'))
+                        <li class="sidebar-menu-item {{ Request::is('admin/students*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.users.students') }}">
+                                <span class="sidebar-menu-text">My Students</span>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if(auth()->user()->hasRole('Teacher'))
+                        <li class="sidebar-menu-item {{ Request::is('admin/classes*') ? 'active' : '' }}">
+                            <a class="sidebar-menu-button" href="{{ route('admin.classes.index') }}">
+                                <span class="sidebar-menu-text">My Classes</span>
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </li>
                 @endcan

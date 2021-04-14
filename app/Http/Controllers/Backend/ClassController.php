@@ -19,10 +19,10 @@ class ClassController extends Controller
     function __construct()
     {
         // Define Permission
-        $this->middleware('permission:class_access', ['only' => ['index', 'show']]);
-        $this->middleware('permission:class_create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:class_edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:class_delete', ['only' => ['destroy']]);
+        // $this->middleware('permission:class_access', ['only' => ['index', 'show']]);
+        // $this->middleware('permission:class_create', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:class_edit', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:class_delete', ['only' => ['destroy']]);
     }
 
     /**
@@ -39,7 +39,13 @@ class ClassController extends Controller
     /** Get Table Data **/
     public function getTableData()
     {
-    	$classes = Grade::all();
+        if(auth()->user()->hasRole('Teacher')) {
+            $class_ids = DB::table('curriculum')->where('user_id', auth()->user()->id)->pluck('class_id');
+            $classes = Grade::whereIn('id', $class_ids)->get();
+        } else {
+            $classes = Grade::all();
+        }
+
     	$data = [];
         foreach ($classes as $class) {
             $temp = [];

@@ -91,16 +91,19 @@ class DashboardController extends Controller
             $live_lesson_ids = Lesson::whereIn('course_id', $course_ids)->where('lesson_type', 1)->pluck('id');
             $schedules = Schedule::whereIn('lesson_id', $live_lesson_ids)->orderBy('updated_at', 'desc')->limit(5)->get();
 
-            $course_students = DB::table('course_student')->whereIn('course_id', $course_ids)->get();
             $students = collect();
-            foreach($course_students as $item) {
-                $c_item = Course::find($item->course_id);
-                $u_item = User::find($item->user_id);
-                $data = [
-                    'course' => $c_item,
-                    'user' => $u_item
-                ];
-                $students->push($data);
+            foreach($courses as $course) {
+                $course_grade = $course->grade;
+                $course_grade_students = $course_grade->students;
+
+                foreach($course_grade_students as $item) {
+                    $data = [
+                        'class' => $course_grade,
+                        'user' => $item
+                    ];
+
+                    $students->push($data);
+                }
             }
 
             $assignments = Assignment::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->limit(5)->get();

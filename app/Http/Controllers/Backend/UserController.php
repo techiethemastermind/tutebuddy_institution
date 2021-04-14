@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use App\Models\Institution;
 use App\Models\Grade;
 use App\Models\Division;
+use App\Models\Course;
 
 class UserController extends Controller
 {
@@ -236,7 +237,24 @@ class UserController extends Controller
     public function getStudentsByAjax(Request $request)
     {
         if(auth()->user()->institution) {
-            $users = User::role('Student')->where('institution_id', auth()->user()->institution_id)->get();
+
+            if(auth()->user()->hasRole('Teacher')) {
+
+                $courses = Course::all();
+                
+                $users = collect();
+                foreach($courses as $course) {
+                    $course_grade = $course->grade;
+                    $course_grade_students = $course_grade->students;
+    
+                    foreach($course_grade_students as $item) {    
+                        $users->push($item);
+                    }
+                }
+            } else {
+                $users = User::role('Student')->where('institution_id', auth()->user()->institution_id)->get();
+            }
+
         } else {
             $users = User::role('Student')->get();
         }

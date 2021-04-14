@@ -57,6 +57,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Models\Course::class, 'course_user');
     }
 
+    // Return student's grade
     public function grade()
     {
         return $this->belongsToMany(Models\Grade::class, 'class_user');

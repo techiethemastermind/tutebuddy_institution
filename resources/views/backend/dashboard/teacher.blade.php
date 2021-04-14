@@ -34,6 +34,63 @@
         @if(count($courses) > 0)
         <div class="page-section">
 
+            <!-- My Students -->
+            @if(count($students) > 0)
+            <div class="card dashboard-area-tabs p-relative o-hidden mb-lg-32pt">
+                <div class="card-header">
+                    <p class="page-separator__text bg-white mb-0"><strong>@lang('labels.backend.dashboard.students_roster')</strong></p>
+                    <a href="" class="btn btn-md btn-outline-accent-dodger-blue float-right">
+                        @lang('labels.backend.buttons.browse_all')
+                    </a>
+                </div>
+                <div class="table-responsive" data-toggle="lists" data-lists-sort-by="js-lists-values-time">
+                    <table class="table mb-0 thead-border-top-0 table-nowrap">
+                        <thead>
+                            <tr>
+                                <th style="width: 18px;" class="pr-0"></th>
+                                <th>@lang('labels.backend.dashboard.table.name')</th>
+                                <th>@lang('labels.backend.dashboard.table.course')</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($students as $student)
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
+                                        <div class="avatar avatar-sm mr-8pt">
+                                            @if(!empty($student['user']->avatar))
+                                            <img src="{{ asset('/storage/avatars/' . $student['user']->avatar) }}" alt="Avatar" class="avatar-img rounded-circle">
+                                            @else
+                                            <span class="avatar-title rounded-circle">{{ substr($student['user']->fullName(), 0, 2) }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex d-flex flex-column">
+                                                    <p class="mb-0"><strong class="js-lists-values-name">{{ $student['user']->fullName() }}</strong></p>
+                                                    <small class="js-lists-values-email text-50">{{ $student['user']->email }}</small>
+                                                </div>
+                                                <div class="d-flex align-items-center ml-24pt">
+                                                    <i class="material-icons text-20 icon-16pt">comment</i>
+                                                    <small class="ml-4pt"><strong class="text-50">1</strong></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <strong>{{ $student['class']->name }}</strong>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
             <!-- Live Lessons -->
             @if(count($schedules) > 0)
             <div class="card dashboard-area-tabs p-relative o-hidden mb-lg-32pt">
@@ -129,82 +186,6 @@
                                     @else
                                     <button type="button" class="btn btn-md btn-outline-primary" disabled>Scheduled</button>
                                     @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            @endif
-
-            <!-- Enrolled Students -->
-            @if(count($students) > 0)
-            <div class="card dashboard-area-tabs p-relative o-hidden mb-lg-32pt">
-                <div class="card-header">
-                    <p class="page-separator__text bg-white mb-0"><strong>@lang('labels.backend.dashboard.students_roster')</strong></p>
-                    <a href="{{ route('admin.instructor.students') }}" class="btn btn-md btn-outline-accent-dodger-blue float-right">
-                        @lang('labels.backend.buttons.browse_all')
-                    </a>
-                </div>
-                <div class="table-responsive" data-toggle="lists" data-lists-sort-by="js-lists-values-time">
-                    <table class="table mb-0 thead-border-top-0 table-nowrap">
-                        <thead>
-                            <tr>
-                                <th style="width: 18px;" class="pr-0"></th>
-                                <th>@lang('labels.backend.dashboard.table.name')</th>
-                                <th>@lang('labels.backend.dashboard.table.course')</th>
-                                <th>@lang('labels.backend.dashboard.table.start_date')</th>
-                                <th>@lang('labels.backend.dashboard.table.end_date')</th>
-                                <th>@lang('labels.backend.dashboard.table.status')</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($students as $student)
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
-                                        <div class="avatar avatar-sm mr-8pt">
-                                            @if(!empty($student['user']->avatar))
-                                            <img src="{{ asset('/storage/avatars/' . $student['user']->avatar) }}" alt="Avatar" class="avatar-img rounded-circle">
-                                            @else
-                                            <span class="avatar-title rounded-circle">{{ substr($student['user']->name, 0, 2) }}</span>
-                                            @endif
-                                        </div>
-                                        <div class="media-body">
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex d-flex flex-column">
-                                                    <p class="mb-0"><strong class="js-lists-values-name">{{ $student['user']->name }}</strong></p>
-                                                    <small class="js-lists-values-email text-50">{{ $student['user']->email }}</small>
-                                                </div>
-                                                <div class="d-flex align-items-center ml-24pt">
-                                                    <i class="material-icons text-20 icon-16pt">comment</i>
-                                                    <small class="ml-4pt"><strong class="text-50">1</strong></small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <strong>{{ $student['course']->title }}</strong>
-                                </td>
-                                <td>
-                                    <strong>{{ $student['course']->start_date }}</strong>
-                                </td>
-                                <td>
-                                    <strong>{{ $student['course']->end_date }}</strong>
-                                </td>
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <small class="js-lists-values-status text-50 mb-4pt">{{ $student['course']->progress() }}%</small>
-                                        @if($student['course']->progress() > 99)
-                                        <span class="indicator-line rounded bg-success"></span>
-                                        @else
-                                        <span class="indicator-line rounded bg-primary"></span>
-                                        @endif
-                                    </div>
                                 </td>
                             </tr>
                             @endforeach

@@ -163,6 +163,7 @@ Route::get('certificates/download', ['uses' => 'CertificateController@download',
 
 // Workspace for Teachers
 Route::get('live-sessions/all', 'LessonController@instructorLiveSessions')->name('instructor.liveSessions');
+Route::get('ajax/instructor-sessions/{type}', 'LessonController@getInstructorLiveSessionsByAjax')->name('teacher.getInstructorSessionsByAjax');
 
 // Messages Routes
 Route::get('messages', 'MessagesController@index')->name('messages.index');
