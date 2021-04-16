@@ -288,6 +288,9 @@ class AssignmentsController extends Controller
         $i = 0;
 
         foreach($assignments as $item) {
+            if(!$item->course) {
+                continue;
+            }
             $lesson = Lesson::find($item->lesson->id);
             $course = $lesson->course;
             $i++;

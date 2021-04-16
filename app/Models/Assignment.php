@@ -24,13 +24,13 @@ class Assignment extends Model
         parent::boot();
         
         if (auth()->check()) {
-            if (auth()->user()->hasRole('Instructor') && $this->course) {
+            if (auth()->user()->hasRole('Instructor')) {
                 static::addGlobalScope('filter', function (Builder $builder) {
                     $builder->where('user_id', '=', Auth::user()->id);
                 });
             }
 
-            if (auth()->user()->hasRole('Student') && $this->course) {
+            if (auth()->user()->hasRole('Student')) {
                 static::addGlobalScope('filter', function (Builder $builder) {
                     $builder->where('published', 1);
                 });
