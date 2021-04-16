@@ -319,7 +319,11 @@ class UserController extends Controller
             $delete_route = route('admin.users.destroy', $user->id);
             $btn_delete = view('layouts.buttons.delete', ['delete_route' => $delete_route])->render();
 
-            $temp['actions'] = $btn_show . '&nbsp;' . $btn_edit . '&nbsp;' . $btn_delete;
+            if(auth()->user()->hasRole('Teacher')) {
+                $temp['actions'] = $btn_show . '&nbsp;';
+            } else {
+                $temp['actions'] = $btn_show . '&nbsp;' . $btn_edit . '&nbsp;' . $btn_delete;
+            }
 
             array_push($data, $temp);
         }

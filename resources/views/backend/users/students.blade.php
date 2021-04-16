@@ -36,7 +36,6 @@
                     <a href="{{ route('admin.users.create', ['t'=>'student']) }}" class="btn btn-outline-secondary">Add New</a>
                 </div>
             </div>
-            @endcan
 
             <div class="row" role="tablist">
                 <div class="col-auto mr-3">
@@ -48,6 +47,8 @@
                     <a href="{{ asset('/assets/files/students.csv') }}" class="btn btn-outline-secondary">Download CSV Template</a>
                 </div>
             </div>
+
+            @endcan
         </div>
     </div>
 
