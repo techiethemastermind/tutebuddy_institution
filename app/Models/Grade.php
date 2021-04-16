@@ -20,7 +20,11 @@ class Grade extends Model
 
         if(!Auth::user()->hasRole('Administrator')) {
             static::addGlobalScope('filter', function (Builder $builder) {
-                $builder->where('institution_id', Auth::user()->institution->id);
+                // $builder->where('institution_id', Auth::user()->institution->id);
+
+                $builder->whereHas('courses', function($q) {
+                    $q->where('institution_id', Auth::user()->institution->id);
+                });
             });
         }
     }
