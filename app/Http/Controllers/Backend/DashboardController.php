@@ -128,8 +128,9 @@ class DashboardController extends Controller
         }
 
         if(auth()->user()->hasRole('Student')) {
+
             // Get purchased Course IDs
-            $course_ids = Course::where('end_date', '>', Carbon::now()->format('Y-m-d'))->pluck('id');
+            $course_ids = Course::all();
             $lesson_ids = Lesson::whereIn('course_id', $course_ids)->pluck('id');
             $teachers_id = DB::table('course_user')->whereIn('course_id', $course_ids)->pluck('user_id');
 

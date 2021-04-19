@@ -30,14 +30,16 @@ class Course extends Model
 
             if(Auth::user()->hasRole('Student')) {
                 static::addGlobalScope('filter', function (Builder $builder) {
-                    $builder->where('class_id', Auth::user()->grade[0]->id);
+                    if(isset(Auth::user()->grade)) {
+                        $builder->where('class_id', auth()->user()->grade->first()->id);
+                    } else {
+                        $builder->where('class_id', 0);
+                    }
                 });
             }
 
             if(Auth::user()->hasRole('Teacher')) {
                 static::addGlobalScope('filter', function (Builder $builder) {
-                    $builder->where('institution_id', Auth::user()->institution->id);
-
                     $builder->whereHas('teachers', function ($q) {
                         $q->where('course_user.user_id', '=', auth()->user()->id);
                     });
