@@ -299,7 +299,7 @@ class LessonController extends Controller
 
     public function getStudentLiveSessionsByAjax($type)
     {
-        $course_ids = Course::where('end_date', '>', Carbon::now()->format('Y-m-d'))->pluck('id');
+        $course_ids = Course::pluck('id');
         $live_lesson_ids = Lesson::whereIn('course_id', $course_ids)->where('lesson_type', 1)->pluck('id');
 
         if($type == 'all') {
@@ -331,7 +331,7 @@ class LessonController extends Controller
 
     function getStudentCounts()
     {
-        $course_ids = Course::where('end_date', '>', Carbon::now()->format('Y-m-d'))->pluck('id');
+        $course_ids = Course::pluck('id');
         $live_lesson_ids = Lesson::whereIn('course_id', $course_ids)->where('lesson_type', 1)->pluck('id');
         $schedules = Schedule::whereIn('lesson_id', $live_lesson_ids)->get();
         $all_count = count($schedules);

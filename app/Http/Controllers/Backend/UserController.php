@@ -357,6 +357,14 @@ class UserController extends Controller
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
 
+        if(!isset($input['roles'])) {
+            if(isset($input['fixed_role'])) {
+                $input['roles'] = [$input['fixed_role']];
+            } else {
+                return back()->with('error', 'New User role is not selected');
+            }
+        }
+
         if(in_array('Admin', $input['roles'])) { // Admin limited with 2
             if(!User::role('Admin')->count() < 3) {
                 return back()->with('error', 'Admin user is limited');
@@ -380,7 +388,7 @@ class UserController extends Controller
             $user->save();
         }
 
-        $user->assignRole($request->input('roles'));
+        $user->assignRole($input['roles']);
         if(isset($input['grade'])) {
             $grade_user = DB::table('class_user')->updateOrInsert(
                 [

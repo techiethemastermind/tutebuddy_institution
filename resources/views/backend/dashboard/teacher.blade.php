@@ -38,7 +38,7 @@
             @if(count($students) > 0)
             <div class="card dashboard-area-tabs p-relative o-hidden mb-lg-32pt">
                 <div class="card-header">
-                    <p class="page-separator__text bg-white mb-0"><strong>@lang('labels.backend.dashboard.students_roster')</strong></p>
+                    <p class="page-separator__text bg-white mb-0"><strong>My Students</strong></p>
                     <a href="" class="btn btn-md btn-outline-accent-dodger-blue float-right">
                         @lang('labels.backend.buttons.browse_all')
                     </a>

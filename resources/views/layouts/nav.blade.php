@@ -25,6 +25,19 @@
                 </span>
             </a>
 
+            @if(auth()->check() && auth()->user()->hasRole('Student'))
+            <span class="d-none d-md-flex align-items-center mr-16pt">
+                <!-- <span class="avatar avatar-sm mr-12pt">
+                    <span class="avatar-title rounded navbar-avatar"><i class="material-icons">opacity</i></span>
+                </span> -->
+
+                <small class="flex d-flex flex-column">
+                    <strong class="navbar-text-100">Grade: {{ auth()->user()->grade->first()->name }}</strong>
+                    <strong class="avbar-text-100">Division: {{ auth()->user()->division->first()->name }}</strong>
+                </small>
+            </span>
+            @endif
+
             <div class="flex"></div>
 
             <div class="nav navbar-nav flex-nowrap d-flex mr-16pt">

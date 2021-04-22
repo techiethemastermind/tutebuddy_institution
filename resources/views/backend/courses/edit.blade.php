@@ -206,7 +206,11 @@
                                 <label class="form-label">Teacher</label>
                                 <select name="teacher" class="form-control">
                                     @foreach($teachers as $teacher)
-                                    <option value="{{ $teacher->id }}">{{ $teacher->fullName() }}</option>
+                                    @if($teacher->id == $course->teachers->first()->id)
+                                        <option value="{{ $teacher->id }}" selected>{{ $teacher->fullName() }}</option>
+                                    @else
+                                        <option value="{{ $teacher->id }}">{{ $teacher->fullName() }}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>

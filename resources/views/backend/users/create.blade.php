@@ -99,43 +99,58 @@
                         </div>
 
                         <div class="row">
+                        
                             <div class="col-md-4">
                                 <label class="form-label">Institution</label>
-                                <select class="form-control" name="institution" id="institions">
+                                <select class="form-control" name="institution" id="institions" @if(auth()->user()->hasRole('Institution Admin')) disabled  @endif>
+                                    
                                     @foreach($institutions as $institution)
-                                    <option value="{{ $institution->id }}">{{ $institution->name }}</option>
+                                        @if(isset(auth()->user()->institution) && auth()->user()->institution->id == $institution->id)
+                                            <option value="{{ $institution->id }}" selected>{{ $institution->name }}</option>
+                                        @else
+                                            <option value="{{ $institution->id }}">{{ $institution->name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
 
-                            @if(auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Institution Admin'))
+                            @if(isset($_GET['t']) && $_GET['t'] == 'admin')
+                            <div class="col-md-8">
+                                <div class="form-group mb-24pt">
+                                    <label class="form-label">Role</label>
+                                    @if(auth()->user()->hasRole('Institution Admin'))
+                                    {!! Form::select('roles[]', $roles, 'Institution Admin', array('class' => 'form-control', 'disabled', 'multiple', 'data-toggle'=>'select')) !!}
+                                    @else
+                                    {!! Form::select('roles[]', $roles, 'Institution Admin', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+                                    @endif
+                                </div>
+                            </div>
+                            @endif
+                            
+                            @if(isset($_GET['t']) && $_GET['t'] == 'teacher')
+                            <div class="col-md-8">
+                                <div class="form-group mb-24pt">
+                                    <label class="form-label">Role</label>
+                                    @if(auth()->user()->hasRole('Institution Admin'))
+                                    {!! Form::select('roles[]', $roles, 'Teacher', array('class' => 'form-control', 'disabled', 'multiple', 'data-toggle'=>'select')) !!}
+                                    @else
+                                    {!! Form::select('roles[]', $roles, 'Teacher', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+                                    @endif
+                                </div>
+                            </div>
+                            @endif
 
-                                @if(isset($_GET['t']) && $_GET['t'] == 'admin')
-                                <div class="col-md-8">
-                                    <div class="form-group mb-24pt">
-                                        <label class="form-label">Role</label>
-                                        {!! Form::select('roles[]', $roles, 'Institution Admin', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
-                                    </div>
+                            @if(isset($_GET['t']) && $_GET['t'] == 'student')
+                            <div class="col-md-8">
+                                <div class="form-group mb-24pt">
+                                    <label class="form-label">Role</label>
+                                    @if(auth()->user()->hasRole('Institution Admin'))
+                                    {!! Form::select('roles[]', $roles, 'Student', array('class' => 'form-control', 'disabled', 'multiple', 'data-toggle'=>'select')) !!}
+                                    @else
+                                    {!! Form::select('roles[]', $roles, 'Student', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
+                                    @endif
                                 </div>
-                                @endif
-                                
-                                @if(isset($_GET['t']) && $_GET['t'] == 'teacher')
-                                <div class="col-md-8">
-                                    <div class="form-group mb-24pt">
-                                        <label class="form-label">Role</label>
-                                        {!! Form::select('roles[]', $roles, 'Teacher', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
-                                    </div>
-                                </div>
-                                @endif
-
-                                @if(isset($_GET['t']) && $_GET['t'] == 'student')
-                                <div class="col-md-8">
-                                    <div class="form-group mb-24pt">
-                                        <label class="form-label">Role</label>
-                                        {!! Form::select('roles[]', $roles, 'Student', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
-                                    </div>
-                                </div>
-                                @endif
+                            </div>
                             @endif
                         </div>
 
@@ -328,6 +343,15 @@
                     </div>
                 </div>
             </div>
+
+            <?php
+                $fixed_role = '';
+                if(isset($_GET['t'])) {
+                    $fixed_role = ucwords($_GET['t']);
+                }
+            ?>
+
+            <input type="hidden" name="fixed_role" value="{{ $fixed_role }}">
 
             <div class="form-group text-right">
                 <button type="submit" class="btn btn-primary">Save changes</button>

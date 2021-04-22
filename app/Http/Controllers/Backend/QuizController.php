@@ -428,7 +428,7 @@ class QuizController extends Controller
     {
         // Get purchased Course IDs
         $course_ids = DB::table('course_student')->where('user_id', auth()->user()->id)->pluck('course_id');
-        $course_ids = Course::whereIn('id', $course_ids)->where('end_date', '>', Carbon::now()->format('Y-m-d'))->pluck('id');
+        $course_ids = Course::whereIn('id', $course_ids)->pluck('id');
         $lesson_ids = Lesson::whereIn('course_id', $course_ids)->pluck('id');
         $quizs = Quiz::whereIn('lesson_id', $lesson_ids)->get();
         $quiz_result_ids = QuizResults::where('user_id', auth()->user()->id)->pluck('quiz_id');
@@ -447,7 +447,7 @@ class QuizController extends Controller
     public function getStudentQuizsByAjax($type)
     {
         $course_ids = DB::table('course_student')->where('user_id', auth()->user()->id)->pluck('course_id');
-        $course_ids = Course::whereIn('id', $course_ids)->where('end_date', '>', Carbon::now()->format('Y-m-d'))->pluck('id');
+        $course_ids = Course::whereIn('id', $course_ids)->pluck('id');
         $lesson_ids = Lesson::whereIn('course_id', $course_ids)->pluck('id');
         $quiz_result_ids = QuizResults::where('user_id', auth()->user()->id)->pluck('quiz_id');
 
