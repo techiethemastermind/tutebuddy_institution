@@ -7,8 +7,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
+
 use Cmgmyr\Messenger\Traits\Messagable;
+use Cmgmyr\Messenger\Models\Message;
+use Cmgmyr\Messenger\Models\Participant;
+use Cmgmyr\Messenger\Models\Thread;
+
+use Illuminate\Support\Facades\DB;
+use Mail;
 
 use App\Models\Institution;
 
@@ -88,5 +94,35 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->morphMany(Models\Review::class, 'reviewable');
+    }
+
+    public function notify_message()
+    {
+        $userId = $this->id;
+        $threads = Thread::where('subject', 'like', '%' . $userId . '%')->latest('updated_at')->get();
+        $partners = [];
+
+        foreach($threads as $thread) {
+
+            if($thread->userUnreadMessagesCount($userId) > 0) {
+
+                $grouped_participants = $thread->participants->where('user_id', '!=', $userId)->groupBy(function($item) {
+                    return $item->user_id;
+                });
+
+                foreach($grouped_participants as $participants) {
+                    $participant = $participants[0];
+
+                    $item = [
+                        'partner_id' => $participant->user_id,
+                        'unread' => $thread->userUnreadMessagesCount($userId),
+                        'msg' => $thread->latestMessage
+                    ];
+                    array_push($partners, $item);
+                }
+            }
+        }
+
+        return $partners;
     }
 }

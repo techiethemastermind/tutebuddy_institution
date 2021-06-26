@@ -55,7 +55,7 @@
     <div class="container page__container page-section">
 
         <div class="card mb-lg-32pt">
-            <div class="table-responsive" data-toggle="lists" data-lists-values='["js-lists-values-name", "js-lists-values-email"]'>
+            <div class="table" data-toggle="lists" data-lists-values='["js-lists-values-name", "js-lists-values-email"]'>
                 <table id="tbl_users" class="table mb-0 thead-border-top-0 table-nowrap">
                     <thead>
                         <tr>
@@ -172,6 +172,11 @@
                     }
                 }
             });
+        });
+
+        $('#importCsvFile').change(function() {
+            var file = $(this)[0].files[0].name;
+            $('label[for=importCsvFile]').text(file);
         });
     });
 </script>

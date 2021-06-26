@@ -337,6 +337,8 @@ class AssignmentsController extends Controller
                             </div>
                         </div>';
 
+            $temp['due_date'] = '<strong>' . $item->due_date . '</strong>';
+
             $edit_route = route('admin.assignments.edit', $item->id);
             $delete_route = route('admin.assignments.destroy', $item->id);
             $publish_route = route('admin.assignment.publish', $item->id);

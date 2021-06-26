@@ -97,7 +97,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive" data-toggle="lists">
+            <div class="table" data-toggle="lists">
                 <table id="tbl_assignments" class="table mb-0 thead-border-top-0 table-nowrap" data-page-length='10'>
                     <thead>
                         <tr>
@@ -106,6 +106,7 @@
                             <th> Title </th>
                             <th> Course </th>
                             <th> lesson </th>
+                            <th> Due Date </th>
                             <th> Actions </th>
                         </tr>
                     </thead>
@@ -141,6 +142,7 @@ $(function() {
             ajax: {
                 url: route,
                 complete: function(res) {
+                    console.log(res);
                     $.each(res.responseJSON.count, function(key, count){
                         $('#tbl_selector').find('span.count-' + key).text(count);
                     });
@@ -154,6 +156,7 @@ $(function() {
                 { data: 'title' },
                 { data: 'course'},
                 { data: 'lesson'},
+                { data: 'due_date'},
                 { data: 'action' }
             ],
             oLanguage: {

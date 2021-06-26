@@ -8,12 +8,12 @@
                         alt="people" class="avatar-img rounded-circle">
                 @else
                     <span
-                        class="avatar-title rounded-circle">{{ substr($partner->avatar, 0, 2) }}</span>
+                        class="avatar-title rounded-circle">{{ substr($partner->fullName(), 0, 2) }}</span>
                 @endif
             </div>
         </div>
         <div class="flex">
-            <h4 class="mb-0">{{ $partner->name }}</h4>
+            <h4 class="mb-0">{{ $partner->fullName() }}</h4>
             <p class="text-50 mb-0">{{ $partner->headline }}</p>
         </div>
     </div>

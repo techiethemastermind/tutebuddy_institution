@@ -100,12 +100,12 @@
                                     <img src="{{ asset('/storage/avatars/' . auth()->user()->avatar ) }}" alt="people"
                                         class="avatar-img rounded-circle">
                                     @else
-                                    <span class="avatar-title rounded-circle">{{ substr(auth()->user()->avatar, 0, 2) }}</span>
+                                    <span class="avatar-title rounded-circle">{{ substr(auth()->user()->fullName(), 0, 2) }}</span>
                                     @endif
                                 </div>
                             </div>
                             <div class="d-flex flex-column" style="max-width: 150px; font-size: 15px">
-                                <strong class="text-body">{{ auth()->user()->name }}</strong>
+                                <strong class="text-body">{{ auth()->user()->fullName() }}</strong>
                                 <span class="text-50 text-ellipsis">{{ auth()->user()->headline }}</span>
                             </div>
                         </div>
@@ -139,11 +139,11 @@
                                     <a href="javascript:void(0)" class="d-flex align-items-center position-relative">
                                         <span class="avatar avatar-xs avatar-online mr-3 flex-shrink-0">
                                             
-                                            @if(!empty($contact_user->avatar))
+                                        @if(!empty($contact_user->avatar))
                                             <img src="{{ asset('/storage/avatars/' . $contact_user->avatar) }}" alt="" class="avatar-img rounded-circle">
-                                            @else
+                                        @else
                                             <span class="avatar-title rounded-circle">{{ substr($contact_user->avatar, 0, 2) }}</span>
-                                            @endif
+                                        @endif
 
                                         </span>
                                         <span class="flex d-flex flex-column" style="max-width: 175px;">
@@ -222,7 +222,7 @@ $(function() {
 
             $.ajax({
                 method: 'GET',
-                url: "/dashboard/messages/users/" + $(this).val(),
+                url: "/admin/messages/users/" + $(this).val(),
                 success: function(res) {
 
                     if (res.success) {
@@ -280,7 +280,7 @@ $(function() {
 
         $.ajax({
             method: 'GET',
-            url: "/dashboard/messages/get?partner=" + partner + "&thread=" + thread,
+            url: "/admin/messages/get?partner=" + partner + "&thread=" + thread,
             success: function(res) {
 
                 if (res.success) {
@@ -302,7 +302,7 @@ $(function() {
             
             $.ajax({
                 method: 'GET',
-                url: "/dashboard/messages/last?partner=" + partner_id + "&thread=" + thread_id,
+                url: "/admin/messages/last?partner=" + partner_id + "&thread=" + thread_id,
                 success: function(res) {
                     if (res.success && res.html != '') {
                         $(res.html).hide().appendTo('#messages_content ul').toggle(500);

@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive" data-toggle="lists">
+            <div class="table" data-toggle="lists">
                 <table id="tbl_courses" class="table mb-0 thead-border-top-0 table-nowrap" data-page-length='10'>
                     <thead>
                         <tr>

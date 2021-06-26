@@ -105,7 +105,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive" data-toggle="lists" data-lists-sort-by="js-lists-values-date">
+            <div class="table" data-toggle="lists" data-lists-sort-by="js-lists-values-date">
                 <table id="tbl_assignments" class="table mb-0 thead-border-top-0 table-nowra" data-page-length='10'>
                     <thead>
                         <tr>

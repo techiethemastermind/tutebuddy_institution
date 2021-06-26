@@ -110,7 +110,7 @@
 
                             <div class="list-group-item">
                                 <button id="btn_submit" type="button" class="btn btn-accent">
-                                    @lang('labels.backend.discussions.edit_notify.update_question')
+                                    Create Discussion
                                 </button>
                             </div>
                         </div>
@@ -170,10 +170,11 @@
 
             $('#frm_discussions').ajaxSubmit({
                 success: function(res) {
-                    var url = '/admin/discussions/' + res.discussion_id + '/edit';
+                    // var url = '/admin/discussions/' + res.discussion_id + '/edit';
+                    var url = '/admin/discussions';
                     window.location.href = url;
                 }
-            })
+            });
         });
 
         var timer, value;

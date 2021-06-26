@@ -27,9 +27,12 @@
             <img src="{{ asset('/assets/img/avatars/no-avatar.jpg') }}" width="154" class="mr-md-32pt mb-32pt mb-md-0" alt="instructor">
             @endif
             <div class="flex mb-32pt mb-md-0">
-                <h2 class="text-white mb-0">{{ $user->name }}</h2>
+                <h2 class="text-white mb-0">{{ $user->fullName() }}</h2>
+                <p class="lead text-white-50 d-flex align-items-center">
+                {{ $user->institution->name }} <span class="ml-16pt d-flex align-items-center">
+                </p>
             </div>
-            <a href="" class="btn btn-outline-white">Follow</a>
+            <!-- <a href="" class="btn btn-outline-white">Follow</a> -->
         </div>
     </div>
 
@@ -55,7 +58,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label class="form-label">Subjects offered by {{ $user->name }}</label>
+                                    <label class="form-label">Subjects offered by {{ $user->fullName() }}</label>
                                     <div class="mt-8pt">
                                         @foreach($user->courses as $course)
                                         <span class="btn btn-light btn-sm p-2 mb-8pt mr-8pt">{{ $course->title }}</span>
@@ -87,7 +90,10 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body p-5">
-                            <h4>{{ $user->name }}</h4>
+                            <div class="form-group mb-4">
+                                <label class="form-label">Full Name: </label>
+                                <h4>{{ $user->fullName() }}</h4>
+                            </div>
                             <div class="form-group">
                                 <label class="form-label">User Email: </label>
                                 <p class="font-size-24pt">{{ $user->email }}</p>
@@ -98,6 +104,27 @@
                             </div>
                         </div>
                     </div>
+
+                    @if($user->hasRole('Student'))
+                     <div class="card">
+                            <div class="card-body p-5">
+                                <div class="form-group">
+                                    <label class="form-label">Roll No: </label>
+                                    <p class="font-size-24pt">{{ $user->roll_no }}</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Grade: </label>
+                                    <p class="font-size-24pt">{{ $user->grade->first()->name }}</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Divsion: </label>
+                                    <p class="font-size-24pt">{{ $user->division->first()->name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
                     @if($user->hasRole('Teacher'))
                         <div class="card">

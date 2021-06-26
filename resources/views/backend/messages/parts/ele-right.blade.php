@@ -15,7 +15,7 @@
             <div class="d-flex align-items-center">
                 <div class="flex mr-3">
                     <a href="javascript:void(0)"
-                        class="text-body"><strong>{{ auth()->user()->name }}</strong></a>
+                        class="text-body"><strong>{{ auth()->user()->fullName() }}</strong></a>
                 </div>
                 <div>
                     <small

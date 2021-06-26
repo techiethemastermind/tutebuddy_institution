@@ -119,7 +119,7 @@ class DiscussionController extends Controller
         $question_data = [
             'user_id' => auth()->user()->id,
             'institution_id' => auth()->user()->institution->id,
-            'grade_id' => auth()->user()->grade[0]->id,
+            'grade_id' => auth()->user()->first()->id,
             'course_id' => $data['course'],
             'lesson_id' => $data['lesson'],
             'title' => $data['title'],
@@ -139,9 +139,7 @@ class DiscussionController extends Controller
             }
         }
         $data['topics'] = array_values($data['topics']);
-
         $question_data['topics'] = json_encode($data['topics']);
-
         $discusson = Discussion::create($question_data);
 
         return response()->json([

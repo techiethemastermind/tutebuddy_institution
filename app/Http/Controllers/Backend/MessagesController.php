@@ -47,7 +47,6 @@ class MessagesController extends Controller
 
     public function reply(Request $request)
     {
-
         $this->validate($request,[
             'message' => 'required'
         ],[
@@ -55,6 +54,8 @@ class MessagesController extends Controller
         ]);
 
         $userId = auth()->user()->id;
+
+        dd(auth()->user()->threads()->first());
 
         $thread = auth()->user()->threads()
             ->where('message_threads.id', '=', $request->thread_id)
@@ -160,20 +161,20 @@ class MessagesController extends Controller
         }
         $user_id = auth()->user()->id;
 
-        if(auth()->user()->hasRole('Instructor')) {
+        if(auth()->user()->hasRole('Teacher')) {
             $course_ids = DB::table('course_user')->where('user_id', $user_id)->pluck('course_id');
             $student_ids = DB::table('course_student')->whereIn('course_id', $course_ids)->pluck('user_id');
-            $users = User::whereIn('id', $student_ids)->where('name', 'like', '%' . $key . '%')->get();
+            $users = User::whereIn('id', $student_ids)->where('user_name', 'like', '%' . $key . '%')->get();
         }
 
         if(auth()->user()->hasRole('Student')) {
             $course_ids = DB::table('course_student')->where('user_id', $user_id)->pluck('course_id');
             $teacher_ids = DB::table('course_user')->whereIn('course_id', $course_ids)->pluck('user_id');
-            $users = User::whereIn('id', $teacher_ids)->where('name', 'like', '%' . $key . '%')->get();
+            $users = User::whereIn('id', $teacher_ids)->where('user_name', 'like', '%' . $key . '%')->get();
         }
 
-        if(auth()->user()->hasRole('Administrator')) {
-            $users = User::where('name', 'like', '%' . $key . '%')->get();
+        if(auth()->user()->hasRole('Institution Admin')) {
+            $users = User::where('user_name', 'like', '%' . $key . '%')->get();
         }
 
         // Thread
@@ -193,7 +194,7 @@ class MessagesController extends Controller
             if(!empty($user->avatar)) {
                 $avatar = '<img src="' . asset('/storage/avatars/' . $user->avatar ) . '" alt="people" class="avatar-img rounded-circle">';
             } else {
-                $avatar = '<span class="avatar-title rounded-circle">' . substr(auth()->user()->avatar, 0, 2) .'</span>';
+                $avatar = '<span class="avatar-title rounded-circle">' . substr(auth()->user()->fullName(), 0, 2) .'</span>';
             }
 
             // Get Thread ID for User
@@ -203,7 +204,7 @@ class MessagesController extends Controller
                         <a href="javascript:void(0)" class="d-flex align-items-center position-relative">
                             <span class="avatar avatar-xs avatar-online mr-3 flex-shrink-0">'. $avatar .'</span>
                             <span class="flex d-flex flex-column" style="max-width: 175px;">
-                                <strong class="text-body">'. $user->name .'</strong>
+                                <strong class="text-body">'. $user->fullName() .'</strong>
                                 <span class="text-muted text-ellipsis">'. $user->headline .'</span>
                             </span>
                         </a>

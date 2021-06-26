@@ -34,3 +34,7 @@ Route::get('test-result/{lesson_slug}/{test_id}', 'StudentController@TestResult'
 
 Route::get('lesson/{id}/complete', 'LessonsController@completeLesson')->name('lesson.complete');
 Route::get('ajax/step/{id}/complete/{type}', 'LessonsController@completeStep')->name('ajax.step.complete');
+
+// === Page route == //
+Route::get('pages', 'PageController@index')->name('pages');
+Route::get('page/{slug}', 'PageController@getPage')->name('page.show');
