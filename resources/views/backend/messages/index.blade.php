@@ -142,7 +142,7 @@
                                         @if(!empty($contact_user->avatar))
                                             <img src="{{ asset('/storage/avatars/' . $contact_user->avatar) }}" alt="" class="avatar-img rounded-circle">
                                         @else
-                                            <span class="avatar-title rounded-circle">{{ substr($contact_user->avatar, 0, 2) }}</span>
+                                            <span class="avatar-title rounded-circle">{{ substr($contact_user->fullName(), 0, 2) }}</span>
                                         @endif
 
                                         </span>

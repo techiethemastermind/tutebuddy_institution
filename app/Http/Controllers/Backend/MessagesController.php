@@ -55,10 +55,8 @@ class MessagesController extends Controller
 
         $userId = auth()->user()->id;
 
-        dd(auth()->user()->threads()->first());
-
         $thread = auth()->user()->threads()
-            ->where('message_threads.id', '=', $request->thread_id)
+            ->where('thread_id', '=', $request->thread_id)
             ->first();
 
         // Reply to Thread
@@ -81,16 +79,16 @@ class MessagesController extends Controller
             $view = view('backend.messages.parts.ele-right', ['message' => $message])->render();
 
             // Send replay message by email
-            $participant = $thread->getParticipantFromUser($userId);
-            $send_data = [
-                'template_type' => 'New_Message_Received',
-                'mail_data' => [
-                    'model_type' => Message::class,
-                    'model_id' => $message->id
-                ]
-            ];
-            $sender_email = User::find($participant->user_id)->email;
-            Mail::to($sender_email)->send(new SendMail($send_data));
+            // $participant = $thread->getParticipantFromUser($userId);
+            // $send_data = [
+            //     'template_type' => 'New_Message_Received',
+            //     'mail_data' => [
+            //         'model_type' => Message::class,
+            //         'model_id' => $message->id
+            //     ]
+            // ];
+            // $sender_email = User::find($participant->user_id)->email;
+            // Mail::to($sender_email)->send(new SendMail($send_data));
 
             return response()->json([
                 'success' => true,
@@ -162,19 +160,43 @@ class MessagesController extends Controller
         $user_id = auth()->user()->id;
 
         if(auth()->user()->hasRole('Teacher')) {
-            $course_ids = DB::table('course_user')->where('user_id', $user_id)->pluck('course_id');
-            $student_ids = DB::table('course_student')->whereIn('course_id', $course_ids)->pluck('user_id');
-            $users = User::whereIn('id', $student_ids)->where('user_name', 'like', '%' . $key . '%')->get();
+            $courses = Course::all();
+                
+            $users = collect();
+            foreach($courses as $course) {
+                $course_grade = $course->grade;
+                $course_grade_students = $course_grade->students;
+
+                foreach($course_grade_students as $item) {    
+                    if(str_contains($item->fullName(), $key)) {
+                        $users->push($item);
+                    }
+                }
+            }
         }
 
         if(auth()->user()->hasRole('Student')) {
-            $course_ids = DB::table('course_student')->where('user_id', $user_id)->pluck('course_id');
+
+            // My class students
+            $user_ids = DB::table('class_user')->where('grade_id', auth()->user()->id)->pluck('user_id');
+            $students = User::whereIn('id', $user_ids)->get();
+
+            // My Teachers
+            $course_ids = auth()->user()->grade->first()->courses->pluck('id');
             $teacher_ids = DB::table('course_user')->whereIn('course_id', $course_ids)->pluck('user_id');
-            $users = User::whereIn('id', $teacher_ids)->where('user_name', 'like', '%' . $key . '%')->get();
+            $teachers = User::whereIn('id', $teacher_ids)->get();
+
+            $all_users = $teachers->concat($students);
+            $users = collect();
+            foreach($all_users as $user) {
+                if(str_contains(strtolower($user->fullName()), strtolower($key))) {
+                    $users->push($user);
+                }
+            }
         }
 
         if(auth()->user()->hasRole('Institution Admin')) {
-            $users = User::where('user_name', 'like', '%' . $key . '%')->get();
+            $users = User::where('institution_id', auth()->user()->institution_id)->where('user_name', 'like', '%' . $key . '%')->get();
         }
 
         // Thread

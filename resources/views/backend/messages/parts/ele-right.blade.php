@@ -6,7 +6,7 @@
                     alt="people" class="avatar-img rounded-circle">
             @else
                 <span
-                    class="avatar-title rounded-circle">{{ substr(auth()->user()->avatar, 0, 2) }}</span>
+                    class="avatar-title rounded-circle">{{ substr(auth()->user()->fullName(), 0, 2) }}</span>
             @endif
         </a>
     </div>
