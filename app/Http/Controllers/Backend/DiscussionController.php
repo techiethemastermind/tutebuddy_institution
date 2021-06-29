@@ -233,7 +233,7 @@ class DiscussionController extends Controller
         $html = '<div class="d-flex mb-3">
                     <a href="" class="avatar avatar-sm mr-12pt">'. $avatar .'</a>
                     <div class="flex">
-                        <a href="" class="text-body"><strong>' . $result->user->name . '</strong></a><br>
+                        <a href="" class="text-body"><strong>' . $result->user->fullName() . '</strong></a><br>
                         <p class="mt-1 text-70">' . $result->content . '</p>
                         <div class="d-flex align-items-center">
                             <small class="text-50 mr-2">' . Carbon::createFromTimeStamp(strtotime($result->updated_at))->diffForHumans() .'</small>
@@ -284,11 +284,11 @@ class DiscussionController extends Controller
                                     <div class="media align-items-center">
                                         <div class="media-left mr-12pt">
                                             <a href="javascript:void(0)" class="avatar avatar-sm">
-                                                <span class="avatar-title rounded-circle">'. substr($discussion->user->name, 0, 2) .'</span>
+                                                <span class="avatar-title rounded-circle">'. substr($discussion->user->fullName(), 0, 2) .'</span>
                                             </a>
                                         </div>
                                         <div class="d-flex flex-column media-body media-middle">
-                                            <a href="" class="card-title">'. $discussion->user->name .'</a>
+                                            <a href="" class="card-title">'. $discussion->user->fullName() .'</a>
                                             <small class="text-muted">'. Carbon::createFromTimeStamp(strtotime($discussion->created_at))->diffForHumans() .'</small>
                                         </div>
                                     </div>

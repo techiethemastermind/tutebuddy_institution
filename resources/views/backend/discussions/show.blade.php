@@ -28,12 +28,12 @@
                                 @if(!empty($discussion->user->avatar))
                                 <img src="{{ asset('/storage/avatars/' . $discussion->user->avatar) }}" alt="people" class="avatar-img rounded-circle">
                                 @else
-                                <span class="avatar-title rounded-circle">{{ substr($discussion->user->name, 0, 2) }}</span>
+                                <span class="avatar-title rounded-circle">{{ substr($discussion->user->fullName(), 0, 2) }}</span>
                                 @endif
                             </a>
                             <div class="flex">
                                 <p class="d-flex align-items-center mb-2">
-                                    <a href="" class="text-body mr-2"><strong>{{ $discussion->user->name }}</strong></a>
+                                    <a href="" class="text-body mr-2"><strong>{{ $discussion->user->fullName() }}</strong></a>
                                     <small class="text-muted">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($discussion->updated_at))->diffForHumans() }}</small>
                                 </p>
                                 <p>{{ $discussion->question }}</p>
@@ -58,11 +58,11 @@
                                 @if(!empty($result->user->avatar))
                                 <img src="{{ asset('/storage/avatars/' . $result->user->avatar) }}" alt="people" class="avatar-img rounded-circle">
                                 @else
-                                <span class="avatar-title rounded-circle">{{ substr($result->user->avatar, 0, 2) }}</span>
+                                <span class="avatar-title rounded-circle">{{ substr($result->user->fullName(), 0, 2) }}</span>
                                 @endif
                             </a>
                             <div class="flex comment-group">
-                                <a href="" class="text-body"><strong>{{ $result->user->name }}</strong></a><br>
+                                <a href="" class="text-body"><strong>{{ $result->user->fullName() }}</strong></a><br>
                                 <p class="mt-1 text-70">{!! $result->content !!}</p>
                                 <div class="d-flex align-items-center">
                                     <small class="text-50 mr-2">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($result->updated_at))->diffForHumans() }}</small>
@@ -86,11 +86,11 @@
                                     <div class="ml-sm-32pt mt-3 card p-3">
                                         <div class="d-flex">
                                             <a href="#" class="avatar avatar-sm mr-12pt">
-                                                <span class="avatar-title rounded-circle">{{ substr($child->user->name, 0, 2) }}</span>
+                                                <span class="avatar-title rounded-circle">{{ substr($child->user->fullName(), 0, 2) }}</span>
                                             </a>
                                             <div class="flex">
                                                 <div class="d-flex align-items-center">
-                                                    <a href="" class="text-body"><strong>{{ $child->user->name }}</strong></a>
+                                                    <a href="" class="text-body"><strong>{{ $child->user->fullName() }}</strong></a>
                                                     <small class="ml-auto text-muted">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($child->updated_at))->diffForHumans() }}</small>
                                                 </div>
                                                 <p class="mt-1 text-70">{!! $child->content !!}</p>
@@ -118,7 +118,7 @@
                             @if(!empty(auth()->user()->avatar))
                             <img src="{{ asset('/storage/avatars/' . auth()->user()->avatar) }}" alt="people" class="avatar-img rounded-circle">
                             @else
-                            <span class="avatar-title rounded-circle">{{ substr(auth()->user()->name, 0, 2) }}</span>
+                            <span class="avatar-title rounded-circle">{{ substr(auth()->user()->fullName(), 0, 2) }}</span>
                             @endif
                         </a>
                         <div class="flex">
@@ -149,10 +149,10 @@
                                 @if(!empty($item->user->avatar))
                                 <img src="{{ asset('/storage/avatars/' . $item->user->avatar) }}" alt="" class="avatar-img rounded-circle">
                                 @else
-                                <span class="avatar-title rounded-circle">{{ substr($item->user->avatar, 0, 2) }}</span>
+                                <span class="avatar-title rounded-circle">{{ substr($item->user->fullName(), 0, 2) }}</span>
                                 @endif
                             </a>
-                            <a href="" class="flex mr-2 text-body"><strong>{{ $item->user->name }}</strong></a>
+                            <a href="" class="flex mr-2 text-body"><strong>{{ $item->user->fullName() }}</strong></a>
                             <span class="text-70 mr-2">{{ $item->results->count() }}</span>
                             <i class="text-muted material-icons font-size-16pt">forum</i>
                         </div>

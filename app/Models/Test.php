@@ -26,11 +26,11 @@ class Test extends Model
         if (auth()->check()) {
             if (auth()->user()->hasRole('Teacher')) {
                 static::addGlobalScope('filter', function (Builder $builder) {
-                    // $builder->where('user_id', '=', Auth::user()->id);
+                    $builder->where('user_id', '=', Auth::user()->id);
 
-                    $builder->whereHas('course', function ($q) {
-                        $q->where('user_id', '=', Auth::user()->id);
-                    });
+                    // $builder->whereHas('course', function ($q) {
+                    //     $q->where('user_id', '=', Auth::user()->id);
+                    // });
                 });
             }
 

@@ -37,7 +37,11 @@ class LessonsController extends Controller
         $next = Step::where('lesson_id', $lesson->id)->where('step', $order + 1)->first();
         $discussions = $course->discussions->take(5);
 
-        return view('frontend.courses.lesson', compact('lesson', 'step', 'prev', 'next', 'discussions'));
+        if(!empty($step)) {
+            return view('frontend.courses.lesson', compact('lesson', 'step', 'prev', 'next', 'discussions'));
+        } else {
+            return redirect()->route('courses.show', $course_slug)->with('warning', 'There is no content to display');
+        }        
     }
 
     /**

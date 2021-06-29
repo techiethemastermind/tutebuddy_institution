@@ -598,13 +598,13 @@ class CourseController extends Controller
                             </div>';
             $temp['name'] = '<div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
                                 <div class="avatar avatar-sm mr-8pt">
-                                    <span class="avatar-title rounded-circle">' . substr($course->teachers[0]->name, 0, 2) . '</span>
+                                    <span class="avatar-title rounded-circle">' . substr($course->teachers[0]->fullName(), 0, 2) . '</span>
                                 </div>
                                 <div class="media-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex d-flex flex-column">
                                             <p class="mb-0"><strong class="js-lists-values-lead">'
-                                            . $course->teachers[0]->name . '</strong></p>
+                                            . $course->teachers[0]->fullName() . '</strong></p>
                                             <small class="js-lists-values-email text-50">Teacher</small>
                                         </div>
                                     </div>

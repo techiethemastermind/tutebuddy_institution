@@ -36,10 +36,11 @@ class Assignment extends Model
 
             if (auth()->user()->hasRole('Student')) {
                 static::addGlobalScope('filter', function (Builder $builder) {
-                    // $builder->where('published', 1);
                     $builder->whereHas('course', function ($q) {
                         $q->where('published', 1);
                     });
+
+                    $builder->where('published', 1);
                 });
             }
         }

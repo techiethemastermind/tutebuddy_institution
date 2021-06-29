@@ -72,12 +72,12 @@
                                             <img src="{{ asset('/storage/avatars/' . $discussion->user->avatar) }}" alt="{{ $discussion->user->avatar }}"
                                             class="avatar-img rounded-circle">
                                             @else
-                                            <span class="avatar-title rounded-circle">{{ substr($discussion->user->name, 0, 2) }}</span>
+                                            <span class="avatar-title rounded-circle">{{ substr($discussion->user->fullName(), 0, 2) }}</span>
                                             @endif
                                         </a>
                                     </div>
                                     <div class="d-flex flex-column media-body media-middle">
-                                        <a href="" class="card-title">{{ $discussion->user->name }}</a>
+                                        <a href="" class="card-title">{{ $discussion->user->fullName() }}</a>
                                         <small class="text-muted">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($discussion->updated_at))->diffForHumans() }}</small>
                                     </div>
                                 </div>

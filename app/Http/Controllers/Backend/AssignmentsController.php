@@ -401,8 +401,7 @@ class AssignmentsController extends Controller
     public function getStudentAssignmentsByAjax($type)
     {
         // Get purchased Course IDs
-        $course_ids = DB::table('course_student')->where('user_id', auth()->user()->id)->pluck('course_id');
-        $course_ids = Course::whereIn('id', $course_ids)->pluck('id');
+        $course_ids = Course::pluck('id');
         $lesson_ids = Lesson::whereIn('course_id', $course_ids)->pluck('id');
         $assignment_ids = AssignmentResult::where('user_id', auth()->user()->id)->pluck('assignment_id');
 
@@ -534,7 +533,7 @@ class AssignmentsController extends Controller
             if(!empty($result->user->avatar)) {
                 $avatar = '<img src="'. asset('/storage/avatars/' . $result->user->avatar) .'" alt="Avatar" class="avatar-img rounded-circle">';
             } else {
-                $avatar = '<span class="avatar-title rounded-circle">'. substr($result->user->name, 0, 2) .'</span>';
+                $avatar = '<span class="avatar-title rounded-circle">'. substr($result->user->fullName(), 0, 2) .'</span>';
             }
 
             $temp['student'] = '<div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
@@ -544,7 +543,7 @@ class AssignmentsController extends Controller
                                     <div class="media-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex d-flex flex-column">
-                                                <p class="mb-0"><strong class="js-lists-values-name">'. $result->user->name .'</strong></p>
+                                                <p class="mb-0"><strong class="js-lists-values-name">'. $result->user->fullName() .'</strong></p>
                                                 <small class="js-lists-values-email text-50">'. $result->user->email .'</small>
                                             </div>
                                         </div>

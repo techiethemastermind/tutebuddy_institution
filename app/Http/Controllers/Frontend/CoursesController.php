@@ -16,6 +16,10 @@ class CoursesController extends Controller
      */
     public function show($slug)
     {
+        if(empty(auth()->user())) {
+            return redirect()->route('homepage');
+        }
+
         $course = Course::where('slug', $slug)->first();
 
         if(auth()->check()) {

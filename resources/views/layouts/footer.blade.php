@@ -6,7 +6,7 @@
 
                 <div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
                     <div class="avatar avatar-xl mr-8pt">
-                        <a href="{{ config('app.url') }}" class="">
+                        <a href="https://tutebuddy.com" class="">
                             <img src="{{ asset('/assets/img/logos/footer-bar-logo.png') }}" alt="logo" class="avatar-img rounded" style="width: 80%;" />
                         </a>
                     </div>
@@ -19,7 +19,7 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                 <div class="text-center pt-32pt">
-                    <a href="{{ config('app.url') }}" class=" text-100">
+                    <a href="https://tutebuddy.com" class=" text-100">
                         <strong>www.tutebuddy.com</strong>
                     </a>
                 </div>

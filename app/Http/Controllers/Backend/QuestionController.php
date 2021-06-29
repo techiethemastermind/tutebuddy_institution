@@ -135,7 +135,7 @@ class QuestionController extends Controller
         try {
 
             $question = Question::create($question_data);
-            $question_count = Question::where('model_id', $data['model_id'])->where('model_type', $data['model_type'])->count();
+            $question_count = Question::where('model_id', $question_data['model_id'])->where('model_type', $question_data['model_type'])->count();
 
             if($question_data['model_type'] == Test::class) {
                 $html = $this->getTestHtml($question);

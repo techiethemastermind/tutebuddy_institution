@@ -93,7 +93,7 @@
                                                     <small class="js-lists-values-project">
                                                         <strong>{{ $schedule->course->title }}</strong></small>
                                                     <small
-                                                        class="js-lists-values-location text-50">{{ $schedule->course->teachers[0]->name }}</small>
+                                                        class="js-lists-values-location text-50">{{ $schedule->course->teachers[0]->fullName() }}</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -185,13 +185,13 @@
                                 <td>
                                     <div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
                                         <div class="avatar avatar-sm mr-8pt">
-                                            <span class="avatar-title rounded-circle">{{ substr($course->teachers[0]->name, 0, 2) }}</span>
+                                            <span class="avatar-title rounded-circle">{{ substr($course->teachers[0]->fullName(), 0, 2) }}</span>
                                         </div>
                                         <div class="media-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex d-flex flex-column">
                                                     <p class="mb-0"><strong class="js-lists-values-lead">
-                                                    {{ $course->teachers[0]->name }}</strong></p>
+                                                    {{ $course->teachers[0]->fullName() }}</strong></p>
                                                     <small class="js-lists-values-email text-50">Teacher</small>
                                                 </div>
                                             </div>
@@ -256,7 +256,7 @@
                                     <div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
                                         <div class="avatar avatar-sm mr-8pt">
                                             @if(empty($teacher->avatar))
-                                            <span class="avatar-title rounded-circle">{{ substr($teacher->name, 0, 2) }}</span>
+                                            <span class="avatar-title rounded-circle">{{ substr($teacher->fullName(), 0, 2) }}</span>
                                             @else
                                             <img src="{{ asset('/storage/avatars/' . $teacher->avatar) }}" alt="Avatar" class="avatar-img rounded-circle">
                                             @endif
@@ -264,7 +264,7 @@
                                         <div class="media-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex d-flex flex-column">
-                                                    <p class="mb-0"><strong class="js-lists-values-lead">{{ $teacher->name }}</strong></p>
+                                                    <p class="mb-0"><strong class="js-lists-values-lead">{{ $teacher->fullName() }}</strong></p>
                                                     <small class="js-lists-values-email text-50">{{ $teacher->headline }}</small>
                                                 </div>
                                             </div>
