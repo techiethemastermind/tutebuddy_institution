@@ -52,9 +52,7 @@
 
                         @foreach($discussion->results as $result)
 
-                        <?php dd($result->user) ?>
-
-                        @if(empty($result->parent))
+                        @if(empty($result->parent) && !empty($result->user))
                         <div class="d-flex mb-3">
                             <a href="" class="avatar avatar-sm mr-12pt">
                                 @if(!empty($result->user->avatar))
