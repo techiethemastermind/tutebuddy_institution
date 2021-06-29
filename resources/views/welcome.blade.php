@@ -16,7 +16,11 @@
 @endpush
 
 <!-- Header Layout Content -->
-<div class="mdk-header-layout__content page-content login-bg"></div>
+<div class="mdk-header-layout__content page-content login-bg">
+    <div class="d-flex align-items-center vh-100 justify-content-center">
+        <img src="{{ asset('/assets/img/logos/tutebuddy-logo-full.png') }}" style="width: 300px;" alt="" srcset="">
+    </div>
+</div>
 
 @push('after-scripts')
 
