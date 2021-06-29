@@ -52,7 +52,7 @@
 
                         @foreach($discussion->results as $result)
 
-                        <?php dd($result->user->fullName()) ?>
+                        <?php dd($result->user) ?>
 
                         @if(empty($result->parent))
                         <div class="d-flex mb-3">
