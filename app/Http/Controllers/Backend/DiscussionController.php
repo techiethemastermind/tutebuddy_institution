@@ -227,7 +227,7 @@ class DiscussionController extends Controller
         if(!empty($result->user->avatar)){
             $avatar = '<img src="' . asset('/storage/avatars/' . $result->user->avatar) . '" alt="people" class="avatar-img rounded-circle">';
         } else {
-            $avatar = '<span class="avatar-title rounded-circle">' . substr($result->user->avatar, 0, 2) . '</span>';
+            $avatar = '<span class="avatar-title rounded-circle">' . substr($result->user->fullName(), 0, 2) . '</span>';
         }
 
         $html = '<div class="d-flex mb-3">
@@ -243,15 +243,15 @@ class DiscussionController extends Controller
                 </div>';
 
         // Send Reply email
-        $send_data = [
-            'template_type' => 'New_Discussion_Topic_Reply_Received',
-            'mail_data' => [
-                'model_type' => DiscussionResults::class,
-                'model_id' => $result->id
-            ]
-        ];
+        // $send_data = [
+        //     'template_type' => 'New_Discussion_Topic_Reply_Received',
+        //     'mail_data' => [
+        //         'model_type' => DiscussionResults::class,
+        //         'model_id' => $result->id
+        //     ]
+        // ];
 
-        Mail::to($result->discussion->user->email)->send(new SendMail($send_data));
+        // Mail::to($result->discussion->user->email)->send(new SendMail($send_data));
 
         return response()->json([
             'success' => true,

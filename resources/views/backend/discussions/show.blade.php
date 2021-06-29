@@ -52,6 +52,8 @@
 
                         @foreach($discussion->results as $result)
 
+                        <?php dd($result->user->fullName()) ?>
+
                         @if(empty($result->parent))
                         <div class="d-flex mb-3">
                             <a href="" class="avatar avatar-sm mr-12pt">
@@ -70,7 +72,7 @@
                                 </div>
                                 
                                 <div class="mt-3 card p-3 post-form d-none">
-                                    <form method="post" action="{{ route('admin.ajax.postComment') }}">@csrf
+                                    <form method="post" class="reply-form" action="{{ route('admin.ajax.postComment') }}">@csrf
                                         <div class="form-group">
                                             <label class="form-label">reply</label>
                                             <textarea class="form-control" name="content" rows="8" placeholder="Type here to reply to Matney ..."></textarea>
@@ -226,7 +228,7 @@
             }
         });
 
-        $('form').on('submit', function(e) {
+        $('.reply-form').on('submit', function(e) {
             e.preventDefault();
 
             var form_group = $(this).closest('.comment-group');
