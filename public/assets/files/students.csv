@@ -1,2 +1,2 @@
-Student ID,First Name,Middle Name,Last Name,Email,Date of Birthday,Roll No,Class,Division
-12,Grisha,Georgi,Belinsky,student@fpi.com,12/32/1999,12,Grade 2,A
+Student ID,Roll No,First Name,Middle Name,Last Name,Class,Division,Email,Date of Birthday,Father Name,Father Mobile,Father Email,Mother Name,Mother Mobile,Mother Email,Communication Email,Communication Phone
+12,12,Grisha,Georgi,Belinsky,Grade 2,A,student@fpi.com,12/32/1999,Grisha Father,1234567,father@email.com,Grisha Mother,12345678,mother@email.com,contact@email.com,123445

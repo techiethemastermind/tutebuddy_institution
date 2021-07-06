@@ -282,6 +282,13 @@
                     </a>
                 </li>
 
+                <li class="sidebar-menu-item {{ Request::is('admin/schedule/timetable*') ? 'active' : '' }}">
+                    <a class="sidebar-menu-button" href="{{ route('admin.schedule.timetable') }}">
+                        <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">av_timer</span>
+                        <span class="sidebar-menu-text">Manage Timetable</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-menu-item {{ Request::is('admin/curriculum*') ? 'active' : '' }}">
                     <a class="sidebar-menu-button" href="{{ route('admin.curriculums.index') }}">
                         <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">category</span>

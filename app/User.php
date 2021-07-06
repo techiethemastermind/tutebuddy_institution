@@ -32,7 +32,7 @@ class User extends Authenticatable
     protected $fillable = [
         'uuid', 'user_name', 'first_name', 'middle_name', 'last_name', 'email', 'password', 'role', 'active', 'verified', 'about', 'verify_token', 'institution_id',
         'remember_token', 'headline', 'phone_number', 'country', 'state', 'city', 'address', 'zip', 'timezone', 'profession',
-        'qualifications', 'achievements', 'experience'
+        'qualifications', 'achievements', 'experience', 'roll_no'
     ];
 
     /**

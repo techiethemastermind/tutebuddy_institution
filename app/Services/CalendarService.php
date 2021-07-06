@@ -6,6 +6,11 @@ use App\Models\Course;
 use App\Models\Schedule;
 use App\Models\Lesson;
 use Carbon\Carbon;
+use App\User;
+use App\Models\Grade;
+use App\Models\Division;
+
+use App\Models\ScheduleTimeTable;
 
 class CalendarService
 {
@@ -24,11 +29,6 @@ class CalendarService
                 foreach($schedules as $schedule) {
 
                     $course_title = (strlen($course->title) > 12) ? (substr($course->title, 0, 12) . '...') : $course->title;
-
-                    // $schedule_start_time = timezone()->convertToLocal(Carbon::parse($schedule['date'] . ' ' . $schedule['start_time']));
-                    // $base_date = Carbon::parse($schedule_start_time); // Base date of Schedule
-                    // $start_date = Carbon::parse(timezone()->convertToLocal(Carbon::parse($data['start']))); // start date
-                    // $end_date = Carbon::parse(timezone()->convertToLocal(Carbon::parse($data['end'])));
 
                     $base_date = Carbon::parse($schedule['date'] . ' ' . $schedule['start_time']);
                     $start_date = Carbon::parse($data['start']); // start date
@@ -107,5 +107,45 @@ class CalendarService
         }
 
         return $calendarData;
+    }
+
+    public function generateTimetableData($data, $colorService)
+    {
+        $tableData = [];
+        $schedules = ScheduleTimeTable::all();
+
+        $today = Carbon::now();
+        $firstDayOfWeek = $today->startOfWeek();
+
+        foreach($schedules as $schedule) {
+
+            $color_set = $colorService->getScheduleColor($schedule->style);
+            $day = $firstDayOfWeek->add($schedule->weekday - 1, 'day');
+
+            $start = $day->format('Y-m-d') . 'T' . Carbon::parse($schedule->time)->format('H:i:s');
+            $end = $day->format('Y-m-d') . 'T' . Carbon::parse($schedule->time)->addHours(1)->format('H:i:s');
+
+            $user = User::find($schedule->user_id);
+            $grade = Grade::find($schedule->grade_id);
+            $division = Division::find($schedule->division_id);
+
+            $title = $user->fullName() . '<br> ' . $grade->name . ' ' . $division->name;
+
+            $item = [
+                'id' => $schedule->id,
+                'title' => $title,
+                'start' => $start,
+                'end' => $end,
+                'display' => 'block',
+                'color' => $color_set['background_color'],
+                'textColor' => $color_set['font_color'],
+                'timezone' => $schedule->timezone
+            ];
+
+            array_push($tableData, $item);
+            $firstDayOfWeek = $today->startOfWeek();
+        }
+
+        return $tableData;
     }
 }

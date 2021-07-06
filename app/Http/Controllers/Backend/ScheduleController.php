@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Schedule;
 use App\Models\Lesson;
+use App\Models\Grade;
+use App\User;
+use App\Models\ScheduleTimeTable;
 
 use Carbon\Carbon;
 
@@ -165,5 +168,86 @@ class ScheduleController extends Controller
             ]);
         }
         
+    }
+
+    /**
+     * Timetable (new)
+     */
+
+    public function timetable()
+    {
+        $teachers = User::where('institution_id', auth()->user()->institution_id)->get();
+        $classes = Grade::all();
+        return view('backend.schedule.admin', compact('teachers', 'classes'));
+    }
+
+    /**
+     * Get Timetable Data
+     */
+    public function getTimetableData(CalendarService $calendarService, ColorService $colorService, Request $request)
+    {
+        $data = $request->all();
+        $weekly_schedule_data = $calendarService->generateTimetableData($data, $colorService);
+
+        return response()->json([
+            'data' => $weekly_schedule_data
+        ]);
+    }
+
+    /**
+     * Store Timetable Data
+     */
+    public function storeTimetableData(Request $request)
+    {
+        $data = $request->all();
+        $timeStr = $data['time'];
+        $time = Carbon::parse($timeStr)->format('H:i:s');
+        $weekday = Carbon::parse($timeStr)->dayOfWeek;
+
+        $new_data = [
+            'user_id' => $data['teacher_id'],
+            'grade_id' => $data['class_id'],
+            'division_id' => $data['division_id'],
+            'weekday' => $weekday,
+            'time' => $time,
+            'timezone' => $data['timezone'],
+            'institution_id' => auth()->user()->institution_id,
+            'style' => rand(0, 10)
+        ];
+
+        $timetable = ScheduleTimeTable::create($new_data);
+
+        return response()->json([
+            'success' => true,
+            'timetable_id' => $timetable->id
+        ]);
+    }
+
+    /**
+     * Get a Timetable Data by ID
+     */
+    public function getTimetableById(Request $request)
+    {
+        $schedule = ScheduleTimeTable::find($request->id);
+        return response()->json([
+            'success' => true,
+            'schedule' => $schedule
+        ]);
+    }
+
+    public function getDivisionsById(Request $request)
+    {
+        $divisions = Grade::find($request->id)->divisions;
+        $html = '';
+
+        foreach($divisions as $division) {
+            $html .= "<option value='$division->id'>$division->name</option>";
+        }
+
+        return response()->json([
+            'success' => true,
+            'divisions' => $divisions,
+            'html' => $html
+        ]);
     }
 }

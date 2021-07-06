@@ -143,7 +143,22 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-6">
+                            @if($user->hasRole('Student'))
+                            <div class="col-md-4">
+                                <div class="form-group mb-24pt">
+                                    <label class="form-label">Role</label>
+                                    {!! Form::select('roles[]', $roles, $userRole, array('class' => 'form-control', 'disabled'=>true, 'multiple', 'data-toggle'=>'select')) !!}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Roll Number</label>
+                                    {!! Form::text('roll_no', null, array('placeholder' => 'Roll Number', 'class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+                            @else
+                            <div class="col-md-8">
                                 <div class="form-group mb-24pt">
                                     <label class="form-label">Role</label>
                                     @if(auth()->user()->hasRole('Administrator'))
@@ -153,6 +168,7 @@
                                     @endif
                                 </div>
                             </div>
+                            @endif
                         </div>
 
                         <div class="row">
@@ -199,6 +215,73 @@
                         </div>
 
                         @if($user->hasRole('Student'))
+
+                        <div class="page-separator mt-32pt">
+                            <div class="page-separator__text">Parent Information</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Father's Name</label>
+                                    <input type="text" name="father_name" class="form-control" value="{{ $parent->father_name }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Father's Mobile No</label>
+                                    <input type="text" name="father_mobile" class="form-control" value="{{ $parent->father_mobile }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Father's Email</label>
+                                    <input type="text" name="father_email" class="form-control" value="{{ $parent->father_email }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Mother's Name</label>
+                                    <input type="text" name="mother_name" class="form-control" value="{{ $parent->mother_name }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Mother's Mobile No</label>
+                                    <input type="text" name="mother_mobile" class="form-control" value="{{ $parent->mother_mobile }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Mother's Email</label>
+                                    <input type="text" name="mother_email" class="form-control" value="{{ $parent->mother_email }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Communication Email</label>
+                                    <input type="text" name="contact_email" class="form-control" value="{{ $parent->contact_email }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Communication Phone Number</label>
+                                    <input type="text" name="contact_phone" class="form-control" value="{{ $parent->contact_phone }}">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">

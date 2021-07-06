@@ -37,7 +37,12 @@
             class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
             <div class="flex d-flex flex-column flex-sm-row align-items-center">
                 <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-                    <h2 class="mb-0">Create New User</h2>
+                    @if(isset($_GET['t']) && $_GET['t'] == 'student')
+                    <h2 class="mb-0">New Student</h2>
+                    @elseif(isset($_GET['t']) && $_GET['t'] == 'teacher')
+                    <h2 class="mb-0">New Teacher</h2>
+                    @endif
+                    
 
                     <ol class="breadcrumb p-0 m-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
@@ -141,7 +146,7 @@
                             @endif
 
                             @if(isset($_GET['t']) && $_GET['t'] == 'student')
-                            <div class="col-md-8">
+                            <div class="col-md-4">
                                 <div class="form-group mb-24pt">
                                     <label class="form-label">Role</label>
                                     @if(auth()->user()->hasRole('Institution Admin'))
@@ -149,6 +154,14 @@
                                     @else
                                     {!! Form::select('roles[]', $roles, 'Student', array('class' => 'form-control', 'multiple', 'data-toggle'=>'select')) !!}
                                     @endif
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Roll Number</label>
+                                    {!! Form::text('roll_no', null, array('placeholder' => 'Roll Number','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
                                 </div>
                             </div>
                             @endif
@@ -215,25 +228,82 @@
                             </div>
                         @endif
 
+                        @if(isset($_GET['t']) && $_GET['t'] == 'student')
+
+                        <div class="page-separator mt-32pt">
+                            <div class="page-separator__text">Parent Information</div>
+                        </div>
+
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label">Password:</label>
-                                    <input class="form-control" type="password" name="password"
-                                            placeholder="New Password" value="" tute-no-empty>
+                                    <label class="form-label">Father's Name</label>
+                                    {!! Form::text('father_name', null, array('placeholder' => 'Father Name','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="form-label">Confirm Password:</label>
-                                    <input class="form-control" type="password" name="confirm_password"
-                                            placeholder="Confirm Password" value="">
+                                    <label class="form-label">Father's Mobile No</label>
+                                    {!! Form::text('father_mobile', null, array('placeholder' => 'Father Mobile Number','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Father's Email</label>
+                                    {!! Form::text('father_email', null, array('placeholder' => 'Father Email','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
                                 </div>
                             </div>
                         </div>
 
-                        @if(isset($_GET['t']) && $_GET['t'] == 'student')
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Mother's Name</label>
+                                    {!! Form::text('mother_name', null, array('placeholder' => 'Mother Name','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Mother's Mobile No</label>
+                                    {!! Form::text('mother_mobile', null, array('placeholder' => 'Mother Mobile Number','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Mother's Email</label>
+                                    {!! Form::text('mother_email', null, array('placeholder' => 'Mother Email','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Communication Email</label>
+                                    {!! Form::text('communication_email', null, array('placeholder' => 'Communication Email','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Communication Phone Number</label>
+                                    {!! Form::text('communication_phone', null, array('placeholder' => 'Communication Phone Number','class' =>
+                                    'form-control', 'tute-no-empty' => '')) !!}
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="page-separator mt-32pt">
                             <div class="page-separator__text">Grade and Division</div>
                         </div>
@@ -325,6 +395,24 @@
                         </div> -->
 
                         <div class="row mt-48pt">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Password:</label>
+                                    <input class="form-control" type="password" name="password"
+                                            placeholder="New Password" value="" tute-no-empty>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Confirm Password:</label>
+                                    <input class="form-control" type="password" name="confirm_password"
+                                            placeholder="Confirm Password" value="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
                             <div class="col-md-4">
                                 <div class="form-group mb-24pt">
                                     <div class="flex form-inline" style="max-width: 100%">

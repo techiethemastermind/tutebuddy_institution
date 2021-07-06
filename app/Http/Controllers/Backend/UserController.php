@@ -414,6 +414,21 @@ class UserController extends Controller
             );
         }
 
+        if($input['fixed_role'] == 'Student') {
+            // Create Parent
+            DB::table('parent')->insert([
+                'user_id' => $user->id,
+                'father_name' => $input['father_name'],
+                'father_mobile' => $input['father_mobile'],
+                'father_email' => $input['father_email'],
+                'mother_name' => $input['mother_name'],
+                'mother_mobile' => $input['mother_mobile'],
+                'mother_email' => $input['mother_email'],
+                'contact_email' => $input['communication_email'],
+                'contact_phone' => $input['communication_phone']
+            ]);
+        }
+
         return redirect()->route('admin.users.edit', $user->id)
                         ->with('success','User created successfully');
     }
@@ -450,7 +465,14 @@ class UserController extends Controller
         } else {
             $divisions = Division::pluck('name', 'id')->all();
         }
-        return view('backend.users.edit', compact('user', 'roles', 'userRole', 'grades', 'divisions', 'institutions'));
+
+        // For student
+        if($user->hasRole('Student')) {
+            $parent = DB::table('parent')->where('user_id', $id)->first();
+            return view('backend.users.edit', compact('user', 'roles', 'userRole', 'grades', 'divisions', 'institutions', 'parent'));
+        } else {
+            return view('backend.users.edit', compact('user', 'roles', 'userRole', 'grades', 'divisions', 'institutions'));
+        }
     }
     
     /**
@@ -497,6 +519,21 @@ class UserController extends Controller
         if(isset($input['roles'])) {
             DB::table('model_has_roles')->where('model_id', $id)->delete();
             $user->assignRole($request->input('roles'));
+        }
+
+        if($user->hasRole('Student')) {
+            // Create Parent
+            DB::table('parent')->update([
+                'user_id' => $user->id,
+                'father_name' => $input['father_name'],
+                'father_mobile' => $input['father_mobile'],
+                'father_email' => $input['father_email'],
+                'mother_name' => $input['mother_name'],
+                'mother_mobile' => $input['mother_mobile'],
+                'mother_email' => $input['mother_email'],
+                'contact_email' => $input['contact_email'],
+                'contact_phone' => $input['contact_phone']
+            ]);
         }
     
         return back()->with('success', 'User updated successfully');
@@ -664,13 +701,12 @@ class UserController extends Controller
                         'uuid' => Str::uuid()->toString(),
                         'institution_id' => $my_institution->id,
                         'user_name' => strtolower($data[1]) . '_' . uniqid(),
-                        'email' => $data[4],
-                        'first_name' => $data[1],
-                        'middle_name' => $data[2],
-                        'last_name' => $data[3],
-                        'roll_no' => $data[6],
-                        'student_no' => $data[0],
-                        'birthday' => $data[5],
+                        'roll_no' => $data[1],
+                        'first_name' => $data[2],
+                        'middle_name' => $data[3],
+                        'last_name' => $data[4],
+                        'email' => $data[7],
+                        'birthday' => $data[8],
                         'timezone' => $my_institution->timezone
                     ];
                     
@@ -681,25 +717,38 @@ class UserController extends Controller
 
                     $grade_user = DB::table('class_user')->updateOrInsert(
                         [
-                            'grade_id' => $grades[$data[7]],
+                            'grade_id' => $grades[$data[5]],
                             'user_id' => $user->id
                         ],
                         [
-                            'grade_id' => $grades[$data[7]],
+                            'grade_id' => $grades[$data[5]],
                             'user_id' => $user->id
                         ]
                     );
 
                     $division_user = DB::table('division_user')->updateOrInsert(
                         [
-                            'division_id' => $divisions[$data[8]],
+                            'division_id' => $divisions[$data[6]],
                             'user_id' => $user->id
                         ],
                         [
-                            'division_id' => $divisions[$data[8]],
+                            'division_id' => $divisions[$data[6]],
                             'user_id' => $user->id
                         ]
                     );
+
+                    // Create Parent
+                    DB::table('parent')->insert([
+                        'user_id' => $user->id,
+                        'father_name' => $data[9],
+                        'father_mobile' => $data[10],
+                        'father_email' => $data[11],
+                        'mother_name' => $data[12],
+                        'mother_mobile' => $data[13],
+                        'mother_email' => $data[14],
+                        'contact_email' => $data[15],
+                        'contact_phone' => $data[16]
+                    ]);
                 }
 
             } else {

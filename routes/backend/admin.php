@@ -67,11 +67,14 @@ Route::post('schedule/new', 'ScheduleController@storeSchedule')->name('storeSche
 Route::post('schedule/lesson/add', 'ScheduleController@addLesson')->name('addLesson');
 Route::post('schedule/update', 'ScheduleController@updateSchedule')->name('updateSchedule');
 Route::get('schedule/delete', 'ScheduleController@deleteSchedule')->name('removeSchedule');
-
 Route::get('get/course/lessons', 'ScheduleController@getLessons')->name('getLessonsByCourse');
 
-Route::get('messages/get/enroll-thread', 'MessagesController@getEnrollThread')->name('messages.getEnrollThread');
-Route::post('messages/enroll-send', 'MessagesController@sendEnrollChat')->name('messages.sendEnrollChat');
+Route::get('schedule/timetable', 'ScheduleController@timetable')->name('schedule.timetable');
+Route::get('schedule/timetable/source', 'ScheduleController@getTimetableData')->name('getTimetableData');
+Route::post('schedule/timetable/new', 'ScheduleController@storeTimetableData')->name('storeTimeTableData');
+Route::get('schedule/timetable/get', 'ScheduleController@getTimetableById')->name('getTimetableById');
+Route::get('schedule/division/get', 'ScheduleController@getDivisionsById')->name('getDivisionsById');
+
 
 // Discussion
 Route::resource('discussions', 'DiscussionController');

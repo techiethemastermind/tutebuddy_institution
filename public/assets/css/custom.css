@@ -202,13 +202,39 @@ div.dataTables_wrapper div.dataTables_paginate {
 
 /** Full Calendar **/
 [dir=ltr] .fc .fc-timegrid-slot {
-    height: 2.0em;
+    height: 15em;
 }
 [dir=ltr] .fc .fc-col-header-cell-cushion {
     padding: 8px 4px;
 }
 [dir=ltr] .fc-license-message {
     display: none;
+}
+[dir=ltr] span.event-remove {
+    position: absolute;
+    z-index: 99;
+    right: -6px;
+    top: -6px;
+    background: rgba(39,44,51,.5);
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 10px;
+    color: #f8f9fa;
+    text-align: center;
+}
+[dir=ltr] .fc-event-title-container .badge {
+    position: absolute;
+    right: 0px;
+    top: 1px;
+    font-size: 10px;
+    font-weight: 400;
+}
+[dir=ltr] .fc-media-screen .fc-timegrid-event-harness {
+    position: relative;
+    height: 36px;
+    margin-right: 0 !important;
+    left: 0 !important;
 }
 
 /** Iframe **/
